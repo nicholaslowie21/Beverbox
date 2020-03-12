@@ -1,0 +1,33 @@
+# Compiled class file
+*.class
+
+# Log file
+*.log
+
+# BlueJ files
+*.ctxt
+
+# Mobile Tools for Java (J2ME)
+.mtj.tmp/
+
+# Package Files #
+*.jar
+*.war
+*.nar
+*.ear
+*.zip
+*.tar.gz
+*.rar
+
+# User defined
+nbproject/private/
+build/
+dist/
+
+Beverbox-ejb/nbproject/private/
+Beverbox-ejb/build/
+Beverbox-ejb/dist/
+
+BeverboxWeb/nbproject/private/
+BeverboxWeb/build/
+BeverboxWeb/dist/
