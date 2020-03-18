@@ -17,4 +17,5 @@ public interface CustomerSessionBeanLocal {
     public List<Customer> retrieveAllCustomers();
     public Customer retrieveCustomerByCustomerId(Long customerId) throws CustomerNotFoundException;
     public Customer retrieveCustomerByCustomerName(String customerName) throws CustomerNotFoundException;
+    public void updateCustomer(Customer customer) throws CustomerNotFoundException;
 }
