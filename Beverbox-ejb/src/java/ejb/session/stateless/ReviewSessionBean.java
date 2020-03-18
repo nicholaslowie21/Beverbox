@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.ReviewNotFoundException;
 
 /**
  *
@@ -94,5 +95,22 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.box.boxId = :inBoxId ORDER BY r.reviewId DESC");
         query.setParameter("inBoxId", boxId);
         return query.getResultList();
+    }
+    
+    
+    public void deleteReview(Long reviewId) throws ReviewNotFoundException 
+    {
+        Review reviewToDelete = em.find(Review.class, reviewId);
+        if (reviewToDelete == null) 
+        {
+            throw new ReviewNotFoundException();
+        }
+//        Customer customer = reviewToDelete.getCustomer();
+//        customer.getReviews().remove(reviewToDelete);
+//        
+//        Box box = reviewToDelete.getBox();
+//        box.getReviews().remove(reviewToDelete);
+        
+        em.remove(reviewToDelete);
     }
 }
