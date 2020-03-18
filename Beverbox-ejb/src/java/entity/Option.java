@@ -33,7 +33,7 @@ public class Option implements Serializable {
     @NotNull
     private Float price;
     
-    @OneToMany (mappedBy="Subscription")
+    @OneToMany (mappedBy="option")
     private List<Subscription> subscriptions;
 
     public Option() {
