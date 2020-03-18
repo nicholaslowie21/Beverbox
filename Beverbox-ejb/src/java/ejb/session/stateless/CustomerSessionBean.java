@@ -33,7 +33,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             
             return newCustomer.getCustomerId();
         }
-        catch(PersistenceException ex) {
+        catch (PersistenceException ex) {
             throw new CreateNewCustomerException();
         }
     }
