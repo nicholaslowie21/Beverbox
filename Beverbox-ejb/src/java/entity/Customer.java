@@ -20,6 +20,8 @@ public class Customer implements Serializable {
     private String customerName;
     private String customerEmail;
     private String customerPassword;
+    private String customerCCNum;
+    private Integer customerCVV;
     
     public Long getCustomerId() {
         return customerId;
@@ -76,6 +78,22 @@ public class Customer implements Serializable {
 
     public void setCustomerPassword(String customerPassword) {
         this.customerPassword = customerPassword;
+    }
+
+    public String getCustomerCCNum() {
+        return customerCCNum;
+    }
+
+    public void setCustomerCCNum(String customerCCNum) {
+        this.customerCCNum = customerCCNum;
+    }
+
+    public Integer getCustomerCVV() {
+        return customerCVV;
+    }
+
+    public void setCustomerCVV(Integer customerCVV) {
+        this.customerCVV = customerCVV;
     }
     
 }
