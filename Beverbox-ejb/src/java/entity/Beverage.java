@@ -42,6 +42,8 @@ public class Beverage implements Serializable {
     @JoinColumn
     private Box box;
     
+    @ManyToOne(optional = true)
+    private Transaction transaction;
     
     public Beverage() {
     }
