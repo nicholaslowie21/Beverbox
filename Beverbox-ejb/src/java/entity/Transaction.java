@@ -38,10 +38,13 @@ public class Transaction implements Serializable {
     @NotNull
     private Double transactionAmt;
     
+    @Column(nullable = false)
+    private Integer cvv;
+    
     @ManyToOne(optional = false)
     private Customer customer;
 
-    @ManyToOne(optional = true)
+    @OneToManyToOne(optional = true)
     private Subscription subscription;
     
     @ManyToOne(optional = true)
