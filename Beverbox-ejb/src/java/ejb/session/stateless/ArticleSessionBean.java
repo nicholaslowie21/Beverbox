@@ -21,11 +21,11 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public Long createNewArticle(String articleTitle, String articleContent) throws CreateNewArticleException 
+    public Long createNewArticle(String articleTitle, String articleContent, String articleImg) throws CreateNewArticleException 
     {
         try 
         {
-            Article newArticle = new Article(articleTitle, articleContent);
+            Article newArticle = new Article(articleTitle, articleContent,articleImg);
             em.persist(newArticle);
             em.flush();
             return newArticle.getArticleId();
