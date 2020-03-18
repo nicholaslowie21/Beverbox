@@ -75,6 +75,10 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
     public void deleteArticle(Long articleId) throws ArticleNotFoundException
     {
         Article articleToDelete = retrieveArticleByArticleId(articleId);
+        if (articleToDelete == null) 
+        {
+            throw new ArticleNotFoundException();
+        }
         em.remove(articleToDelete);
     }
     
