@@ -17,9 +17,9 @@ public class Admin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
-    private String name;
-    private String email;
-    private String password;
+    private String adminName;
+    private String adminEmail;
+    private String adminPassword;
     
     public Long getAdminId() {
         return adminId;
@@ -54,28 +54,28 @@ public class Admin implements Serializable {
         return "entity.Admin[ id=" + adminId + " ]";
     }
 
-    public String getName() {
-        return name;
+    public String getAdminName() {
+        return adminName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setAdminName(String adminName) {
+        this.adminName = adminName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getAdminEmail() {
+        return adminEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setAdminEmail(String adminEmail) {
+        this.adminEmail = adminEmail;
     }
 
-    public String getPassword() {
-        return password;
+    public String getAdminPassword() {
+        return adminPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setAdminPassword(String adminPassword) {
+        this.adminPassword = adminPassword;
     }
     
 }

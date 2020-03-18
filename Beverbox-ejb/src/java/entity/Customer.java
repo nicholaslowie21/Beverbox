@@ -17,9 +17,9 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
-    private String name;
-    private String email;
-    private String password;
+    private String customerName;
+    private String customerEmail;
+    private String customerPassword;
     
     public Long getCustomerId() {
         return customerId;
@@ -54,28 +54,28 @@ public class Customer implements Serializable {
         return "entity.Customer[ id=" + customerId + " ]";
     }
 
-    public String getName() {
-        return name;
+    public String getCustomerName() {
+        return customerName;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public void setCustomerName(String customerName) {
+        this.customerName = customerName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getCustomerEmail() {
+        return customerEmail;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setCustomerEmail(String customerEmail) {
+        this.customerEmail = customerEmail;
     }
 
-    public String getPassword() {
-        return password;
+    public String getCustomerPassword() {
+        return customerPassword;
     }
 
-    public void setPassword(String password) {
-        this.password = password;
+    public void setCustomerPassword(String customerPassword) {
+        this.customerPassword = customerPassword;
     }
     
 }
