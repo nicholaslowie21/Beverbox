@@ -30,10 +30,11 @@ public class Article implements Serializable {
     {    
     }
     
-    public Article(String articleTitle, String articleContent) 
+    public Article(String articleTitle, String articleContent, String articleImg) 
     {
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
+        this.articleImg = articleImg;
     }
 
     public Long getArticleId() {
