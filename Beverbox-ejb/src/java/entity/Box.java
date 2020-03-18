@@ -38,7 +38,7 @@ public class Box implements Serializable {
     @Size(max = 32)
     private String boxDesc;
 
-    @OneToMany(mappedBy="Beverage")
+    @OneToMany(mappedBy="box")
     private List<Beverage> beverages;
     
     /*@OneToMany(mappedBy="Review")

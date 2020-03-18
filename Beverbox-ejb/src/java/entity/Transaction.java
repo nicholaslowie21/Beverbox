@@ -14,6 +14,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -44,7 +45,7 @@ public class Transaction implements Serializable {
     @ManyToOne(optional = false)
     private Customer customer;
 
-    @OneToManyToOne(optional = true)
+    @OneToOne(optional = true)
     private Subscription subscription;
     
     @ManyToOne(optional = true)
@@ -52,6 +53,12 @@ public class Transaction implements Serializable {
     
     @OneToMany(mappedBy = "transaction")
     private List<Beverage> beverages;
+
+    public Transaction(String ccNum, Double transactionAmt, Integer cvv) {
+        this.ccNum = ccNum;
+        this.transactionAmt = transactionAmt;
+        this.cvv = cvv;
+    }
     
     public Long getTransactionId() {
         return transactionId;
@@ -107,6 +114,14 @@ public class Transaction implements Serializable {
 
     public void setBeverages(List<Beverage> beverages) {
         this.beverages = beverages;
+    }
+
+    public Integer getCvv() {
+        return cvv;
+    }
+
+    public void setCvv(Integer cvv) {
+        this.cvv = cvv;
     }
     
     
