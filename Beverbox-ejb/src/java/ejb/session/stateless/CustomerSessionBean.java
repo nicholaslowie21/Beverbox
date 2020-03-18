@@ -79,6 +79,8 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customerToUpdate.setCustomerName(customer.getCustomerName());
             customerToUpdate.setCustomerEmail(customer.getCustomerEmail());
             customerToUpdate.setCustomerPassword(customer.getCustomerPassword());
+            customerToUpdate.setCustomerCCNum(customer.getCustomerCCNum());
+            customerToUpdate.setCustomerCVV(customer.getCustomerCVV());
         }
         else
         {
