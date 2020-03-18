@@ -11,39 +11,39 @@ import javax.persistence.Id;
  * @author zhixuan
  */
 @Entity
-public class Customer implements Serializable {
+public class Admin implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long customerId;
+    private Long adminId;
     private String name;
     private String email;
     private String password;
     
-    public Long getCustomerId() {
-        return customerId;
+    public Long getAdminId() {
+        return adminId;
     }
 
-    public void setCustomerId(Long customerId) {
-        this.customerId = customerId;
+    public void setAdminId(Long adminId) {
+        this.adminId = adminId;
     }
 
     @Override
     public int hashCode() {
         int hash = 0;
-        hash += (customerId != null ? customerId.hashCode() : 0);
+        hash += (adminId != null ? adminId.hashCode() : 0);
         return hash;
     }
 
     @Override
     public boolean equals(Object object) {
-        // TODO: Warning - this method won't work in the case the customerId fields are not set
-        if (!(object instanceof Customer)) {
+        // TODO: Warning - this method won't work in the case the adminId fields are not set
+        if (!(object instanceof Admin)) {
             return false;
         }
-        Customer other = (Customer) object;
-        if ((this.customerId == null && other.customerId != null) || (this.customerId != null && !this.customerId.equals(other.customerId))) {
+        Admin other = (Admin) object;
+        if ((this.adminId == null && other.adminId != null) || (this.adminId != null && !this.adminId.equals(other.adminId))) {
             return false;
         }
         return true;
@@ -51,7 +51,7 @@ public class Customer implements Serializable {
 
     @Override
     public String toString() {
-        return "entity.Customer[ id=" + customerId + " ]";
+        return "entity.Admin[ id=" + adminId + " ]";
     }
 
     public String getName() {
