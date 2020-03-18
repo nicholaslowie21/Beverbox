@@ -20,14 +20,21 @@ public class Article implements Serializable {
     private Long articleId;
     @Column(nullable = false)
     private String articleTitle;
+    @Column(nullable = false)
+    private String articleContent;
+    @Column
+    private String articleImg;
+    
     
     public Article()
     {    
     }
     
-    public Article(String articleTitle) 
+    public Article(String articleTitle, String articleContent, String articleImg) 
     {
         this.articleTitle = articleTitle;
+        this.articleContent = articleContent;
+        this.articleImg = articleImg;
     }
 
     public Long getArticleId() {
@@ -69,6 +76,22 @@ public class Article implements Serializable {
 
     public void setArticleTitle(String articleTitle) {
         this.articleTitle = articleTitle;
+    }
+
+    public String getArticleContent() {
+        return articleContent;
+    }
+
+    public void setArticleContent(String articleContent) {
+        this.articleContent = articleContent;
+    }
+
+    public String getArticleImg() {
+        return articleImg;
+    }
+
+    public void setArticleImg(String articleImg) {
+        this.articleImg = articleImg;
     }
     
 }
