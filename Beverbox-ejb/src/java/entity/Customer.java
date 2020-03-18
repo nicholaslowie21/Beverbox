@@ -20,6 +20,7 @@ public class Customer implements Serializable {
     private String customerName;
     private String customerEmail;
     private String customerPassword;
+    private Double accumulatedCashback;
     private String customerCCNum;
     private Integer customerCVV;
     
@@ -79,7 +80,15 @@ public class Customer implements Serializable {
     public void setCustomerPassword(String customerPassword) {
         this.customerPassword = customerPassword;
     }
+    
+    public Double getAccumulatedCashback() {
+        return accumulatedCashback;
+    }
 
+    public void setAccumulatedCashback(Double accumulatedCashback) {
+        this.accumulatedCashback = accumulatedCashback;
+    }
+    
     public String getCustomerCCNum() {
         return customerCCNum;
     }
@@ -95,5 +104,5 @@ public class Customer implements Serializable {
     public void setCustomerCVV(Integer customerCVV) {
         this.customerCVV = customerCVV;
     }
-    
+
 }
