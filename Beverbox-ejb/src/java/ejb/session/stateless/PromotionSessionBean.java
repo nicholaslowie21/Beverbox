@@ -39,6 +39,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
     
+    @Override
     public long createNewPromotion(Promotion newPromo) throws UnknownPersistenceException, InputDataValidationException, InputDataValidationException, InputDataValidationException, InputDataValidationException{
         try
         {
