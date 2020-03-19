@@ -5,7 +5,12 @@
  */
 package ejb.session.stateless;
 
+import entity.Customer;
+import entity.Transaction;
+import java.util.List;
 import javax.ejb.Local;
+import util.exception.InputDataValidationException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -13,5 +18,11 @@ import javax.ejb.Local;
  */
 @Local
 public interface TransactionSessionBeanLocal {
+
+    public long createNewTransaction(Transaction newTransaction) throws UnknownPersistenceException, InputDataValidationException;
+
+    public List<Transaction> retrieveAllTransaction();
+
+    public List<Transaction> retrieveCustBeverageTrans(Customer customer);
     
 }

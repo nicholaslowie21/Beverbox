@@ -37,6 +37,9 @@ public class Beverage implements Serializable {
     private String country;
     private Boolean healthy;
     private Boolean alcoholic;
+    
+    @Column(nullable = false)
+    private Double price;
 
     @ManyToOne
     @JoinColumn
@@ -64,6 +67,23 @@ public class Beverage implements Serializable {
         this.beverageName = beverageName;
     }
 
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    
     public Boolean getAlcoholic() {
         return alcoholic;
     }

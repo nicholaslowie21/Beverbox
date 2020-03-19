@@ -1,10 +1,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -24,10 +27,23 @@ public class Customer implements Serializable {
     private String customerCCNum;
     private Integer customerCVV;
     
+    @OneToMany(mappedBy = "customer")
+    private List<Transaction> transactions = new ArrayList<>();
+    
     public Long getCustomerId() {
         return customerId;
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    
+    
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }

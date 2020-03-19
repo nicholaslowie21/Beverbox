@@ -5,16 +5,25 @@
  */
 package ejb.session.stateless;
 
+import entity.Beverage;
+import entity.Customer;
+import entity.Promotion;
 import entity.Transaction;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
 import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.InputDataValidationException;
+import util.exception.PromoCodeNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -24,12 +33,13 @@ import util.exception.UnknownPersistenceException;
 @Stateless
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
+    @EJB
+    private PromotionSessionBeanLocal promotionSessionBean;
+
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
-
-    public void persist(Object object) {
-        em.persist(object);
-    }
+    
+    
     
     private final ValidatorFactory validatorFactory;
     private final Validator validator;
@@ -62,6 +72,79 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
     }
     
+    public List<Transaction> retrieveAllTransaction(){
+        Query query = em.createQuery("SELECT t FROM Transaction t");
+        
+        List<Transaction> theList = query.getResultList();
+        
+        return theList;
+    }
+    
+    public List<Transaction> retrieveCustBeverageTrans(Customer customer){
+        long custId = customer.getCustomerId();
+        
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.customer.customerId = :inId")
+                .setParameter("inId", custId);
+        
+        List<Transaction> temp = query.getResultList();
+        List<Transaction> theList = new ArrayList<>();
+        
+        for(Transaction t: temp){
+            if(t.getBeverage()!=null){
+                theList.add(t);
+            }
+        }
+        
+        return theList;
+    }
+    
+    public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException{
+        Promotion thePromo = null;
+        Double newCashBack; // to add into wallet
+        
+        Double totalamt = bev.getPrice()*qty;
+        
+        if(useCashBack){
+            Double theCashBackNow = cust.getAccumulatedCashback();
+            if(theCashBackNow>=totalamt){
+                cust.setAccumulatedCashback(cust.getAccumulatedCashback()-totalamt);
+                totalamt = 0.0;
+            }else{
+                totalamt-=cust.getAccumulatedCashback();
+                cust.setAccumulatedCashback(0.0);
+            }
+        }
+        
+        if( !promoCode.equals("")){
+            thePromo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
+            if(thePromo!=null){
+                newCashBack = totalamt * thePromo.getPromoPercentage()/100;
+                cust.setAccumulatedCashback(cust.getAccumulatedCashback()+newCashBack);
+            } else {
+                throw new PromoCodeNotFoundException("Promotion not found!");
+            }
+        }
+        
+        Transaction newTrans = new Transaction(cust.getCustomerCCNum(), totalamt, cust.getCustomerCVV(), new Date());
+        newTrans.setBevNumber(qty);
+        
+        newTrans.setBeverage(bev);
+        bev.setTransaction(newTrans);
+        
+        newTrans.setCustomer(cust);
+        cust.getTransactions().add(newTrans);
+        
+        if(thePromo!=null) {
+            newTrans.setPromotion(thePromo);
+            thePromo.getTransactions().add(newTrans);
+        }
+        
+        em.persist(newTrans);
+        em.flush();
+        
+        return newTrans.getTransactionId();
+    }
+    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
     {
         String msg = "Input data validation error!:";
@@ -72,7 +155,5 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
         
         return msg;
-    }
-
-    
+    }    
 }
