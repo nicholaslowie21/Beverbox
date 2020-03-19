@@ -6,6 +6,8 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -42,6 +44,12 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private Integer cvv;
     
+    @Column(nullable = false)
+    private Date transDate;
+    
+    @Column(nullable = false)
+    private Integer bevNumber;
+    
     @ManyToOne(optional = false)
     private Customer customer;
 
@@ -51,14 +59,42 @@ public class Transaction implements Serializable {
     @ManyToOne(optional = true)
     private Promotion promotion;
     
-    @OneToMany(mappedBy = "transaction")
-    private List<Beverage> beverages;
+    @OneToOne(mappedBy = "transaction")
+    private Beverage beverage;
 
-    public Transaction(String ccNum, Double transactionAmt, Integer cvv) {
+    public Transaction(String ccNum, Double transactionAmt, Integer cvv, Date currDate) {
         this.ccNum = ccNum;
         this.transactionAmt = transactionAmt;
         this.cvv = cvv;
+        this.transDate = currDate;
     }
+
+    public Integer getBevNumber() {
+        return bevNumber;
+    }
+
+    public void setBevNumber(Integer bevNumber) {
+        this.bevNumber = bevNumber;
+    }
+
+    
+    public Date getTransDate() {
+        return transDate;
+    }
+
+    public void setTransDate(Date transDate) {
+        this.transDate = transDate;
+    }
+
+    public Beverage getBeverage() {
+        return beverage;
+    }
+
+    public void setBeverage(Beverage beverage) {
+        this.beverage = beverage;
+    }
+    
+    
     
     public Long getTransactionId() {
         return transactionId;
@@ -106,14 +142,6 @@ public class Transaction implements Serializable {
 
     public void setPromotion(Promotion promotion) {
         this.promotion = promotion;
-    }
-
-    public List<Beverage> getBeverages() {
-        return beverages;
-    }
-
-    public void setBeverages(List<Beverage> beverages) {
-        this.beverages = beverages;
     }
 
     public Integer getCvv() {
