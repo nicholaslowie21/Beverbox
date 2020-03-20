@@ -37,7 +37,8 @@ public class Beverage implements Serializable {
     private String country;
     private Boolean healthy;
     private Boolean alcoholic;
-    
+    @Column(nullable = false)
+    private Boolean active;
     @Column(nullable = false)
     private Double price;
 
@@ -51,12 +52,14 @@ public class Beverage implements Serializable {
     public Beverage() {
     }
 
-    public Beverage(String beverageName, String beverageDesc, String country, Boolean alcoholic, Boolean healthy) {
+    public Beverage(String beverageName, String beverageDesc, String country, Boolean alcoholic, Boolean healthy, Double price) {
         this.beverageName = beverageName;
         this.beverageDesc = beverageDesc;
         this.country = country;
         this.healthy = healthy;
         this.alcoholic = alcoholic;
+        this.price = price;
+        this.active = true;
     }
 
     public String getBeverageName() {
@@ -132,6 +135,16 @@ public class Beverage implements Serializable {
     public void setBeverageId(Long beverageId) {
         this.beverageId = beverageId;
     }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+    
+    
 
     @Override
     public int hashCode() {
