@@ -7,11 +7,16 @@ package ejb.session.stateless;
 
 import entity.Box;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.DeleteBoxException;
@@ -26,14 +31,25 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
 
+    private final ValidatorFactory validatorFactory;
+    private final Validator validator;
     
       public BoxSessionBean() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
     @Override
     public Long createNewBox(Box newBox) throws CreateNewBoxException
     {
         try {
+            
+            Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
+            
+            if(constraintViolations.isEmpty()) {
+                em.persist(newBox);
+                em.flush();
+            }
             em.persist(newBox);
             em.flush();
             
@@ -127,5 +143,16 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
         em.persist(object);
     }
     
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Box>>constraintViolations)
+    {
+        String msg = "Input data validation error!:";
+            
+        for(ConstraintViolation constraintViolation:constraintViolations)
+        {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+        
+        return msg;
+    }  
 
 }

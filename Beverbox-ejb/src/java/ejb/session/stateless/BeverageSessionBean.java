@@ -7,11 +7,16 @@ package ejb.session.stateless;
 
 import entity.Beverage;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewBeverageException;
 import util.exception.DeleteBeverageException;
@@ -26,15 +31,25 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
     
+    private final ValidatorFactory validatorFactory;
+    private final Validator validator;
+    
     public BeverageSessionBean() {
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
     @Override
     public Long createNewBeverage(Beverage newBeverage) throws CreateNewBeverageException
     {
         try {
-            em.persist(newBeverage);
-            em.flush();
+            Set<ConstraintViolation<Beverage>>constraintViolations = validator.validate(newBeverage);
+            
+            if(constraintViolations.isEmpty()) {
+                em.persist(newBeverage);
+                em.flush();
+            }
+           
             
             return newBeverage.getBeverageId();
         }
@@ -127,5 +142,17 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
     public void persist1(Object object) {
         em.persist(object);
     }
+    
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Beverage>>constraintViolations)
+    {
+        String msg = "Input data validation error!:";
+            
+        for(ConstraintViolation constraintViolation:constraintViolations)
+        {
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
+        }
+        
+        return msg;
+    }  
     
 }
