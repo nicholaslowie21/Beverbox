@@ -19,7 +19,7 @@ import util.exception.UnknownPersistenceException;
 @Local
 public interface PromotionSessionBeanLocal {
 
-    public long createNewPromotion(Promotion newPromo) throws UnknownPersistenceException, InputDataValidationException, InputDataValidationException, InputDataValidationException, InputDataValidationException;
+    public long createNewPromotion(Promotion newPromo) throws UnknownPersistenceException, InputDataValidationException;
 
     public long updatePromotion(Promotion updatedPromo) throws InputDataValidationException;
 

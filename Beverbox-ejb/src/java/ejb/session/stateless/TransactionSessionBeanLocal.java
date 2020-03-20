@@ -5,11 +5,13 @@
  */
 package ejb.session.stateless;
 
+import entity.Beverage;
 import entity.Customer;
 import entity.Transaction;
 import java.util.List;
 import javax.ejb.Local;
 import util.exception.InputDataValidationException;
+import util.exception.PromoCodeNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -24,5 +26,7 @@ public interface TransactionSessionBeanLocal {
     public List<Transaction> retrieveAllTransaction();
 
     public List<Transaction> retrieveCustBeverageTrans(Customer customer);
+
+    public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException;
     
 }
