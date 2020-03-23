@@ -5,6 +5,14 @@
         <param-value>Production</param-value>
     </context-param>
     <context-param>
+        <param-name>DEFAULT_CURRENCY</param-name>
+        <param-value>SGD</param-value>
+    </context-param>
+        <context-param>
+        <param-name>DEFAULT_TIMEZONE</param-name>
+        <param-value>GMT+8</param-value>
+    </context-param>
+    <context-param>
         <param-name>primefaces.FONT_AWESOME</param-name>
         <param-value>true</param-value>
     </context-param>
