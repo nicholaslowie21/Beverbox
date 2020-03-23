@@ -1,21 +1,36 @@
 package ejb.session.stateless;
 
+import entity.Customer;
 import entity.Option;
 import entity.Subscription;
+import entity.Transaction;
+import java.time.LocalDate;
+import java.time.Period;
+import java.util.Date;
 import java.util.List;
+import java.util.Set;
 import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PersistenceException;
 import javax.persistence.Query;
+import javax.validation.ConstraintViolation;
+import javax.validation.Validation;
+import javax.validation.Validator;
+import javax.validation.ValidatorFactory;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.SubscriptionNotFoundException;
+import util.exception.UnknownPersistenceException;
 
 @Stateless
 public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
+
+    @EJB(name = "TransactionSessionBeanLocal")
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
@@ -26,52 +41,63 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
     
-    //Need to inject Transaction Entity Session Bean as well
-    
+    private final ValidatorFactory validatorFactory;
+    private final Validator validator;
 
     public SubscriptionSessionBean() {
-//        Initialise Validator if needed
+        validatorFactory = Validation.buildDefaultValidatorFactory();
+        validator = validatorFactory.getValidator();
     }
 
-    //Need to associate with Transaction entity as well
     @Override
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException
     {
-        try {
-            
-            if (optionId == null) {
-                throw new OptionNotFoundException();
-            }
-            
-            Option option = optionSessionBeanLocal.retrieveOptionByOptionId(optionId);
-            
-            if (customerId == null) {
-                throw new CustomerNotFoundException();
-            }
-//            Uncomment this when customer session bean has implemented CRUD methods and Transaction Session Bean as well
-//            Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+        Set<ConstraintViolation<Subscription>>constraintViolations = validator.validate(newSubscription);
+        
+        if(constraintViolations.isEmpty())
+        {  
+        
+            try {
 
-//            if (transactionId == null) {
-//                throw new TransactionNotFoundException();
-//            }
-//            Transaction transaction = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
-            
-            em.persist(newSubscription);
-            newSubscription.setOption(option);
-//            newSubscription.setCustomer(customer);
-//            customer.add(newSubscription);
-//            newSubscription.setTransaction(transaction);
-//            transaction.setSubscription(newSubscription);
-            
-            em.flush();
-            
-            return newSubscription.getSubscriptionId();
-        }
-        catch(PersistenceException ex) {
-            throw new CreateNewSubscriptionException();
-        }
-        catch(OptionNotFoundException | CustomerNotFoundException ex) {
-            throw new CreateNewSubscriptionException("An error has occured when creating a new Subscription" + ex.getMessage());
+                if (optionId == null) {
+                    throw new OptionNotFoundException();
+                }
+
+                Option option = optionSessionBeanLocal.retrieveOptionByOptionId(optionId);
+
+                if (customerId == null) {
+                    throw new CustomerNotFoundException();
+                }
+
+                Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+
+    //            Nicholas needs to implemeent a retrieveTransactionByTransactionId, with its corresponding exception as well
+    //            if (transactionId == null) {
+    //                throw new TransactionNotFoundException();
+    //            }
+    //            Transaction transaction = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
+
+                em.persist(newSubscription);
+                newSubscription.setOption(option);
+                newSubscription.setCustomer(customer);
+    //            ZhiXuan needs to associate Customer with subscription entities TT
+    //            customer.getSubscriptionEntities().add(newSubscription);
+    //            newSubscription.setTransaction(transaction);
+    //            transaction.setSubscription(newSubscription);
+
+                em.flush();
+
+                return newSubscription.getSubscriptionId();
+            }
+            catch(PersistenceException ex) {
+                throw new CreateNewSubscriptionException();
+            }
+            catch(OptionNotFoundException | CustomerNotFoundException ex) {
+                throw new CreateNewSubscriptionException("An error has occured when creating a new Subscription" + ex.getMessage());
+            }
+        
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
     }
     
@@ -85,7 +111,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         {
             subscription.getCustomer();
             subscription.getOption();
-//            subscription.getTransaction();
+            subscription.getTransaction();
         }
         
         return subscriptions;
@@ -108,7 +134,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             {
                 subscription.getCustomer();
                 subscription.getOption();
-    //            subscription.getTransaction();
+                subscription.getTransaction();
             }
 
             return subscriptions;
@@ -135,7 +161,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             {
                 subscription.getCustomer();
                 subscription.getOption();
-    //            subscription.getTransaction();
+                subscription.getTransaction();
             }
 
             return subscriptions;
@@ -156,7 +182,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
 //            But actually if one to one, this is not necessary right
             subscription.getCustomer();
             subscription.getOption();
-//            subscription.getTransaction();
+            subscription.getTransaction();
             
             return subscription;
         }
@@ -165,48 +191,44 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             throw new SubscriptionNotFoundException("Subscription ID " + subscriptionId + " does not exist!");
         }               
     }
-
-//    I don't think I need an update function
-    @Override
-    public void updateSubscription (Subscription subscription) throws SubscriptionNotFoundException
-    {
-        if(subscription != null)
-        {
-            Subscription subscriptionToUpdate = retrieveSubscriptionBySubscriptionId(subscription.getSubscriptionId());
-
-            subscriptionToUpdate.setStartDate(subscription.getStartDate());
-            subscriptionToUpdate.setEndDate(subscription.getEndDate());
-            //If it is associated with another object, do we need to update the subscription obj associated there too?
-        }
-        else
-        {
-            throw new SubscriptionNotFoundException("Subscription ID not provided for option to be updated");
-        }
+    
+    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException {
+        
+//        try{
+//            Subscription oldSubscription = retrieveSubscriptionBySubscriptionId(subscriptionId);
+//        
+//            Date startDate = oldSubscription.getStartDate();
+//            Date endDate = oldSubscription.getEndDate();
+//            
+//            int startMonth = oldSubscription.getStartDate().getMonth();
+//            int startYear = oldSubscription.getStartDate().getYear();
+//            int endMonth = oldSubscription.getEndDate().getMonth();
+//            int endYear = oldSubscription.getEndDate().getYear();
+//            
+//            Period monthDiff = Period.between(startDate, endDate);
+//            
+//            if (startYear == endYear) {
+//                int duration = endMonth - startMonth;
+//                
+//            } else {
+//                
+//            }
+//        } catch (SubscriptionNotFoundException ex){
+//            throw new CreateNewSubscriptionException("An error occured while renewing your subscription" + ex.getMessage());
+//        }
+//      Not completed, will finish up later
+        return subscriptionId;
     }
     
-    //    I don't think I need a delete function
-    @Override
-    public void deleteSubscription(Long subscriptionId) throws SubscriptionNotFoundException
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Subscription>>constraintViolations)
     {
-        try {
-            if (subscriptionId == null) {
-                throw new SubscriptionNotFoundException();
-            }
+        String msg = "Input data validation error!:";
             
-            Subscription subscriptionToRemove = retrieveSubscriptionBySubscriptionId(subscriptionId);
-            Option option = subscriptionToRemove.getOption();
-            option.getSubscriptions().remove(subscriptionToRemove);
-//            Customer customer = subscriptionToRemove.getCustomer();
-//            customer.getSubscriptions().remove(subscriptionToRemove);
-//            Transaction transaction = subscriptionToRemove.getTransaction();
-//            transaction.setSubscription(null);         
-        }
-    
-        catch(Exception ex)
+        for(ConstraintViolation constraintViolation:constraintViolations)
         {
-            throw new SubscriptionNotFoundException();
+            msg += "\n\t" + constraintViolation.getPropertyPath() + " - " + constraintViolation.getInvalidValue() + "; " + constraintViolation.getMessage();
         }
-    }
-    
-    
+        
+        return msg;
+    }    
 }

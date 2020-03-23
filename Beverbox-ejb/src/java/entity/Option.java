@@ -32,6 +32,8 @@ public class Option implements Serializable {
     private String description;
     @NotNull
     private Float price;
+    @NotNull
+    private boolean active;
     
     @OneToMany (mappedBy="option")
     private List<Subscription> subscriptions;
@@ -48,6 +50,7 @@ public class Option implements Serializable {
         this.sharing = sharing;
         this.description = description;
         this.price = price;
+        this.active = true;
     }
     
     
@@ -131,6 +134,14 @@ public class Option implements Serializable {
 
     public void setPrice(Float price) {
         this.price = price;
+    }
+
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
     }
     
 }
