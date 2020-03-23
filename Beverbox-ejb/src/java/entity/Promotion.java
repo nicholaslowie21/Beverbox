@@ -51,6 +51,9 @@ public class Promotion implements Serializable {
     @OneToMany
     private List<Transaction> transactions;
 
+    public Promotion(){
+        
+    }
     public Promotion(String promoName, String promoType, Integer promoPercentage, String promoCode) {
         this.promoName = promoName;
         this.promoType = promoType;

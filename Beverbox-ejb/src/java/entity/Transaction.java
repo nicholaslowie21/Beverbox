@@ -62,6 +62,9 @@ public class Transaction implements Serializable {
     @OneToOne(mappedBy = "transaction")
     private Beverage beverage;
 
+    public Transaction(){
+        
+    }
     public Transaction(String ccNum, Double transactionAmt, Integer cvv, Date currDate) {
         this.ccNum = ccNum;
         this.transactionAmt = transactionAmt;
