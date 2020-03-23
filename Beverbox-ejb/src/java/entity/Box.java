@@ -43,7 +43,7 @@ public class Box implements Serializable {
     @OneToMany(mappedBy="box")
     private List<Beverage> beverages;
     
-    @OneToMany(mappedBy="Review")
+    @OneToMany(mappedBy="box")
     private List<Review> reviews; 
     
     public Box() {
