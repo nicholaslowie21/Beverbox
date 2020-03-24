@@ -6,6 +6,9 @@ import entity.Subscription;
 import entity.Transaction;
 import java.time.LocalDate;
 import java.time.Period;
+import java.time.YearMonth;
+import java.time.ZoneId;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
@@ -24,6 +27,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.SubscriptionNotFoundException;
+import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 @Stateless
@@ -50,7 +54,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
     }
 
     @Override
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException
     {
         Set<ConstraintViolation<Subscription>>constraintViolations = validator.validate(newSubscription);
         
@@ -72,10 +76,10 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
 
     //            Nicholas needs to implemeent a retrieveTransactionByTransactionId, with its corresponding exception as well
-    //            if (transactionId == null) {
-    //                throw new TransactionNotFoundException();
-    //            }
-    //            Transaction transaction = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
+                if (transactionId == null) {
+                    throw new TransactionNotFoundException();
+                }
+                Transaction transaction = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
 
                 em.persist(newSubscription);
                 newSubscription.setOption(option);
@@ -192,33 +196,29 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         }               
     }
     
-    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException {
-        
+// I realise that renewSubscription should not be in this subscription session bean, bcs like the business logic shouldn't be here, and that if it is done here, the method will be overly complicated
+//    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException {    
 //        try{
 //            Subscription oldSubscription = retrieveSubscriptionBySubscriptionId(subscriptionId);
-//        
-//            Date startDate = oldSubscription.getStartDate();
+//            long monthDuration = oldSubscription.getMonthDuration();
 //            Date endDate = oldSubscription.getEndDate();
+//            YearMonth oldEndYearMonth = YearMonth.of(endDate.getYear(), endDate.getMonth());
 //            
-//            int startMonth = oldSubscription.getStartDate().getMonth();
-//            int startYear = oldSubscription.getStartDate().getYear();
-//            int endMonth = oldSubscription.getEndDate().getMonth();
-//            int endYear = oldSubscription.getEndDate().getYear();
+//            Date today = new Date();
 //            
-//            Period monthDiff = Period.between(startDate, endDate);
-//            
-//            if (startYear == endYear) {
-//                int duration = endMonth - startMonth;
-//                
+//            if (today.before(endDate)) {
+//                YearMonth newEndYearMonth = oldEndYearMonth.plusMonths(monthDuration);
+//                Date newEndDate = new Date(newEndYearMonth.getYear() - 1900, newEndYearMonth.getMonthValue(), 1);
+//                createNewSubscription(new Subscription(endDate, newEndDate, oldSubscription.getMonthDuration()), oldSubscription.getOption().getOptionId(), oldSubscription.getCustomer().getCustomerId(), oldSubscription.getTransaction().getTransactionId());
 //            } else {
-//                
+////                When the date the customer press renew subscription is 
 //            }
 //        } catch (SubscriptionNotFoundException ex){
 //            throw new CreateNewSubscriptionException("An error occured while renewing your subscription" + ex.getMessage());
 //        }
-//      Not completed, will finish up later
-        return subscriptionId;
-    }
+//
+//        return subscriptionId;
+//    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Subscription>>constraintViolations)
     {

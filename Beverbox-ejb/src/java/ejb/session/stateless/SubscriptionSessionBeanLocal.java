@@ -15,6 +15,7 @@ import util.exception.OptionNotFoundException;
 import util.exception.SubscriptionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.InputDataValidationException;
+import util.exception.TransactionNotFoundException;
 
 /**
  *
@@ -23,7 +24,7 @@ import util.exception.InputDataValidationException;
 @Local
 public interface SubscriptionSessionBeanLocal {
 
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException;
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException;
     
     public List<Subscription> retrieveAllSubscriptions();
 
@@ -32,5 +33,4 @@ public interface SubscriptionSessionBeanLocal {
     public Subscription retrieveSubscriptionBySubscriptionId(Long subscriptionId) throws SubscriptionNotFoundException;
 
     public List<Subscription> retrieveAllSubscriptionsByOptionId(Long optionId) throws OptionNotFoundException, SubscriptionNotFoundException;
-    
 }
