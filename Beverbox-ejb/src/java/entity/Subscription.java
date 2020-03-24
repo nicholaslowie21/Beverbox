@@ -29,6 +29,9 @@ public class Subscription implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Date endDate;
+    @Column(nullable = false)
+    @NotNull
+    private int monthDuration;
     
     // Unsure whether the relationship should be optional or not
     @ManyToOne
@@ -39,16 +42,17 @@ public class Subscription implements Serializable {
     @JoinColumn
     private Customer customer;
     
-//    @OneToOne 
-//    private Transaction transaction;
+    @OneToOne (optional = false)
+    private Transaction transaction;
     
     public Subscription() {
 
     }
 
-    public Subscription(Date startDate, Date endDate) {
+    public Subscription(Date startDate, Date endDate, int monthDuration) {
         this.startDate = startDate;
         this.endDate = endDate;
+        this.monthDuration = monthDuration;
     }
     
     
@@ -118,6 +122,22 @@ public class Subscription implements Serializable {
 
     public void setCustomer(Customer customer) {
         this.customer = customer;
+    }
+
+    public Transaction getTransaction() {
+        return transaction;
+    }
+
+    public void setTransaction(Transaction transaction) {
+        this.transaction = transaction;
+    }
+
+    public int getMonthDuration() {
+        return monthDuration;
+    }
+
+    public void setMonthDuration(int monthDuration) {
+        this.monthDuration = monthDuration;
     }
 
     
