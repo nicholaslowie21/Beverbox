@@ -12,6 +12,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.InputDataValidationException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -28,5 +29,7 @@ public interface TransactionSessionBeanLocal {
     public List<Transaction> retrieveCustBeverageTrans(Customer customer);
 
     public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException;
+
+    public Transaction retrieveTransactionByTransactionId(long id) throws TransactionNotFoundException;
     
 }
