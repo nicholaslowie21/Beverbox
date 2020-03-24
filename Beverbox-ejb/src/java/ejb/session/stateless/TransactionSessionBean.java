@@ -24,6 +24,7 @@ import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
 import util.exception.InputDataValidationException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 /**
@@ -49,6 +50,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
     
+    @Override
     public long createNewTransaction(Transaction newTransaction) throws UnknownPersistenceException, InputDataValidationException{
         try
         {
@@ -72,6 +74,18 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         }
     }
     
+    @Override
+    public Transaction retrieveTransactionByTransactionId(long id) throws TransactionNotFoundException{
+        Transaction temp =  em.find(Transaction.class, id);
+        if(temp != null){
+            return temp;
+        } else {
+            throw new TransactionNotFoundException();
+        }
+    }
+    
+    
+    @Override
     public List<Transaction> retrieveAllTransaction(){
         Query query = em.createQuery("SELECT t FROM Transaction t");
         
@@ -80,6 +94,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         return theList;
     }
     
+    @Override
     public List<Transaction> retrieveCustBeverageTrans(Customer customer){
         long custId = customer.getCustomerId();
         
@@ -98,6 +113,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         return theList;
     }
     
+    @Override
     public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException{
         Promotion thePromo = null;
         Double newCashBack; // to add into wallet
