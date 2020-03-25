@@ -3,6 +3,7 @@ package entity;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -20,29 +21,36 @@ public class Customer implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long customerId;
+    @Column(nullable = false)
     private String customerName;
+    @Column(nullable = false)
     private String customerEmail;
+    @Column(nullable = false)
     private String customerPassword;
     private Double accumulatedCashback;
+    @Column(nullable = false)
     private String customerCCNum;
+    @Column(nullable = false)
     private Integer customerCVV;
     
     @OneToMany(mappedBy = "customer")
-    private List<Transaction> transactions = new ArrayList<>();
+    private List<Subscription> subscriptions;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Transaction> transactions;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Review> reviews;
+    
+    public Customer() {
+        subscriptions = new ArrayList<>();
+        transactions = new ArrayList<>();
+        reviews = new ArrayList<>();
+    }
     
     public Long getCustomerId() {
         return customerId;
     }
-
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
-
-    public void setTransactions(List<Transaction> transactions) {
-        this.transactions = transactions;
-    }
-
-    
     
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
@@ -119,6 +127,30 @@ public class Customer implements Serializable {
 
     public void setCustomerCVV(Integer customerCVV) {
         this.customerCVV = customerCVV;
+    }
+
+    public List<Subscription> getSubscriptions() {
+        return subscriptions;
+    }
+
+    public void setSubscriptions(List<Subscription> subscriptions) {
+        this.subscriptions = subscriptions;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+    
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
     }
 
 }

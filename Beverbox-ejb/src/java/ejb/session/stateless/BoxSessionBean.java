@@ -106,6 +106,19 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
             throw new BoxNotFoundException("Box ID " + boxId + " does not exist!");
         }               
     }
+    
+    @Override
+    public List<Box> searchBoxesByActive(Boolean active) {
+         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active == true ORDER BY b.boxName ASC");
+         List<Box> boxes = query.getResultList();
+         
+         for(Box box:boxes)
+        {
+            box.getBeverages().size();
+        }
+         
+         return boxes;
+    }
 
     @Override
     public void updateBox (Box box) throws BoxNotFoundException
