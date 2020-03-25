@@ -31,6 +31,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.QuantityNotEnoughException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -129,16 +130,21 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
     @Override
-    public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException{
+    public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException, QuantityNotEnoughException{
         Promotion thePromo = null;
         Double newCashBack; // to add into wallet
         
         Double totalamt = bev.getPrice()*qty;
+        double totalamtCopy = totalamt;
+        
+        if(qty>bev.getQuantityOnHand()){
+            throw new QuantityNotEnoughException();
+        }
         
         if(useCashBack){
             Double theCashBackNow = cust.getAccumulatedCashback();
             if(theCashBackNow>=totalamt){
-                cust.setAccumulatedCashback(cust.getAccumulatedCashback()-totalamt);
+                cust.setAccumulatedCashback(theCashBackNow-totalamt);
                 totalamt = 0.0;
             }else{
                 totalamt-=cust.getAccumulatedCashback();
@@ -149,7 +155,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         if( !promoCode.equals("")){
             thePromo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
             if(thePromo!=null){
-                newCashBack = totalamt * thePromo.getPromoPercentage()/100;
+                newCashBack = totalamtCopy * thePromo.getPromoPercentage()/100;
                 cust.setAccumulatedCashback(cust.getAccumulatedCashback()+newCashBack);
             } else {
                 throw new PromoCodeNotFoundException("Promotion not found!");
@@ -169,6 +175,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
             newTrans.setPromotion(thePromo);
             thePromo.getTransactions().add(newTrans);
         }
+        
+        bev.setQuantityOnHand(bev.getQuantityOnHand()-qty);
         
         em.persist(newTrans);
         em.flush();
