@@ -7,6 +7,7 @@ package ejb.session.stateless;
 
 import entity.Beverage;
 import entity.Customer;
+import entity.Subscription;
 import entity.Transaction;
 import java.util.List;
 import javax.ejb.Local;
@@ -31,5 +32,7 @@ public interface TransactionSessionBeanLocal {
     public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException;
 
     public Transaction retrieveTransactionByTransactionId(long id) throws TransactionNotFoundException;
+
+    public long renewSubscriptionTransaction(Subscription subs);
     
 }

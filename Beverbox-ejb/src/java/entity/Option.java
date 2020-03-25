@@ -31,7 +31,7 @@ public class Option implements Serializable {
     @Size(max = 256)
     private String description;
     @NotNull
-    private Float price;
+    private Double price;
     @NotNull
     private boolean active;
     
@@ -42,7 +42,7 @@ public class Option implements Serializable {
         subscriptions = new ArrayList<>();
     }
 
-    public Option(String name, Integer duration, Boolean sharing, String description, Float price) {
+    public Option(String name, Integer duration, Boolean sharing, String description, Double price) {
         this();
         
         this.name = name;
@@ -128,11 +128,11 @@ public class Option implements Serializable {
         this.subscriptions = subscriptions;
     }
 
-    public Float getPrice() {
+    public Double getPrice() {
         return price;
     }
 
-    public void setPrice(Float price) {
+    public void setPrice(Double price) {
         this.price = price;
     }
 
