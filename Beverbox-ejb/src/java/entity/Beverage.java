@@ -40,7 +40,9 @@ public class Beverage implements Serializable {
     private Boolean active;
     @Column(nullable = false)
     private Double price;
-
+    @Column(nullable = false)
+    private Integer quantityOnHand;
+    
     @ManyToOne
     @JoinColumn
     private Box box;
@@ -51,12 +53,13 @@ public class Beverage implements Serializable {
     public Beverage() {
     }
 
-    public Beverage(String beverageName, String beverageDesc, String country, String type, Double price) {
+    public Beverage(String beverageName, String beverageDesc, String country, String type, Double price, Integer quantityOnHand) {
         this.beverageName = beverageName;
         this.beverageDesc = beverageDesc;
         this.country = country;
         this.type = type;
         this.price = price;
+        this.quantityOnHand = quantityOnHand;
         this.active = true;
     }
 
@@ -132,7 +135,14 @@ public class Beverage implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    
+
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    public void setQuantityOnHand(Integer quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
+    }
     
 
     @Override
