@@ -15,6 +15,14 @@ import javax.validation.constraints.Size;
 @Entity
 public class Option implements Serializable {
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
     private static final long serialVersionUID = 1L;
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,10 +38,14 @@ public class Option implements Serializable {
     @Column(nullable = true, length = 256)
     @Size(max = 256)
     private String description;
+    @Column(nullable = false)
     @NotNull
     private Double price;
     @NotNull
     private boolean active;
+    @Column(nullable = false)
+    @NotNull
+    private String type;
     
     @OneToMany (mappedBy="option")
     private List<Subscription> subscriptions;
@@ -42,7 +54,7 @@ public class Option implements Serializable {
         subscriptions = new ArrayList<>();
     }
 
-    public Option(String name, Integer duration, Boolean sharing, String description, Double price) {
+    public Option(String name, Integer duration, Boolean sharing, String description, Double price, String type) {
         this();
         
         this.name = name;
@@ -51,6 +63,7 @@ public class Option implements Serializable {
         this.description = description;
         this.price = price;
         this.active = true;
+        this.type = type;
     }
     
     

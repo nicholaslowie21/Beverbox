@@ -75,7 +75,6 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
 
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
 
-    //            Nicholas needs to implemeent a retrieveTransactionByTransactionId, with its corresponding exception as well
                 if (transactionId == null) {
                     throw new TransactionNotFoundException();
                 }
@@ -84,10 +83,9 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 em.persist(newSubscription);
                 newSubscription.setOption(option);
                 newSubscription.setCustomer(customer);
-    //            ZhiXuan needs to associate Customer with subscription entities TT
-    //            customer.getSubscriptionEntities().add(newSubscription);
-    //            newSubscription.setTransaction(transaction);
-    //            transaction.setSubscription(newSubscription);
+                customer.getSubscriptions().add(newSubscription);
+                newSubscription.setTransaction(transaction);
+                transaction.setSubscription(newSubscription);
 
                 em.flush();
 
