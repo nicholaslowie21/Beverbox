@@ -7,13 +7,17 @@ package ejb.session.stateless;
 
 import entity.Beverage;
 import entity.Customer;
+import entity.Option;
 import entity.Promotion;
+import entity.Subscription;
 import entity.Transaction;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -36,9 +40,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
+    
 
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
+    
+    @Resource
+    private EJBContext eJBContext;
     
     
     
@@ -159,6 +167,19 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         em.flush();
         
         return newTrans.getTransactionId();
+    }
+    
+    public long renewSubscriptionTransaction(Subscription subs){
+        Customer customer = subs.getCustomer();
+        Option option = subs.getOption();
+        
+        try{
+            
+            
+        }catch(Exception ex){
+            eJBContext.setRollbackOnly();
+        }
+        
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
