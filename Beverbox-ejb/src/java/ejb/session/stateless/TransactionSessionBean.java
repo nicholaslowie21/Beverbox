@@ -7,13 +7,17 @@ package ejb.session.stateless;
 
 import entity.Beverage;
 import entity.Customer;
+import entity.Option;
 import entity.Promotion;
+import entity.Subscription;
 import entity.Transaction;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Set;
+import javax.annotation.Resource;
 import javax.ejb.EJB;
+import javax.ejb.EJBContext;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -22,7 +26,10 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.CreateNewSubscriptionException;
+import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -35,10 +42,18 @@ import util.exception.UnknownPersistenceException;
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @EJB
-    private PromotionSessionBeanLocal promotionSessionBean;
+    private SubscriptionSessionBeanLocal subscriptionSessionBean;
 
+    @EJB
+    private PromotionSessionBeanLocal promotionSessionBean;
+    
+
+    
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
+    
+    @Resource
+    private EJBContext eJBContext;
     
     
     
@@ -159,6 +174,40 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         em.flush();
         
         return newTrans.getTransactionId();
+    }
+    
+    public long renewSubscriptionTransaction(Subscription subs){
+        Customer customer = subs.getCustomer();
+        Option option = subs.getOption();
+        
+        long transId = 0;
+        try{ 
+            transId = createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
+            em.flush();
+            
+            Transaction tempTrans = em.find(Transaction.class, transId);
+            tempTrans.setCustomer(customer);
+            customer.getTransactions().add(tempTrans);
+            
+            int tempEndYear = subs.getEndDate().getYear();
+            int tempEndMonth = subs.getEndDate().getMonth();
+            int tempEndDate = subs.getEndDate().getDate();
+            int tempMonthSubs = subs.getOption().getDuration();
+            
+            tempEndMonth += tempMonthSubs;
+            if(tempEndMonth > 12){
+                tempEndMonth -=12;
+                tempEndYear +=1;
+            }
+            
+            long subsId = subscriptionSessionBean.createNewSubscription(new Subscription(subs.getEndDate(),new Date(tempEndYear, tempEndMonth, tempEndDate) , tempMonthSubs),option.getOptionId(), customer.getCustomerId(), transId);
+            
+            
+        }catch( TransactionNotFoundException | CustomerNotFoundException | CreateNewSubscriptionException | OptionNotFoundException | InputDataValidationException | UnknownPersistenceException ex){
+            eJBContext.setRollbackOnly();
+        }
+        
+        return transId;
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
