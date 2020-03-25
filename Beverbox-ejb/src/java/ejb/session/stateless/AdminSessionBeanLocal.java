@@ -17,4 +17,5 @@ public interface AdminSessionBeanLocal {
     public Admin retrieveAdminByAdminId(Long adminId) throws AdminNotFoundException;
     public Admin retrieveAdminByAdminName(String adminName) throws AdminNotFoundException;
     public void updateAdmin(Admin admin) throws AdminNotFoundException;
+    public void deleteAdmin(Long adminId) throws AdminNotFoundException;
 }
