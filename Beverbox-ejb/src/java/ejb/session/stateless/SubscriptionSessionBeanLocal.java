@@ -10,8 +10,12 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.SubscriptionNotFoundException;
+import util.exception.UnknownPersistenceException;
+import util.exception.InputDataValidationException;
+import util.exception.TransactionNotFoundException;
 
 /**
  *
@@ -20,8 +24,8 @@ import util.exception.SubscriptionNotFoundException;
 @Local
 public interface SubscriptionSessionBeanLocal {
 
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException;
-
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException;
+    
     public List<Subscription> retrieveAllSubscriptions();
 
     public List<Subscription> retrieveAllSubscriptionsByCustomerId(Long customerId) throws CustomerNotFoundException, SubscriptionNotFoundException;
@@ -29,9 +33,4 @@ public interface SubscriptionSessionBeanLocal {
     public Subscription retrieveSubscriptionBySubscriptionId(Long subscriptionId) throws SubscriptionNotFoundException;
 
     public List<Subscription> retrieveAllSubscriptionsByOptionId(Long optionId) throws OptionNotFoundException, SubscriptionNotFoundException;
-
-    public void updateSubscription(Subscription subscription) throws SubscriptionNotFoundException;
-
-    public void deleteSubscription(Long subscriptionId) throws SubscriptionNotFoundException;
-    
 }
