@@ -30,5 +30,7 @@ public interface BoxSessionBeanLocal {
     public List<Box> retrieveAllBoxes();
 
     public Long createNewBox(Box newBox) throws CreateNewBoxException;
+
+    public List<Box> searchBoxesByActive(Boolean active);
     
 }
