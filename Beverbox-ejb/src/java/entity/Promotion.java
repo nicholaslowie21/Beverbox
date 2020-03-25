@@ -6,12 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -43,8 +45,35 @@ public class Promotion implements Serializable {
     @Column(unique = true, nullable = false)
     private String promoCode;
     
-    @ManyToOne
-    private Transaction transaction;
+    @Column(nullable = false)
+    private boolean active;
+    
+    @OneToMany
+    private List<Transaction> transactions;
+
+    public Promotion(){
+        
+    }
+    public Promotion(String promoName, String promoType, Integer promoPercentage, String promoCode) {
+        this.promoName = promoName;
+        this.promoType = promoType;
+        this.promoPercentage = promoPercentage;
+        this.promoCode = promoCode;
+    }
+
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+    
+    
+    
+    public boolean isActive() {
+        return active;
+    }
+
+    public void setActive(boolean active) {
+        this.active = active;
+    }
     
     public Long getPromoId() {
         return promoId;
@@ -84,14 +113,6 @@ public class Promotion implements Serializable {
 
     public void setPromoCode(String promoCode) {
         this.promoCode = promoCode;
-    }
-
-    public Transaction getTransaction() {
-        return transaction;
-    }
-
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
     }
 
     

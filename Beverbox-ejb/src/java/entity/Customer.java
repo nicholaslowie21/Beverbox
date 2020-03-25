@@ -1,10 +1,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.OneToMany;
 
 /**
  *
@@ -20,11 +23,27 @@ public class Customer implements Serializable {
     private String customerName;
     private String customerEmail;
     private String customerPassword;
+    private Double accumulatedCashback;
+    private String customerCCNum;
+    private Integer customerCVV;
+    
+    @OneToMany(mappedBy = "customer")
+    private List<Transaction> transactions = new ArrayList<>();
     
     public Long getCustomerId() {
         return customerId;
     }
 
+    public List<Transaction> getTransactions() {
+        return transactions;
+    }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
+
+    
+    
     public void setCustomerId(Long customerId) {
         this.customerId = customerId;
     }
@@ -78,4 +97,28 @@ public class Customer implements Serializable {
         this.customerPassword = customerPassword;
     }
     
+    public Double getAccumulatedCashback() {
+        return accumulatedCashback;
+    }
+
+    public void setAccumulatedCashback(Double accumulatedCashback) {
+        this.accumulatedCashback = accumulatedCashback;
+    }
+    
+    public String getCustomerCCNum() {
+        return customerCCNum;
+    }
+
+    public void setCustomerCCNum(String customerCCNum) {
+        this.customerCCNum = customerCCNum;
+    }
+
+    public Integer getCustomerCVV() {
+        return customerCVV;
+    }
+
+    public void setCustomerCVV(Integer customerCVV) {
+        this.customerCVV = customerCVV;
+    }
+
 }

@@ -37,12 +37,14 @@ public class Box implements Serializable {
     @Column(nullable = true, length = 32)
     @Size(max = 32)
     private String boxDesc;
+    @Column(nullable = false)
+    private Boolean active;
 
     @OneToMany(mappedBy="box")
     private List<Beverage> beverages;
     
-    /*@OneToMany(mappedBy="Review")
-    private List<Review> reviews;*/ 
+    @OneToMany(mappedBy="box")
+    private List<Review> reviews; 
     
     public Box() {
     }
@@ -51,6 +53,7 @@ public class Box implements Serializable {
         this.boxName = boxName;
         this.boxOrigin = boxOrigin;
         this.boxDesc = boxDesc;
+        this.active = true;
     }
 
     public String getBoxName() {
@@ -94,6 +97,24 @@ public class Box implements Serializable {
     public void setBeverages(List<Beverage> beverages) {
         this.beverages = beverages;
     }
+
+    public Boolean getActive() {
+        return active;
+    }
+
+    public void setActive(Boolean active) {
+        this.active = active;
+    }
+
+    public List<Review> getReviews() {
+        return reviews;
+    }
+
+    public void setReviews(List<Review> reviews) {
+        this.reviews = reviews;
+    }
+    
+    
 
     @Override
     public int hashCode() {
