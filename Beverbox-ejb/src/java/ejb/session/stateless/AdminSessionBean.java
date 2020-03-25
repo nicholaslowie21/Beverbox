@@ -77,4 +77,9 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         }
     }
     
+    @Override
+    public void deleteAdmin(Long adminId) throws AdminNotFoundException {
+        Admin adminToDelete = retrieveAdminByAdminId(adminId);
+        em.remove(adminToDelete);
+    }
 }
