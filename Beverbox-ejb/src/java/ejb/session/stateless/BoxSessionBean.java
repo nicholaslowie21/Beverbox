@@ -20,6 +20,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.DeleteBoxException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -40,24 +41,25 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     }
 
     @Override
-    public Long createNewBox(Box newBox) throws CreateNewBoxException
+    public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException
     {
-        try {
+        Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
             
-            Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
-            
-            if(constraintViolations.isEmpty()) {
+        if(constraintViolations.isEmpty()) {
+            try {
                 em.persist(newBox);
                 em.flush();
+                
+                return newBox.getBoxId();
             }
-            em.persist(newBox);
-            em.flush();
+            catch(PersistenceException ex) {
+                throw new CreateNewBoxException();
+            }
             
-            return newBox.getBoxId();
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
-        catch(PersistenceException ex) {
-            throw new CreateNewBoxException();
-        }
+        
     }
     
     @Override
