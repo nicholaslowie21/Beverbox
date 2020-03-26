@@ -1,0 +1,96 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    <ui:define name="content">
+        <div>
+            <ez:Breadcrumb pageName="box" />
+                <h3>Create New Box</h3>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="boxName" value="Box Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="boxName" value="#{createNewBoxManagedBean.newBox.boxName}" placeholder="Exotic Bananas" required="true" requiredMessage="Box Name is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="boxName" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="boxOrigin" value="Box Origin: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="boxOrigin" value="#{createNewBoxManagedBean.newBox.boxOrigin}" placeholder="Singapore" required="true" requiredMessage="Box Origin is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="boxOrigin" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="boxDesc" value="Box Description: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="boxDesc" value="#{createNewBoxManagedBean.newBox.boxDesc}" placeholder="regular or healthy" required="true" requiredMessage="Box Description is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="boxDesc" />
+                            </p:column>
+                            
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id ="active" value="#{createNewBoxManagedBean.newBox.active}" required="true" requiredMessage="Password is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="active" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="beverages" value="Beverages: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                 <p:selectManyMenu id="beverages" value="#{viewBeveragesManagedBean.selectedBeverages}" 
+                          filter="true" filterMatchMode="contains" showCheckbox="true" required="true" requiredMessage="At Least one beverage required!">
+                                     <f:selectItems value="#{viewBeveragesManagedBean.beverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" />
+
+                            <p:column>
+                                <h:outputText value="#{beverage.beverageName}" />
+                            </p:column>
+                                </p:selectManyMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="beverages" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Box"  actionListener="#{createNewBoxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
+                            </p:column>
+                        </p:row>
+
+
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </ui:define>
+</ui:composition>
+
