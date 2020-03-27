@@ -9,19 +9,31 @@
         <h3>Main Menu</h3>
         <nav>
             <h:form>
-                    
-                <p:menu style="width:200px;">
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
 
+                <p:panelMenu style="width:200px">
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
                     </p:submenu>
-                    <p:submenu label="Product Management">
-                        <p:menuitem value="Box" outcome="/productManagement/viewAllBox.xhtml" icon="fa fa-archive" />
-                         <p:menuitem value="Beverage" outcome="/productManagement/viewAllBeverage.xhtml" icon="fa fa-glass" />
+                    <p:submenu label="Admin Management System">
+                        <p:menuitem value="Create New Admin" outcome="/index" icon="fa fa-home" />
+                        <p:menuitem value="View All Admin" outcome="/index" icon="fa fa-home" />
                     </p:submenu>
-
-                </p:menu>
-
+                    <p:submenu label="Product Management">
+                        <p:menuitem value="Option" outcome="/index" icon="fa fa-archive" />
+                        <p:menuitem value="Box" outcome="/productManagement/viewAllBox.xhtml" icon="fa fa-archive" />
+                        <p:menuitem value="Beverage" outcome="/productManagement/viewAllBeverage.xhtml" icon="fa fa-glass" />
+                    </p:submenu>
+                    <p:submenu label="Sales Management">
+                        <p:menuitem value="Promotion" outcome="/index" icon="fa fa-home" />
+                    </p:submenu>
+                    <p:submenu label="Other">
+                        <p:menuitem value="Report Management" outcome="/index" icon="fa fa-home" />
+                        <p:menuitem value="Article Management" outcome="/index" icon="fa fa-home" />
+                    </p:submenu>
+                </p:panelMenu>
             </h:form>
         </nav>
             
