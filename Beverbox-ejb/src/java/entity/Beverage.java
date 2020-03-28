@@ -35,13 +35,14 @@ public class Beverage implements Serializable {
     @Column(length = 64)
     @Size(max = 64)
     private String country;
-    private Boolean healthy;
-    private Boolean alcoholic;
+    private String type;
     @Column(nullable = false)
     private Boolean active;
     @Column(nullable = false)
     private Double price;
-
+    @Column(nullable = false)
+    private Integer quantityOnHand;
+    
     @ManyToOne
     @JoinColumn
     private Box box;
@@ -52,13 +53,13 @@ public class Beverage implements Serializable {
     public Beverage() {
     }
 
-    public Beverage(String beverageName, String beverageDesc, String country, Boolean alcoholic, Boolean healthy, Double price) {
+    public Beverage(String beverageName, String beverageDesc, String country, String type, Double price, Integer quantityOnHand) {
         this.beverageName = beverageName;
         this.beverageDesc = beverageDesc;
         this.country = country;
-        this.healthy = healthy;
-        this.alcoholic = alcoholic;
+        this.type = type;
         this.price = price;
+        this.quantityOnHand = quantityOnHand;
         this.active = true;
     }
 
@@ -86,13 +87,12 @@ public class Beverage implements Serializable {
         this.transaction = transaction;
     }
 
-    
-    public Boolean getAlcoholic() {
-        return alcoholic;
+    public String getType() {
+        return type;
     }
 
-    public void setAlcoholic(Boolean alcoholic) {
-        this.alcoholic = alcoholic;
+    public void setType(String type) {
+        this.type = type;
     }
 
     public String getCountry() {
@@ -109,14 +109,6 @@ public class Beverage implements Serializable {
 
     public void setBeverageDesc(String beverageDesc) {
         this.beverageDesc = beverageDesc;
-    }
-
-    public Boolean getHealthy() {
-        return healthy;
-    }
-
-    public void setHealthy(Boolean healthy) {
-        this.healthy = healthy;
     }
 
     public Box getBox() {
@@ -143,7 +135,14 @@ public class Beverage implements Serializable {
     public void setActive(Boolean active) {
         this.active = active;
     }
-    
+
+    public Integer getQuantityOnHand() {
+        return quantityOnHand;
+    }
+
+    public void setQuantityOnHand(Integer quantityOnHand) {
+        this.quantityOnHand = quantityOnHand;
+    }
     
 
     @Override

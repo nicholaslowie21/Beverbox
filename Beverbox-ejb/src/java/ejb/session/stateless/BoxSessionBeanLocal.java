@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.DeleteBoxException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -29,6 +30,8 @@ public interface BoxSessionBeanLocal {
 
     public List<Box> retrieveAllBoxes();
 
-    public Long createNewBox(Box newBox) throws CreateNewBoxException;
+    public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException;
+
+    public List<Box> searchBoxesByActive(Boolean active);
     
 }

@@ -20,6 +20,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.DeleteBoxException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -40,24 +41,25 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     }
 
     @Override
-    public Long createNewBox(Box newBox) throws CreateNewBoxException
+    public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException
     {
-        try {
+        Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
             
-            Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
-            
-            if(constraintViolations.isEmpty()) {
+        if(constraintViolations.isEmpty()) {
+            try {
                 em.persist(newBox);
                 em.flush();
+                
+                return newBox.getBoxId();
             }
-            em.persist(newBox);
-            em.flush();
+            catch(PersistenceException ex) {
+                throw new CreateNewBoxException();
+            }
             
-            return newBox.getBoxId();
+        } else {
+            throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
         }
-        catch(PersistenceException ex) {
-            throw new CreateNewBoxException();
-        }
+        
     }
     
     @Override
@@ -105,6 +107,19 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
         {
             throw new BoxNotFoundException("Box ID " + boxId + " does not exist!");
         }               
+    }
+    
+    @Override
+    public List<Box> searchBoxesByActive(Boolean active) {
+         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active == true ORDER BY b.boxName ASC");
+         List<Box> boxes = query.getResultList();
+         
+         for(Box box:boxes)
+        {
+            box.getBeverages().size();
+        }
+         
+         return boxes;
     }
 
     @Override
