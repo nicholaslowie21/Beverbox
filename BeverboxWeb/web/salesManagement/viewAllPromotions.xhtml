@@ -10,21 +10,11 @@
     <ui:define name="content">
         
         <div>
-            <h3>Product Management</h3>
-            
+            <h3>Promotion Management</h3>
             <h:form>
-            
-                <p:menubar>
-
-                    <p:submenu label="File" icon="ui-icon-document">
-                        <p:menuitem value="Create New Promotion" onclick="PF('dialogCreateNewPromotion').show()" icon="fa fa-plus" />
-                    </p:submenu>                                        
-
-                </p:menubar>
-                <br/>
-
+                <p:commandButton oncomplete="PF('dialogCreateNewPromotion').show()" value="Create New Promotion" icon="fa fa-plus" style="margin-right:20px;" />
+            <br></br>
             </h:form>
-            
             <h:form id="formAllPromotions">
             
                 <p:messages id="messages" redisplay="false" closable="true" />
@@ -40,31 +30,27 @@
                         </p:outputPanel>
                     </f:facet>
 
-                    <p:column headerText="Promo ID" sortBy="#{promotionEntity.promoId}" filterBy="#{promotionEntity.promoId}" filterMatchMode="contains">
-                        <h:outputText value="#{promotionEntity.promoId}" />
+                    <p:column headerText="Promo ID" style="text-align: center;" sortBy="#{promotionEntity.promoId}" filterBy="#{promotionEntity.promoId}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoId}"  />
                     </p:column>
 
-                    <p:column headerText="Promo Code" sortBy="#{promotionEntity.promoCode}" filterBy="#{promotionEntity.promoCode}" filterMatchMode="contains">
+                    <p:column headerText="Promo Code" style="width: 100px;text-align: center;" sortBy="#{promotionEntity.promoCode}" filterBy="#{promotionEntity.promoCode}" filterMatchMode="contains">
                         <h:outputText value="#{promotionEntity.promoCode}" />
                     </p:column>                            
 
-                    <p:column headerText="Name" sortBy="#{promotionEntity.promoName}" filterBy="#{promotionEntity.promoName}" filterMatchMode="contains">
+                    <p:column headerText="Name" style="text-align: center;" sortBy="#{promotionEntity.promoName}" filterBy="#{promotionEntity.promoName}" filterMatchMode="contains">
                         <h:outputText value="#{promotionEntity.promoName}" />
                     </p:column>
                     
-                    <p:column headerText="Percentage" sortBy="#{promotionEntity.promoPercentage}" filterBy="#{promotionEntity.promoPercentage}" filterMatchMode="contains">
-                        <h:outputText value="#{promotionEntity.promoPercentage} + %" />
-                    </p:column>
-
-                    <p:column headerText="Type" sortBy="#{promotionEntity.promoType}" filterBy="#{promotionEntity.promoType}" filterMatchMode="contains">
-                        <h:outputText value="#{promotionEntity.promoType}" />
+                    <p:column headerText="%" style="width: 50px;text-align: center;" sortBy="#{promotionEntity.promoPercentage}" filterBy="#{promotionEntity.promoPercentage}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoPercentage}%" />
                     </p:column>
                     
-                    <p:column headerText="Active">
+                    <p:column headerText="Active" sortBy="#{promotionEntity.active}" style="width: 50px;text-align: center;">
                         <h:outputText value="#{promotionEntity.active}" />
                     </p:column>
 
-                    <p:column headerText="Type" sortBy="#{promotionEntity.promoType}" filterBy="#{promotionEntity.promoType}" filterMatchMode="exact">
+                    <p:column headerText="Type" style="text-align: center;" sortBy="#{promotionEntity.promoType}" filterBy="#{promotionEntity.promoType}" filterMatchMode="exact">
                         <f:facet name="filter">
                             <p:selectOneMenu id="selPromotions" onchange="PF('dataTableAllPromotions').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
@@ -74,17 +60,19 @@
                         <h:outputText value="#{promotionEntity.promoType}" />
                     </p:column>
 
-                    <p:column headerText="Action" >
-<!--                        <p:commandButton update="ccViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
-                            <f:setPropertyActionListener value="#{productEntity}" target="#{productManagementManagedBean.viewProductManagedBean.productEntityToView}" />
+                    <p:column headerText="Action" style="text-align: center;">
+                        <p:commandButton actionListener="#{promotionManagedBean.doUpdatePromotion}" update="formUpdatePromotion" oncomplete="PF('dialogUpdatePromotion').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="promotionEntityToUpdate" value="#{promotionEntity}" />
                         </p:commandButton>
-                        <p:commandButton actionListener="#{productManagementManagedBean.doUpdateProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
-                            <f:attribute name="productEntityToUpdate" value="#{productEntity}" />
+                        <p:commandButton icon="fa fa-check" actionListener="#{promotionManagedBean.restorePromotion}" update="formAllPromotions:dataTableAllPromotions formAllPromotions:messages">
+                            <f:attribute name="promotionEntityToRestore" value="#{promotionEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to restore #{promotionEntity.promoName} (Promo Code: #{promotionEntity.promoCode})?" icon="ui-icon-alert" />
                         </p:commandButton>
-                        <p:commandButton icon="ui-icon-trash" actionListener="#{productManagementManagedBean.deleteProduct}" update="formAllProducts:dataTableAllProducts formAllProducts:messages">
-                            <f:attribute name="productEntityToDelete" value="#{productEntity}" />
-                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{productEntity.name} (SKU Code: #{productEntity.skuCode})?" icon="ui-icon-alert" />
-                        </p:commandButton>-->
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{promotionManagedBean.deletePromotion}" update="formAllPromotions:dataTableAllPromotions formAllPromotions:messages">
+                            <f:attribute name="promotionEntityToDelete" value="#{promotionEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to disable #{promotionEntity.promoName} (Promo Code: #{promotionEntity.promoCode})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                        
                     </p:column>
 
                 </p:dataTable>
@@ -96,8 +84,163 @@
 
             </h:form>
             
-        </div>
         
+        
+            <h:form id="formCreateNewPromotion">
+
+                <p:dialog id="dialogCreateNewPromotion" widgetVar="dialogCreateNewPromotion" header="Create New Promotion" closable="true">
+
+                    <p:messages id="messagesCreateNewPromotion" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promoName" value="Promo Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="promoName" value="#{promotionManagedBean.newPromotion.promoName}" placeholder="Chinese New Year Promo" required="true" requiredMessage="Promotion Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="promoName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promoCode" value="Promo Code: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="promoCode" value="#{promotionManagedBean.newPromotion.promoCode}" placeholder="CNY2020" required="true" requiredMessage="Promo Code is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="promoCode" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="percentage" value="Percentage: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="percentage" value="#{promotionManagedBean.newPromotion.promoPercentage}" placeholder="0" min="5" max="100" stepFactor="5" suffix="%" required="true" requiredMessage="Percentage is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="percentage" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selType" value="Type " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selType" value="#{promotionManagedBean.newPromotion.promoType}">
+                                    <f:selectItem itemLabel="[Select One]" noSelectionOption="false" />
+                                    <f:selectItems value="#{promotionManagedBean.promoTypes}" var="promoTypeEntity" itemValue="#{promoTypeEntity}" itemLabel="#{promoTypeEntity}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selType" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton  value="Create New Promotion" update="@form formAllPromotions:dataTableAllPromotions" actionListener="#{promotionManagedBean.createNewPromo}" oncomplete="PF('dialogCreateNewPromotion').show()">
+                                </p:commandButton>
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+            <h:form id="formUpdatePromotion">
+
+                <p:dialog id="dialogUpdatePromotion" widgetVar="dialogUpdatePromotion" header="Update Promotion" closable="true">
+
+                    <p:messages id="messagesUpdatePromotion" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Promo Id: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{promotionManagedBean.selectedPromotion.promoId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promoName" value="Promo Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="promoName" value="#{promotionManagedBean.selectedPromotion.promoName}" placeholder="Chinese New Year 2020 Promo" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="promoName" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="promoCode" value="Promo Code: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="promoCode" value="#{promotionManagedBean.selectedPromotion.promoCode}" placeholder="CNY2020" required="true" requiredMessage="Promo Code is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="promoCode" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="percentage" value="Percentage " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="percentage" value="#{promotionManagedBean.selectedPromotion.promoPercentage}" placeholder="0" min="5" max="100" stepFactor="5" suffix="%" required="true" requiredMessage="Percentage is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="percentage" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selType" value="Type " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selType" value="#{promotionManagedBean.selectedPromotion.promoType}">
+                                    <f:selectItem itemLabel="[Select One]" noSelectionOption="false" />
+                                    <f:selectItems value="#{promotionManagedBean.promoTypes}" var="promoTypeEntity" itemValue="#{promoTypeEntity}" itemLabel="#{promoTypeEntity}" />
+                                </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selType" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Promotion" update="@form formAllPromotions:dataTableAllPromotions" actionListener="#{promotionManagedBean.UpdatePromotion}" oncomplete="PF('dialogUpdatePromotion').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+        </div>
     </ui:define>    
     
 </ui:composition>
