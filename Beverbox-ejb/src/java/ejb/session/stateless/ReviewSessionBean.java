@@ -52,11 +52,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
             
             Box box = boxSessionBeanLocal.retrieveBoxByBoxId(boxId);
             newReview.setBox(box);
-            //box.getReviews().add(newReview);
+            box.getReviews().add(newReview);
             
-//            Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
-//            newReview.setCustomer(customer);
-//            customer.getReviews().add(newReview);
+            Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+            newReview.setCustomer(customer);
+            customer.getReviews().add(newReview);
             
             em.flush();
             return newReview.getReviewId();
@@ -105,11 +105,11 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
         {
             throw new ReviewNotFoundException();
         }
-//        Customer customer = reviewToDelete.getCustomer();
-//        customer.getReviews().remove(reviewToDelete);
-//        
-//        Box box = reviewToDelete.getBox();
-//        box.getReviews().remove(reviewToDelete);
+        Customer customer = reviewToDelete.getCustomer();
+        customer.getReviews().remove(reviewToDelete);
+        
+        Box box = reviewToDelete.getBox();
+        box.getReviews().remove(reviewToDelete);
         
         em.remove(reviewToDelete);
     }
