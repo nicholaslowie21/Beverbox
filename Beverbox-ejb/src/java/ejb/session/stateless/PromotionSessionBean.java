@@ -94,11 +94,17 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         return promo.getPromoId();
     }
     
+    public long restorePromotion(Promotion promo){
+        promo.setActive(true);
+        return promo.getPromoId();
+    }
+    
     public List<Promotion> retrieveAllPromotions(){
-        Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.active = true");
+        Query query = em.createQuery("SELECT p FROM Promotion p");
         
         return query.getResultList();
     }
+    
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Promotion>>constraintViolations)
     {

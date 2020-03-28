@@ -28,5 +28,7 @@ public interface PromotionSessionBeanLocal {
     public long deletePromotion(Promotion promo);
 
     public List<Promotion> retrieveAllPromotions();
+
+    public long restorePromotion(Promotion promo);
     
 }

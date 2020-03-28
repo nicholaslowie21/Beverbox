@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -29,12 +30,12 @@ public class Promotion implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long promoId;
 
-    @Column(nullable = false, unique = true, length = 32)
+    @Column(nullable = false,length = 32)
     @NotNull
     @Size(max = 32)
     private String promoName;
     
-    @Column(nullable = false, unique = true, length = 32)
+    @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
     private String promoType;
@@ -46,10 +47,10 @@ public class Promotion implements Serializable {
     private String promoCode;
     
     @Column(nullable = false)
-    private boolean active;
+    private boolean active = true;
     
     @OneToMany
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public Promotion(){
         
@@ -59,6 +60,7 @@ public class Promotion implements Serializable {
         this.promoType = promoType;
         this.promoPercentage = promoPercentage;
         this.promoCode = promoCode;
+        this.active = true;
     }
 
     public List<Transaction> getTransactions() {
