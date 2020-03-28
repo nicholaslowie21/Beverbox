@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+                
+    <ui:define name="content">
+        
+        <div>
+            <h3>Product Management</h3>
+            
+            <h:form>
+            
+                <p:menubar>
+
+                    <p:submenu label="File" icon="ui-icon-document">
+                        <p:menuitem value="Create New Promotion" onclick="PF('dialogCreateNewPromotion').show()" icon="fa fa-plus" />
+                    </p:submenu>                                        
+
+                </p:menubar>
+                <br/>
+
+            </h:form>
+            
+            <h:form id="formAllPromotions">
+            
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllPromotions" widgetVar="dataTableAllPromotions" value="#{promotionManagedBean.allPromotions}" var="promotionEntity" rowKey="#{promotionEntity.promoId}" rowIndexVar="row"
+                             filteredValue="#{promotionManagedBean.filteredPromotions}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllPromotions').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Promo ID" sortBy="#{promotionEntity.promoId}" filterBy="#{promotionEntity.promoId}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoId}" />
+                    </p:column>
+
+                    <p:column headerText="Promo Code" sortBy="#{promotionEntity.promoCode}" filterBy="#{promotionEntity.promoCode}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoCode}" />
+                    </p:column>                            
+
+                    <p:column headerText="Name" sortBy="#{promotionEntity.promoName}" filterBy="#{promotionEntity.promoName}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoName}" />
+                    </p:column>
+                    
+                    <p:column headerText="Percentage" sortBy="#{promotionEntity.promoPercentage}" filterBy="#{promotionEntity.promoPercentage}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoPercentage} + %" />
+                    </p:column>
+
+                    <p:column headerText="Type" sortBy="#{promotionEntity.promoType}" filterBy="#{promotionEntity.promoType}" filterMatchMode="contains">
+                        <h:outputText value="#{promotionEntity.promoType}" />
+                    </p:column>
+                    
+                    <p:column headerText="Active">
+                        <h:outputText value="#{promotionEntity.active}" />
+                    </p:column>
+
+                    <p:column headerText="Type" sortBy="#{promotionEntity.promoType}" filterBy="#{promotionEntity.promoType}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selPromotions" onchange="PF('dataTableAllPromotions').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{promotionManagedBean.promoTypes}" var="promoType" itemValue="#{promoType}" itemLabel="#{promoType}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                        <h:outputText value="#{promotionEntity.promoType}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+<!--                        <p:commandButton update="ccViewProduct:formViewProduct" oncomplete="PF('dialogViewProduct').show()" icon="ui-icon-document" title="View">
+                            <f:setPropertyActionListener value="#{productEntity}" target="#{productManagementManagedBean.viewProductManagedBean.productEntityToView}" />
+                        </p:commandButton>
+                        <p:commandButton actionListener="#{productManagementManagedBean.doUpdateProduct}" update="formUpdateProduct" oncomplete="PF('dialogUpdateProduct').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="productEntityToUpdate" value="#{productEntity}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{productManagementManagedBean.deleteProduct}" update="formAllProducts:dataTableAllProducts formAllProducts:messages">
+                            <f:attribute name="productEntityToDelete" value="#{productEntity}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{productEntity.name} (SKU Code: #{productEntity.skuCode})?" icon="ui-icon-alert" />
+                        </p:commandButton>-->
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+
+            </h:form>
+            
+        </div>
+        
+    </ui:define>    
+    
+</ui:composition>
