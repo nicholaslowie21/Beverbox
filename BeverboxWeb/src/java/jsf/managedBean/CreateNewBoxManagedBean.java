@@ -9,6 +9,7 @@ import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
 import entity.Beverage;
 import entity.Box;
+import java.io.Serializable;
 
 import java.util.List;
 import java.util.logging.Level;
@@ -21,6 +22,7 @@ import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
+import util.exception.BeverageNotFoundException;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.InputDataValidationException;
@@ -32,7 +34,7 @@ import util.exception.UnknownPersistenceException;
  */
 @Named(value = "createNewBoxManagedBean")
 @RequestScoped
-public class CreateNewBoxManagedBean {
+public class CreateNewBoxManagedBean implements Serializable {
 
     @EJB(name = "BeverageSessionBeanLocal")
     private BeverageSessionBeanLocal beverageSessionBeanLocal;
@@ -62,20 +64,25 @@ public class CreateNewBoxManagedBean {
         
         try
         {
-            Long boxId = boxSessionBeanLocal.createNewBox(newBox);
-            Box box = boxSessionBeanLocal.retrieveBoxByBoxId(boxId);
-            box.setBeverages(selectedBeverages);
+
             for(Beverage b:selectedBeverages) {
-                b.setBox(box);
+                b.setBox(newBox);
+                beverageSessionBeanLocal.updateBeverage(b);
+                
             }
-            boxes.add(box);
+            newBox.setBeverages(selectedBeverages);
+            
+            boxes.add(newBox);
+            Long boxId = boxSessionBeanLocal.createNewBox(newBox);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));
         }
         catch(InputDataValidationException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new box: " + ex.getMessage(), null));
-        } catch (BoxNotFoundException | CreateNewBoxException ex) {
+        } catch (CreateNewBoxException ex) {
+            Logger.getLogger(CreateNewBoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BeverageNotFoundException ex) {
             Logger.getLogger(CreateNewBoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

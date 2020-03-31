@@ -129,6 +129,7 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
             beverageToUpdate.setQuantityOnHand(beverage.getQuantityOnHand());
             beverageToUpdate.setPrice(beverage.getPrice());
             beverageToUpdate.setActive(beverage.getActive());
+            beverageToUpdate.setBox(beverage.getBox());
             
         }
         else
