@@ -47,6 +47,17 @@ public class Customer implements Serializable {
         transactions = new ArrayList<>();
         reviews = new ArrayList<>();
     }
+
+    public Customer(String customerName, String customerEmail, String customerPassword, String customerCCNum, Integer customerCVV) {
+        this.customerName = customerName;
+        this.customerEmail = customerEmail;
+        this.customerPassword = customerPassword;
+        this.customerCCNum = customerCCNum;
+        this.customerCVV = customerCVV;
+    }
+
+    
+    
     
     public Long getCustomerId() {
         return customerId;

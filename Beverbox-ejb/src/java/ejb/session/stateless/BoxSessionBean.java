@@ -110,8 +110,8 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     }
     
     @Override
-    public List<Box> searchBoxesByActive(Boolean active) {
-         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active == true ORDER BY b.boxName ASC");
+    public List<Box> retrieveAllActive() {
+         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active = true ORDER BY b.boxName ASC");
          List<Box> boxes = query.getResultList();
          
          for(Box box:boxes)
@@ -149,7 +149,7 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
             throw new BoxNotFoundException("Box " + boxId + "does not exist!");
         }
         else {
-            em.remove(boxToDelete);
+            boxToDelete.setActive(false);
         }
         
 }

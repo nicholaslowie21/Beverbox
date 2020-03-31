@@ -6,8 +6,9 @@
 package jsf.managedBean;
 
 import ejb.session.stateless.BoxSessionBeanLocal;
+import entity.Beverage;
 import entity.Box;
-import java.awt.event.ActionEvent;
+
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -18,6 +19,7 @@ import javax.enterprise.context.Dependent;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewBoxException;
 import util.exception.InputDataValidationException;
@@ -35,6 +37,7 @@ public class CreateNewBoxManagedBean {
     private BoxSessionBeanLocal boxSessionBeanLocal;
     private Box newBox;
     private List<Box> boxes;
+    private List<Beverage> selectedBeverages;
     /**
      * Creates a new instance of createNewBoxManagedBean
      */
@@ -54,6 +57,10 @@ public class CreateNewBoxManagedBean {
         {
             Long boxId = boxSessionBeanLocal.createNewBox(newBox);
             Box box = boxSessionBeanLocal.retrieveBoxByBoxId(boxId);
+            box.setBeverages(selectedBeverages);
+            for(Beverage b:selectedBeverages) {
+                b.setBox(box);
+            }
             boxes.add(box);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));
@@ -81,6 +88,15 @@ public class CreateNewBoxManagedBean {
     public void setBoxes(List<Box> boxes) {
         this.boxes = boxes;
     }
+
+    public List<Beverage> getSelectedBeverages() {
+        return selectedBeverages;
+    }
+
+    public void setSelectedBeverages(List<Beverage> selectedBeverages) {
+        this.selectedBeverages = selectedBeverages;
+    }
+    
     
     
 }

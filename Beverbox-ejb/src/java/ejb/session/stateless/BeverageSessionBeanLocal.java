@@ -11,6 +11,7 @@ import javax.ejb.Local;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewBeverageException;
 import util.exception.DeleteBeverageException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -19,7 +20,7 @@ import util.exception.DeleteBeverageException;
 @Local
 public interface BeverageSessionBeanLocal {
 
-    public Long createNewBeverage(Beverage newBeverage) throws CreateNewBeverageException;
+    public Long createNewBeverage(Beverage newBeverage) throws CreateNewBeverageException, InputDataValidationException;
 
     public List<Beverage> retrieveAllBeverages();
 
@@ -32,5 +33,7 @@ public interface BeverageSessionBeanLocal {
     public void deleteBeverage(Long beverageId) throws BeverageNotFoundException, DeleteBeverageException;
 
     public List<Beverage> searchBeverageByCountry(String country);
+
+    public List<Beverage> retrieveAllActive();
     
 }

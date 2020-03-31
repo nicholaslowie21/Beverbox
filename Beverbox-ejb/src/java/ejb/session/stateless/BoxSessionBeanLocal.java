@@ -32,6 +32,6 @@ public interface BoxSessionBeanLocal {
 
     public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException;
 
-    public List<Box> searchBoxesByActive(Boolean active);
+    public List<Box> retrieveAllActive();
     
 }

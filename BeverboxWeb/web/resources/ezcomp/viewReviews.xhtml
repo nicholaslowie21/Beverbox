@@ -1,0 +1,87 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:cc="http://xmlns.jcp.org/jsf/composite"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:f="http://xmlns.jcp.org/jsf/core"
+      xmlns:p="http://primefaces.org/ui">
+
+    <cc:interface>
+    </cc:interface>
+    
+    <cc:implementation>
+        
+        <h:form id="formViewReviews">
+            
+            <p:dialog id="dialogViewReviews" widgetVar="dialogViewReviews" header="View Reviews" closable="true">
+
+                <p:panelGrid >
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Box ID: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewReviewsManagedBean.boxToView.boxId}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Box Name: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewReviewsManagedBean.boxToView.boxName}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Box Description: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewReviewsManagedBean.boxToView.boxDesc}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Active: " />
+                        </p:column>
+                        <p:column>
+                            <h:outputText value="#{viewReviewsManagedBean.boxToView.active}" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Review (s): " />
+                        </p:column>
+
+                        <p:column colspan="3">
+                            <p:dataTable var="review" value="#{viewReviewsManagedBean.boxToView.reviews}" scrollRows="20" scrollable="true" liveScroll="true" scrollHeight="150">
+                                <p:column headerText="Review Id" footerText="Review Id">
+                                    <h:outputText value="#{review.reviewId}" />
+                                </p:column>
+                                <p:column headerText="Review" footerText="Review">
+                                    <h:outputText value="#{review.reviewContent}" />
+                                </p:column>
+                                <p:column headerText="Customer Name" footerText="Customer Name">
+                                    <h:outputText value="#{review.customer.customerName}" />
+                                </p:column>
+                                <p:column headerText="Customer Email" footerText="Customer Email">
+                                    <h:outputText value="#{review.customer.customerEmail}" />
+                                </p:column>
+                            </p:dataTable>
+                        </p:column>
+
+                    </p:row>
+                    
+                </p:panelGrid>
+
+            </p:dialog>
+            
+        </h:form>
+        
+    </cc:implementation>
+</html>
