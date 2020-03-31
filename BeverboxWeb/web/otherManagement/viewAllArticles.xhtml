@@ -1,0 +1,103 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        
+        <h3>View All Articles</h3>
+        
+        <p:outputPanel style="text-align: right;">
+            <p:button value="Create New Article" outcome="createNewArticle.xhtml" />
+        </p:outputPanel>
+        
+        <h:form id="formArticles">
+            <p:messages id="messages" redisplay="false" closable="true" />
+                
+                <h:panelGroup id="listOfArticles">
+                    <ui:repeat value="#{viewArticlesManagedBean.articles}" var="article">
+                        <p:panel header="#{article.articleTitle}">
+                            <h:outputText value="#{article.articleContent}" escape="false" />
+
+                            <f:facet name="actions">
+                                <p:commandButton actionListener="#{viewArticlesManagedBean.doUpdateArticle}" update="formUpdateArticle" oncomplete="PF('dialogUpdateArticle').show()" icon="ui-icon-pencil" title="Update">
+                                    <f:attribute name="articleToUpdate" value="#{article}" />
+                                </p:commandButton>
+                                <p:commandButton actionListener="#{viewArticlesManagedBean.deleteArticle}" update="formArticles:messages formArticles:listOfArticles" icon="ui-icon-trash" title="Delete">
+                                    <f:attribute name="articleToDelete" value="#{article}" />
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete #{article.articleTitle} ?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </f:facet>
+
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panel>
+                        <br/>     
+                    </ui:repeat>
+                </h:panelGroup>
+        </h:form>
+        
+        <h:form id="formUpdateArticle">
+
+            <p:dialog id="dialogUpdateArticle" widgetVar="dialogUpdateArticle" position="center top" header="Update Article" closable="true">
+                <p:messages id="messageUpdateArticle" redisplay="false" />
+                <p:panelGrid>
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Title" />
+                        </p:column>
+                        <p:column>
+                            <p:inputText id="title" value="#{viewArticlesManagedBean.articleToUpdate.articleTitle}" required="true" requiredMessage="Title is required"/>
+                        </p:column>
+                        <p:column>
+                            <p:message for="title" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column>
+                            <h:outputLabel value="Content" />
+                        </p:column>
+                        <p:column>
+                            
+                            <p:textEditor id="content" widgetVar="editor2" value="#{viewArticlesManagedBean.articleToUpdate.articleContent}" height="220" 
+                                      style="margin-bottom:10px" placeholder="Type article here..." required="true" requiredMessage="Content is required">
+                                <f:facet name="toolbar">
+                                     <span class="ql-formats">
+                                        <button class="ql-bold" />
+                                        <button class="ql-italic" />
+                                        <button class="ql-underline" />
+                                        <button class="ql-strike" />
+                                        <button class="ql-blockquote" />
+                                    </span>
+                                    <span class="ql-formats">
+                                        <select class="ql-header"></select>
+                                        <select class="ql-color" />
+                                    </span>
+                                </f:facet>
+                            </p:textEditor>
+                            
+                        </p:column>
+                        <p:column>
+                            <p:message for="content" />
+                        </p:column>
+                    </p:row>
+                    
+                    <p:row>
+                        <p:column colspan="3">
+                            <p:commandButton value="Update Article" update="@form formArticles" actionListener="#{viewArticlesManagedBean.updateArticle}" oncomplete="PF('dialogUpdateArticle').show();" />
+                        </p:column>
+                    </p:row>
+                    
+                </p:panelGrid>
+            </p:dialog>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>

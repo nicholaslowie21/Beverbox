@@ -13,7 +13,7 @@ import util.exception.CreateNewArticleException;
 @Local
 public interface ArticleSessionBeanLocal {
 
-    public Long createNewArticle(String articleTitle, String articleContent, String articleImg) throws CreateNewArticleException;
+    public Long createNewArticle(Article newArticle) throws CreateNewArticleException;
 
     public List<Article> retrieveAllArticles();
 

@@ -9,7 +9,7 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <h:form id="loginForm">
 
-                <p:outputLabel for="username" value="Username" />&nbsp;
+                <!--<p:outputLabel for="username" value="Username" />&nbsp;
                 <p:inputText id="username" value="#{custLoginManagedBean.email}" size="16" required="true" requiredMessage="Username is required" maxlength="32">
                     <f:validateLength minimum="4" />
                 </p:inputText>
@@ -25,7 +25,7 @@
                 <p:growl>
                     <p:autoUpdate />
                 </p:growl>
-                &nbsp;
+                &nbsp;-->
             </h:form>
 
         </h:panelGroup>
@@ -33,7 +33,7 @@
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <h:form id="logoutForm">
                 <h:outputText value="You are login as #{sessionScope.currentCustomerEntity.firstName} #{sessionScope.currentCustomerEntity.lastName}" />&nbsp;
-                <p:commandButton value="Logout" actionListener="#{custLoginManagedBean.logout}" icon="fa fa-sign-out" />
+                <!--<p:commandButton value="Logout" actionListener="#{custLoginManagedBean.logout}" icon="fa fa-sign-out" />-->
             </h:form>
         </h:panelGroup>
         

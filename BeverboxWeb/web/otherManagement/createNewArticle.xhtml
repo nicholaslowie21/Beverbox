@@ -1,0 +1,70 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        <h3>Create New Article</h3>
+        
+        <h:form id="createNewArticle">
+            
+            <p:messages id="messagesCreateNewArticle" redisplay="false" />
+            
+            <p:panelGrid>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="title" value="Title: " />
+                    </p:column>
+                    <p:column>
+                        <p:inputText id="title" value="#{createNewArticleManagedBean.title}" required="true" requiredMessage="Title is required" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="title" />
+                    </p:column>
+                </p:row>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="content" value="Content " />
+                    </p:column>
+                    <p:column style="width: 100%">
+                        <p:textEditor id="content" widgetVar="editor2" value="#{createNewArticleManagedBean.content}" height="220" 
+                                      style="margin-bottom:10px" placeholder="Type article here..." required="true" requiredMessage="Content is required">
+                            <f:facet name="toolbar">
+                                 <span class="ql-formats">
+                                    <button class="ql-bold" />
+                                    <button class="ql-italic" />
+                                    <button class="ql-underline" />
+                                    <button class="ql-strike" />
+                                    <button class="ql-blockquote" />
+                                </span>
+                                <span class="ql-formats">
+                                    <select class="ql-header"></select>
+                                    <select class="ql-color" />
+                                </span>
+                            </f:facet>
+                        </p:textEditor>
+                    </p:column>
+                    <p:column>
+                        <p:message for="content" />
+                    </p:column>
+                </p:row>
+                
+                <!-- Image Upload -->
+                
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton type="reset" value="Clear" />&nbsp;
+                        <p:commandButton value="Create" actionListener="#{createNewArticleManagedBean.createNewArticle}" />
+                    </p:column>
+                </p:row>
+            </p:panelGrid>
+            
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
