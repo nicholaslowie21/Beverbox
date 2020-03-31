@@ -1,0 +1,111 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+                
+    <ui:define name="content">
+        <ez:Breadcrumb pageName="createNewBeverages" />
+        <div>
+            
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+                <h3>Create New Beverage</h3>
+                
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="beverageName" value="Beverage Name: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="beverageName" value="#{createNewBeverageManagedBean.newBeverage.beverageName}" placeholder="Teh Bing" required="true" requiredMessage="Beverage Name is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="beverageName" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="country" value="Box Country: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="country" value="#{createNewBeverageManagedBean.newBeverage.country}" placeholder="Singapore" required="true" requiredMessage="Country is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="country" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="beverageDesc" value="Beverage Description: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea rows="6" cols="33"  id="beverageDesc" value="#{createNewBeverageManagedBean.newBeverage.beverageDesc}" placeholder="This Beverage is interesting" required="true" requiredMessage="Beverage Description is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="beverageDesc" />
+                            </p:column>
+                            
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="price" value="Beverage Price: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="price" value="#{createNewBeverageManagedBean.newBeverage.price}" placeholder="10" required="true" requiredMessage="Price is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="price" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{createNewBeverageManagedBean.newBeverage.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id ="active" value="#{createNewBeverageManagedBean.newBeverage.active}" required="true" requiredMessage="Status is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="active" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton type="reset" value="Clear" />&nbsp;
+                                <p:commandButton ajax="false" value="Create New Beverage"  actionListener="#{createNewBeverageManagedBean.createNewBeverage}" oncomplete="PF('dialogCreateNewBeverage').show();"  />
+                                
+                            </p:column>
+                        </p:row>
+
+                </h:form>
+            
+           
+        </div>
+        
+        
+        
+        
+        
+        
+        
+        
+        
+    </ui:define>
+</ui:composition>
+

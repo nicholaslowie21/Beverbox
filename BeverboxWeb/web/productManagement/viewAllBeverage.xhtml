@@ -1,12 +1,191 @@
 <?xml version='1.0' encoding='UTF-8' ?>
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-    </h:body>
-</html>
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+ <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="viewAllBeverages" />
+        <div>
+            <h3>View All Beverages</h3>
+            <h:form>
+
+                        <p:linkButton outcome="createNewBeverage.xhtml" value="Create New Beverage" style="margin-right:20px;" icon="fa fa-plus" />                                       
+                 
+            </h:form>
+            <br></br>
+            <h:form id="formAllBeverages">
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                        
+                        <p:dataTable id="dataTableAllBeverages" widgetVar="dataTableAllBeverages" value="#{beverageManagedBean.beverages}" var="beverage" rowKey="#{beverage.beverageId}" rowIndexVar="row" 
+
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                    
+                            <p:column headerText="Beverage ID" sortBy="#{beverage.beverageId}">
+                                <h:outputText value="#{beverage.beverageId}" />
+                            </p:column>
+
+                            <p:column headerText="Beverage Name" sortBy="#{beverage.beverageName}">
+                                <h:outputText value="#{beverage.beverageName}" />
+                            </p:column>                            
+
+                            <p:column headerText="Beverage Country" sortBy="#{beverage.country}">
+                                <h:outputText value="#{beverage.country}" />
+                            </p:column>
+
+                            <p:column headerText="Beverage Description" sortBy="#{beverage.beverageDesc}">
+                                <h:outputText value="#{beverage.beverageDesc}" />
+                            </p:column>
+                            
+                             <p:column headerText="Beverage Type" sortBy="#{beverage.type}" filterBy="#{beverage.type}" filterMatchMode="exact">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selBeverageType" onchange="PF('dataTableAllBeverages').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{beverageManagedBean.beverageTypes}" var="beverageType" itemValue="#{beverage.type}" itemLabel="#{beverage.type}" />
+                            </p:selectOneMenu>
+                        </f:facet>
+                                 <h:outputText value="#{beverage.type}" />
+                    </p:column>  
+                            
+                            <p:column headerText="Beverage Price" sortBy="#{beverage.price}">
+                                <h:outputText value="#{beverage.price}" />
+                            </p:column>
+                           
+                            <p:column headerText="Beverage Quantity On Hand" sortBy="#{beverage.quantityOnHand}">
+                                <h:outputText value="#{beverage.quantityOnHand}" />
+                            </p:column>
+                            
+                            <p:column headerText="Active" sortBy="#{beverage.active}">
+                                <h:outputText value="#{beverage.active}" />
+                            </p:column>
+                            
+                            <p:column headerText="Action" >
+                                <p:commandButton update="formUpdateBeverage" oncomplete="PF('dialogUpdateBeverage').show()" icon="ui-icon-pencil" title="Update">
+                                    <f:setPropertyActionListener value="#{beverage}" target="#{beverageManagedBean.selectedBeverageToUpdate}" />
+                                </p:commandButton>
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{beverageManagedBean.deleteBeverage}" update="formAllBeverages:dataTableAllBeverages formAllBeverages:messages">
+                                    <f:attribute name="beverageToDelete" value="#{beverage}" />
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete #{beverage.beverageName} (Beverage ID: #{beverage.beverageId})?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                            </p:column>
+                            
+                        </p:dataTable>
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                                            
+                
+            </h:form>
+             <h:form id="formUpdateBeverage">
+
+                <p:dialog id="dialogUpdateBeverage" widgetVar="dialogUpdateBeverage" header="Update Beverage" closable="true">
+
+                    <p:messages id="messagesUpdateBeverage" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Beverage ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{beverageManagedBean.selectedBeverageToUpdate.beverageId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Beverage Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{beverageManagedBean.selectedBeverageToUpdate.beverageName}" placeholder="Beverage001" required="true" requiredMessage="Beverage Name is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="country" value="Country: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="country" value="#{beverageManagedBean.selectedBeverageToUpdate.country}" placeholder="Singapore" required="true" requiredMessage="Country is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="country" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Beverage Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea rows="6" cols="33" id="description" value="#{beverageManagedBean.selectedBeverageToUpdate.beverageDesc}" placeholder="This Beverage is interesting" required="true" requiredMessage="Beverage Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="price" value="Price " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="price" value="#{beverageManagedBean.selectedBeverageToUpdate.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="price" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="quantityOnHand" value="Quantity On Hand " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="quantityOnHand" value="#{beverageManagedBean.selectedBeverageToUpdate.quantityOnHand}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id ="active" value="#{beverageManagedBean.selectedBeverageToUpdate.active}" required="true" requiredMessage="Status is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="active" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Product" update="@form formAllBeverages:dataTableAllBeverages" actionListener="#{beverageManagedBean.updateBeverage}" oncomplete="PF('dialogUpdateBeverage').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+            </h:form>
+        </div>
+        
+    </ui:define>
+
+</ui:composition>
 
