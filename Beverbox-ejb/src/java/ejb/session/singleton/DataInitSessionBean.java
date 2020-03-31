@@ -175,9 +175,16 @@ public class DataInitSessionBean {
             Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic Europe", "England", "Regular"));
             Box box1 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId1);
             box1.setBeverages(beverages1);
+            for(Beverage b: beverages1) {
+                b.setBox(box1);
+            }
+            
             Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Amazing Asia", "Asia", "Alcohol"));
             Box box2 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId2);
             box2.setBeverages(beverages2);
+            for(Beverage b: beverages2) {
+                b.setBox(box2);
+            }
             Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"));
             Box box3 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId3);
             box3.setBeverages(beverages1);

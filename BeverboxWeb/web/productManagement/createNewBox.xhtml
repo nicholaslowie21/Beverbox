@@ -69,7 +69,7 @@
                             <p:column>
                                 <p:selectManyMenu id="beverages" value="#{createNewBoxManagedBean.selectedBeverages}" 
                           filter="true" filterMatchMode="contains" showCheckbox="true" required="true" requiredMessage="At Least one beverage required!">
-                                     <f:selectItems value="#{beverageManagedBean.activeBeverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" /> 
+                                    <f:selectItems value="#{beverageManagedBean.noBoxBeverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" /> 
                             <p:column>
                                 <h:outputText value="#{beverage.beverageName}" />
                             </p:column>
@@ -79,6 +79,7 @@
                                 <p:message for="beverages" />
                             </p:column>
                         </p:row>
+                
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
