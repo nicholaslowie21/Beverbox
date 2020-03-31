@@ -22,9 +22,15 @@
 
                         
                         <p:dataTable id="dataTableAllBeverages" widgetVar="dataTableAllBeverages" value="#{beverageManagedBean.beverages}" var="beverage" rowKey="#{beverage.beverageId}" rowIndexVar="row" 
-
+                                     filteredValue="#{beverageManagedBean.filteredBeverages}"
                              rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
                     
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: right;">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableAllBeverages').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
                             <p:column headerText="Beverage ID" sortBy="#{beverage.beverageId}">
                                 <h:outputText value="#{beverage.beverageId}" />
                             </p:column>

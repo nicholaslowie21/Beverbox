@@ -19,13 +19,9 @@
             </h:form>
             <br></br>
             <h:form id="formAllBoxes">
+                <p:messages id="messages" redisplay="false" closable="true" />
                 <p:layout>
-                
-                    <p:layoutUnit position="west" resizable="true">
-                        
-                                                                         
-
-                    </p:layoutUnit>
+     
 
                     <p:layoutUnit position="center">
                         
@@ -70,7 +66,7 @@
                             
                             <p:column headerText="Action" >
                                
-                                <p:commandButton icon="ui-icon-trash" ajax="false" actionListener="#{viewBoxesManagedBean.deleteBox}" update="formAllBoxes:dataTableAllBoxes formAllBoxes:messages">
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{viewBoxesManagedBean.deleteBox}" update="formAllBoxes:dataTableMain formAllBoxes:messages">
                                     <f:attribute name="boxToDelete" value="#{box}" />
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete #{box.boxName} (Box ID: #{box.boxId})?" icon="ui-icon-alert" />
                                 </p:commandButton>

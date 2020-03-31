@@ -53,6 +53,17 @@
                         </p:row>
                         <p:row>
                             <p:column>
+                                <p:outputLabel for="type" value="Beverage Type: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="type" value="#{createNewBeverageManagedBean.newBeverage.type}" placeholder="Alcoholic or Non-Alcoholic" required="true" requiredMessage="Type is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="type" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
                                 <p:outputLabel for="price" value="Beverage Price: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>

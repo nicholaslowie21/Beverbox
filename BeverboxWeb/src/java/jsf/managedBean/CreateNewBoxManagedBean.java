@@ -5,6 +5,7 @@
  */
 package jsf.managedBean;
 
+import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
 import entity.Beverage;
 import entity.Box;
@@ -33,11 +34,16 @@ import util.exception.UnknownPersistenceException;
 @RequestScoped
 public class CreateNewBoxManagedBean {
 
+    @EJB(name = "BeverageSessionBeanLocal")
+    private BeverageSessionBeanLocal beverageSessionBeanLocal;
+
     @EJB
     private BoxSessionBeanLocal boxSessionBeanLocal;
+    
     private Box newBox;
     private List<Box> boxes;
     private List<Beverage> selectedBeverages;
+    private List<Beverage> activeBeverages;
     /**
      * Creates a new instance of createNewBoxManagedBean
      */
@@ -49,6 +55,7 @@ public class CreateNewBoxManagedBean {
     public void postConstruct()
     {
         boxes = boxSessionBeanLocal.retrieveAllBoxes();
+        activeBeverages = beverageSessionBeanLocal.retrieveAllActive();
     }
     
     public void createNewBox(ActionEvent actionEvent) {
