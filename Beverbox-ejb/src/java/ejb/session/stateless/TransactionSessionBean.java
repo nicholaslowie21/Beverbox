@@ -7,7 +7,7 @@ package ejb.session.stateless;
 
 import entity.Beverage;
 import entity.Customer;
-import entity.Option;
+import entity.OptionEntity;
 import entity.Promotion;
 import entity.Subscription;
 import entity.Transaction;
@@ -186,7 +186,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     
     public long renewSubscriptionTransaction(Subscription subs){
         Customer customer = subs.getCustomer();
-        Option option = subs.getOption();
+        OptionEntity option = subs.getOption();
         
         long transId = 0;
         try{ 

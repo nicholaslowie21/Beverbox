@@ -13,15 +13,7 @@ import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
-public class Option implements Serializable {
-
-    public String getType() {
-        return type;
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
+public class OptionEntity implements Serializable {
 
     private static final long serialVersionUID = 1L;
     @Id
@@ -50,11 +42,11 @@ public class Option implements Serializable {
     @OneToMany (mappedBy="option")
     private List<Subscription> subscriptions;
 
-    public Option() {
+    public OptionEntity() {
         subscriptions = new ArrayList<>();
     }
 
-    public Option(String name, Integer duration, Boolean sharing, String description, Double price, String type) {
+    public OptionEntity(String name, Integer duration, Boolean sharing, String description, Double price, String type) {
         this();
         
         this.name = name;
@@ -62,8 +54,8 @@ public class Option implements Serializable {
         this.sharing = sharing;
         this.description = description;
         this.price = price;
-        this.active = true;
         this.type = type;
+        this.active = true;
     }
     
     
@@ -78,10 +70,10 @@ public class Option implements Serializable {
     @Override
     public boolean equals(Object object) {
         // TODO: Warning - this method won't work in the case the optionId fields are not set
-        if (!(object instanceof Option)) {
+        if (!(object instanceof OptionEntity)) {
             return false;
         }
-        Option other = (Option) object;
+        OptionEntity other = (OptionEntity) object;
         if ((this.optionId == null && other.optionId != null) || (this.optionId != null && !this.optionId.equals(other.optionId))) {
             return false;
         }
@@ -157,4 +149,11 @@ public class Option implements Serializable {
         this.active = active;
     }
     
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
 }

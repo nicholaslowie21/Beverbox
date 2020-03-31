@@ -1,6 +1,6 @@
 package ejb.session.stateless;
 
-import entity.Option;
+import entity.OptionEntity;
 import entity.Promotion;
 import entity.Transaction;
 import java.util.List;
@@ -34,18 +34,18 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     }
 
     @Override
-    public Long createNewOption(Option newOption) throws CreateNewOptionException, InputDataValidationException
+    public Long createNewOption(OptionEntity newOption) throws CreateNewOptionException, InputDataValidationException
     {
         try
         {
-            Set<ConstraintViolation<Option>>constraintViolations = validator.validate(newOption);
+            Set<ConstraintViolation<OptionEntity>>constraintViolations = validator.validate(newOption);
         
             if(constraintViolations.isEmpty())
                 {
-                em.persist(newOption);
-                em.flush();
+                    em.persist(newOption);
+                    em.flush();
 
-                return newOption.getOptionId();
+                    return newOption.getOptionId();
                 } else {
                     throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
                 }            
@@ -56,12 +56,12 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     }
     
     @Override
-    public List<Option> retrieveAllOptions()
+    public List<OptionEntity> retrieveAllOptions()
     {
-        Query query = em.createQuery("SELECT o FROM Option o ORDER BY o.name ASC");        
-        List<Option> options = query.getResultList();
+        Query query = em.createQuery("SELECT o FROM OptionEntity o ORDER BY o.name ASC");        
+        List<OptionEntity> options = query.getResultList();
         
-        for(Option option:options)
+        for(OptionEntity option:options)
         {
             option.getSubscriptions().size();
         }
@@ -70,13 +70,13 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     }
     
     @Override
-    public List<Option> searchOptionsByName(String searchString)
+    public List<OptionEntity> searchOptionsByName(String searchString)
     {
-        Query query = em.createQuery("SELECT o FROM Option o WHERE o.name LIKE :inSearchString ORDER BY o.name ASC");
+        Query query = em.createQuery("SELECT o FROM OptionEntity o WHERE o.name LIKE :inSearchString ORDER BY o.name ASC");
         query.setParameter("inSearchString", "%" + searchString + "%");
-        List<Option> options = query.getResultList();
+        List<OptionEntity> options = query.getResultList();
         
-        for(Option option:options)
+        for(OptionEntity option:options)
         {
             option.getSubscriptions().size();
         }
@@ -86,9 +86,9 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     
     
     @Override
-    public Option retrieveOptionByOptionId(Long optionId) throws OptionNotFoundException
+    public OptionEntity retrieveOptionByOptionId(Long optionId) throws OptionNotFoundException
     {
-        Option option = em.find(Option.class, optionId);
+        OptionEntity option = em.find(OptionEntity.class, optionId);
         
         if(option != null)
         {
@@ -103,14 +103,14 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     }
 
     @Override
-    public void updateOption (Option option) throws OptionNotFoundException, InputDataValidationException
+    public void updateOption (OptionEntity option) throws OptionNotFoundException, InputDataValidationException
     {
         if(option != null)
         {
-            Set<ConstraintViolation<Option>>constraintViolations = validator.validate(option);
+            Set<ConstraintViolation<OptionEntity>>constraintViolations = validator.validate(option);
             if(constraintViolations.isEmpty())
             {
-                Option optionToUpdate = retrieveOptionByOptionId(option.getOptionId());
+                OptionEntity optionToUpdate = retrieveOptionByOptionId(option.getOptionId());
 
                 //unable to update sharing option because it's only either true or false. And it's likely that two of them will exist
                 optionToUpdate.setName(option.getName());
@@ -130,7 +130,7 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
     @Override
     public void deleteOption(Long optionId) throws OptionNotFoundException, DeleteOptionException
     {
-        Option optionToRemove = retrieveOptionByOptionId(optionId);
+        OptionEntity optionToRemove = retrieveOptionByOptionId(optionId);
         optionToRemove.setActive(false);
         //Perhaps also be able to remove only after all the associated Subscriptions are passed the endDate
 //        Right now, I will never delete the option from the database, it's only like disablingcx
@@ -140,11 +140,11 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
 //        }
 //        else
 //        {
-//            throw new DeleteOptionException("Option ID " + optionId + " is associated with existing subscription(s) and cannot be deleted!");
+//            throw new DeleteOptionException("OptionEntity ID " + optionId + " is associated with existing subscription(s) and cannot be deleted!");
 //        }
     }
 
-    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Option>>constraintViolations)
+    private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<OptionEntity>>constraintViolations)
     {
         String msg = "Input data validation error!:";
             

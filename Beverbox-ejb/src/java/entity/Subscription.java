@@ -36,7 +36,7 @@ public class Subscription implements Serializable {
     // Unsure whether the relationship should be optional or not
     @ManyToOne
     @JoinColumn
-    private Option option;
+    private OptionEntity option;
     
     @ManyToOne 
     @JoinColumn
@@ -108,11 +108,11 @@ public class Subscription implements Serializable {
         this.endDate = endDate;
     }
 
-    public Option getOption() {
+    public OptionEntity getOption() {
         return option;
     }
 
-    public void setOption(Option option) {
+    public void setOption(OptionEntity option) {
         this.option = option;
     }
 
