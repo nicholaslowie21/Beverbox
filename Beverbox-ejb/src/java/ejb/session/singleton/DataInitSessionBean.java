@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package ejb.session.singleton;
 
 import ejb.session.stateless.BeverageSessionBeanLocal;
@@ -13,6 +8,9 @@ import ejb.session.stateless.ReviewSessionBeanLocal;
 import entity.Beverage;
 import entity.Box;
 import entity.Customer;
+import ejb.session.stateless.OptionSessionBeanLocal;
+import ejb.session.stateless.PromotionSessionBeanLocal;
+import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
 import java.util.ArrayList;
@@ -33,6 +31,8 @@ import util.exception.CreateNewBoxException;
 import util.exception.CreateNewCustomerException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.CreateNewOptionException;
+
 import util.exception.InputDataValidationException;
 
 /**
@@ -55,9 +55,10 @@ public class DataInitSessionBean {
 
     @EJB(name = "CustomerSessionBeanLocal")
     private CustomerSessionBeanLocal customerSessionBeanLocal;
-    
-    
-    
+
+    @EJB(name = "OptionSessionBeanLocal")
+    private OptionSessionBeanLocal optionSessionBeanLocal;
+
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
@@ -66,7 +67,10 @@ public class DataInitSessionBean {
 
     private List<Beverage> beverages1;
     private List<Beverage> beverages2;
-    
+
+    public DataInitSessionBean() {
+    }
+
     @PostConstruct
     public void PostConstruct(){
         List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
@@ -76,6 +80,7 @@ public class DataInitSessionBean {
         if(promos.size()==0){
             initializePromo();
         }
+
         if(customers.isEmpty()) {
             initializeCust();
         }
@@ -87,6 +92,12 @@ public class DataInitSessionBean {
         }
         initializeReview();
     
+
+        
+        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
+        if(options.size() == 0) {
+            initializeOption();
+        }
     }
     
     public void initializePromo(){
@@ -188,5 +199,13 @@ public class DataInitSessionBean {
     }
     
    
-    
+    private void initializeOption() {
+        try {
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "A testing option", 16.90, "Regular"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "A testing option", 16.90, "Regular"));
+        } catch (CreateNewOptionException | InputDataValidationException ex) {
+            ex.printStackTrace();
+        }
+        
+    }
 }

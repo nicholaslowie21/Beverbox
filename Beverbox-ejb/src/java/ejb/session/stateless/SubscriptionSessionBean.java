@@ -1,7 +1,7 @@
 package ejb.session.stateless;
 
 import entity.Customer;
-import entity.Option;
+import entity.OptionEntity;
 import entity.Subscription;
 import entity.Transaction;
 import java.time.LocalDate;
@@ -67,7 +67,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                     throw new OptionNotFoundException();
                 }
 
-                Option option = optionSessionBeanLocal.retrieveOptionByOptionId(optionId);
+                OptionEntity option = optionSessionBeanLocal.retrieveOptionByOptionId(optionId);
 
                 if (customerId == null) {
                     throw new CustomerNotFoundException();
