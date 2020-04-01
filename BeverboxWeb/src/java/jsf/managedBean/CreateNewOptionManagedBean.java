@@ -39,7 +39,7 @@ public class CreateNewOptionManagedBean implements Serializable {
     }
     
     @PostConstruct
-    public void postCosntruct() {
+    public void postConstruct() {
         availableDurations = new ArrayList<>();
         availableDurations.add(3);
         availableDurations.add(6);

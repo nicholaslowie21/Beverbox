@@ -27,7 +27,7 @@
                                 <p:outputLabel for="selDuration" value="Duration (months) " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selDuration" value="#{createNewOptionManagedBean.duration}">
+                                <p:selectOneMenu id="selDuration" value="#{createNewOptionManagedBean.duration}" required="true">
                                     <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="false" />
                                     <f:selectItems value="#{createNewOptionManagedBean.availableDurations}" var="optionDuration" />
                                 </p:selectOneMenu>
@@ -39,7 +39,7 @@
                                 <p:outputLabel for="selType" value="Type " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selType" value="#{createNewOptionManagedBean.type}">
+                                <p:selectOneMenu id="selType" value="#{createNewOptionManagedBean.type}" required="true">
                                     <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="false" />
                                     <f:selectItems value="#{createNewOptionManagedBean.availableTypes}" var="optionType" />
                                 </p:selectOneMenu>

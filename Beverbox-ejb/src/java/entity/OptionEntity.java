@@ -34,7 +34,7 @@ public class OptionEntity implements Serializable {
     @NotNull
     private Double price;
     @NotNull
-    private boolean active;
+    private Boolean active;
     @Column(nullable = false)
     @NotNull
     private String type;
@@ -141,11 +141,11 @@ public class OptionEntity implements Serializable {
         this.price = price;
     }
 
-    public boolean isActive() {
+    public Boolean getActive() {
         return active;
     }
 
-    public void setActive(boolean active) {
+    public void setActive(Boolean active) {
         this.active = active;
     }
     
