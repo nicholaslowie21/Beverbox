@@ -73,6 +73,14 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     
     
     @Override
+    public List<Review> retrieveAllReviews() 
+    {
+        Query query = em.createQuery("SELECT r FROM Review r");
+        return query.getResultList();
+    }
+    
+    
+    @Override
     public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException 
     {
         if (customerId == null) 

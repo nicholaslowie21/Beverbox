@@ -19,5 +19,7 @@ public interface ReviewSessionBeanLocal {
     public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException;
 
     public List<Review> retrieveAllReviewsByBoxId(Long boxId) throws BoxNotFoundException;
+
+    public List<Review> retrieveAllReviews();
     
 }
