@@ -64,7 +64,8 @@ public class CreateNewBoxManagedBean implements Serializable {
         
         try
         {
-
+            Long boxId = boxSessionBeanLocal.createNewBox(newBox);
+            
             for(Beverage b:selectedBeverages) {
                 b.setBox(newBox);
                 beverageSessionBeanLocal.updateBeverage(b);
@@ -73,7 +74,6 @@ public class CreateNewBoxManagedBean implements Serializable {
             newBox.setBeverages(selectedBeverages);
             
             boxes.add(newBox);
-            Long boxId = boxSessionBeanLocal.createNewBox(newBox);
             
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));
         }
