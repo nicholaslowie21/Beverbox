@@ -71,7 +71,7 @@ public class CreateNewBoxManagedBean implements Serializable {
                 beverageSessionBeanLocal.updateBeverage(b);
                 
             }
-            newBox.setBeverages(selectedBeverages);
+            newBox.setBeverages(selectedBeverages);  
             
             boxes.add(newBox);
             
