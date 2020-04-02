@@ -63,6 +63,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         }
     }
     
+    @Override
     public long updatePromotion(Promotion updatedPromo) throws InputDataValidationException{
         Set<ConstraintViolation<Promotion>>constraintViolations = validator.validate(updatedPromo);
         
@@ -75,6 +76,7 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         return updatedPromo.getPromoId();
     }
     
+    @Override
     public Promotion retrievePromotionByPromoCode(String promoCode) throws PromoCodeNotFoundException{
         Query query = em.createQuery("SELECT p FROM Promotion p WHERE p.promoCode LIKE :inPromo AND p.active = true")
                 .setParameter("inPromo", promoCode);
@@ -89,16 +91,19 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         return temp;
     }
     
+    @Override
     public long deletePromotion(Promotion promo){
         promo.setActive(false);
         return promo.getPromoId();
     }
     
+    @Override
     public long restorePromotion(Promotion promo){
         promo.setActive(true);
         return promo.getPromoId();
     }
     
+    @Override
     public List<Promotion> retrieveAllPromotions(){
         Query query = em.createQuery("SELECT p FROM Promotion p");
         
