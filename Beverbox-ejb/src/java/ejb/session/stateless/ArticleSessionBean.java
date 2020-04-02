@@ -2,6 +2,8 @@ package ejb.session.stateless;
 
 import entity.Article;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -21,11 +23,10 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public Long createNewArticle(String articleTitle, String articleContent, String articleImg) throws CreateNewArticleException 
+    public Long createNewArticle(Article newArticle) throws CreateNewArticleException 
     {
         try 
         {
-            Article newArticle = new Article(articleTitle, articleContent,articleImg);
             em.persist(newArticle);
             em.flush();
             return newArticle.getArticleId();
@@ -74,12 +75,17 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
     @Override
     public void deleteArticle(Long articleId) throws ArticleNotFoundException
     {
-        Article articleToDelete = retrieveArticleByArticleId(articleId);
-        if (articleToDelete == null) 
+        Article articleToDelete;
+        try 
         {
-            throw new ArticleNotFoundException();
+            articleToDelete = retrieveArticleByArticleId(articleId);
+            em.remove(articleToDelete);
+        } 
+        catch (ArticleNotFoundException ex) 
+        {
+            throw new ArticleNotFoundException("Article does not exist!");
         }
-        em.remove(articleToDelete);
+        
     }
     
 }

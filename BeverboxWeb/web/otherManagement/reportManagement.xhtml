@@ -1,0 +1,23 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        
+        <p:panel header="Jasper Report">
+            
+            <h:form>
+                <p:commandButton ajax="false" value="Generate Transaction Report" actionListener="#{jasperReportManagedBean.generateTransactionReport}" />
+                <p:commandButton ajax="false" value="Generate Subscription Report" actionListener="#{jasperReportManagedBean.generateSubscriptionReport}" />
+                
+            </h:form>
+            
+        </p:panel>
+        
+    </ui:define>
+</ui:composition>

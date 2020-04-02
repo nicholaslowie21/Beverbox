@@ -6,10 +6,17 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
                 xmlns:p="http://primefaces.org/ui">
+                
     <ui:define name="content">
+        <ez:Breadcrumb pageName="createNewBox" />
         <div>
-
+            
+            <h:form>
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
                 <h3>Create New Box</h3>
+                
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="boxName" value="Box Name: " style="font-weight: bold;" />
@@ -60,10 +67,9 @@
                                 <p:outputLabel for="beverages" value="Beverages: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                 <p:selectManyMenu id="beverages" value="#{viewBeveragesManagedBean.selectedBeverages}" 
+                                <p:selectManyMenu id="beverages" value="#{createNewBoxManagedBean.selectedBeverages}" 
                           filter="true" filterMatchMode="contains" showCheckbox="true" required="true" requiredMessage="At Least one beverage required!">
-                                     <f:selectItems value="#{viewBeveragesManagedBean.beverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" />
-
+                                    <f:selectItems value="#{beverageManagedBean.noBoxBeverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" /> 
                             <p:column>
                                 <h:outputText value="#{beverage.beverageName}" />
                             </p:column>
@@ -73,14 +79,15 @@
                                 <p:message for="beverages" />
                             </p:column>
                         </p:row>
+                
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Box"  actionListener="#{createNewBoxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
+                                <p:commandButton ajax="false" value="Create New Box"  actionListener="#{createNewBoxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
                             </p:column>
                         </p:row>
 
-
+                </h:form>
         </div>
         
         

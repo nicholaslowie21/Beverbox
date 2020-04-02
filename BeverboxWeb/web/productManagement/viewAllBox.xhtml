@@ -6,91 +6,95 @@
                 template="/template/defaultTemplate.xhtml"
                 xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
                 xmlns:p="http://primefaces.org/ui">
-    <ui:define name="content">
+ <ui:define name="content">
+        
+        <ez:Breadcrumb pageName="viewAllBoxes" />
+        <ez:viewReviews id="ccViewReviews" />
         <div>
-            <ez:Breadcrumb pageName="box" />
-                <h3>Create New Box</h3>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="boxName" value="Box Name: " style="font-weight: bold;" />
+            <h3>View All Boxes</h3>
+            <h:form>
+
+                        <p:linkButton outcome="createNewBox.xhtml" value="Create New Box" style="margin-right:20px;" icon="fa fa-plus" />                                       
+                 
+            </h:form>
+            <br></br>
+            <h:form id="formAllBoxes">
+                <p:messages id="messages" redisplay="false" closable="true" />
+                <p:layout>
+                    <p:layoutUnit position="west">
+                        
+                    </p:layoutUnit>
+
+                    <p:layoutUnit position="center">
+                        
+                        <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{viewBoxesManagedBean.boxes}" var="box" rowKey="#{box.boxId}" rowIndexVar="row"                             
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+                            
+                            <f:facet name="header">
+                                <p:outputPanel style="text-align: right;">
+                                    <h:outputText value="Search all fields:" />
+                                    <p:inputText id="globalFilter" onkeyup="PF('dataTableMain').filter()" style="width:300px" placeholder="Enter keyword"/>
+                                </p:outputPanel>
+                            </f:facet>
+                            
+                            <p:column headerText="Box ID" sortBy="#{box.boxId}" filterBy="#{box.boxId}" filterMatchMode="contains">
+                                <h:outputText value="#{box.boxId}" />
                             </p:column>
-                            <p:column>
-                                <p:inputText id="boxName" value="#{createNewBoxManagedBean.newBox.boxName}" placeholder="Exotic Bananas" required="true" requiredMessage="Box Name is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="boxName" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="boxOrigin" value="Box Origin: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText id="boxOrigin" value="#{createNewBoxManagedBean.newBox.boxOrigin}" placeholder="Singapore" required="true" requiredMessage="Box Origin is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="boxOrigin" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="boxDesc" value="Box Description: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:inputText id="boxDesc" value="#{createNewBoxManagedBean.newBox.boxDesc}" placeholder="regular or healthy" required="true" requiredMessage="Box Description is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="boxDesc" />
+
+                            <p:column headerText="Box Name" sortBy="#{box.boxName}" filterBy="#{box.boxName}" filterMatchMode="contains">
+                                <h:outputText value="#{box.boxName}" />
+                            </p:column>                            
+
+                            <p:column headerText="Box Origin" sortBy="#{box.boxOrigin}" filterBy="#{box.boxOrigin}" filterMatchMode="contains">
+                                <h:outputText value="#{box.boxOrigin}" />
                             </p:column>
                             
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
+                           
+                            <p:column headerText="Box Description" sortBy="#{box.boxDesc}" filterBy="#{box.boxDesc}" filterMatchMode="contains">
+                                <h:outputText value="#{box.boxDesc}" />
                             </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id ="active" value="#{createNewBoxManagedBean.newBox.active}" required="true" requiredMessage="Password is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="active" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="beverages" value="Beverages: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                 <p:selectManyMenu id="beverages" value="#{viewBeveragesManagedBean.selectedBeverages}" 
-                          filter="true" filterMatchMode="contains" showCheckbox="true" required="true" requiredMessage="At Least one beverage required!">
-                                     <f:selectItems value="#{viewBeveragesManagedBean.beverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" />
+                            <p:column headerText="Beverages">
+                                <p:dataScroller value="#{box.beverages}" var="beverage" chunkSize="10">
+                                
+                                        <h:panelGrid columns="2" cellpadding="5">
 
-                            <p:column>
-                                <h:outputText value="#{beverage.beverageName}" />
-                            </p:column>
-                                </p:selectManyMenu>
-                            </p:column>
-                            <p:column>
-                                <p:message for="beverages" />
-                            </p:column>
-                        </p:row>
-                        <p:row>
-                            <p:column colspan="3">
-                                <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton  value="Create New Box"  actionListener="#{createNewBoxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
-                            </p:column>
-                        </p:row>
+                                            <h:outputText value="#{beverage.beverageId}:#{beverage.beverageName}" style="font-weight: bold"/>
 
+                                        </h:panelGrid>
+                                 </p:dataScroller>
+                            </p:column>
+                            <p:column headerText="Active" sortBy="#{box.active}" filterBy="#{box.active}" filterMatchMode="contains">
+                                <h:outputText value="#{box.active}" />
+                            </p:column>
 
+                            <p:column headerText="Reviews" >
+                                <p:commandButton update="ccViewReviews:formViewReviews" oncomplete="PF('dialogViewReviews').show()" icon="ui-icon-document" title="View">
+                                    <f:setPropertyActionListener value="#{box}" target="#{viewBoxesManagedBean.viewReviewsManagedBean.boxToView}" />
+                                </p:commandButton>                        
+                            </p:column>
+                            
+                            <p:column headerText="Action" >
+                               
+                                <p:commandButton icon="ui-icon-trash" actionListener="#{viewBoxesManagedBean.deleteBox}" update="formAllBoxes:dataTableMain formAllBoxes:messages">
+                                    <f:attribute name="boxToDelete" value="#{box}" />
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete #{box.boxName} (Box ID: #{box.boxId})?" icon="ui-icon-alert" />
+                                </p:commandButton>
+                                
+                            </p:column>
+                        </p:dataTable>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                    </p:layoutUnit>
+
+                </p:layout>                                               
+                
+            </h:form>
+            
         </div>
         
-        
-        
-        
-        
-        
-        
-        
-        
     </ui:define>
+
 </ui:composition>
 

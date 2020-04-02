@@ -20,6 +20,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewBeverageException;
 import util.exception.DeleteBeverageException;
+import util.exception.InputDataValidationException;
 
 /**
  *
@@ -40,22 +41,27 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
     }
 
     @Override
-    public Long createNewBeverage(Beverage newBeverage) throws CreateNewBeverageException
+    public Long createNewBeverage(Beverage newBeverage) throws CreateNewBeverageException, InputDataValidationException
     {
-        try {
-            Set<ConstraintViolation<Beverage>>constraintViolations = validator.validate(newBeverage);
-            
-            if(constraintViolations.isEmpty()) {
-                em.persist(newBeverage);
-                em.flush();
-            }
+         Set<ConstraintViolation<Beverage>>constraintViolations = validator.validate(newBeverage);
+       
            
             
-            return newBeverage.getBeverageId();
-        }
-        catch(PersistenceException ex) {
-            throw new CreateNewBeverageException();
-        }
+            if(constraintViolations.isEmpty()) {
+                try {
+                    em.persist(newBeverage);
+                    em.flush();
+                    
+                    return newBeverage.getBeverageId();
+                } catch(PersistenceException ex) 
+                  {
+                    throw new CreateNewBeverageException();
+                  }
+            } else {
+                throw new InputDataValidationException(prepareInputDataValidationErrorsMessage(constraintViolations));
+            }
+          
+        
     }
     
     @Override
@@ -102,6 +108,13 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
             throw new BeverageNotFoundException("Beverage ID " + beverageId + " does not exist!");
         }               
     }
+    
+    @Override
+    public List<Beverage> retrieveAllActive() {
+         Query query = em.createQuery("SELECT be FROM Beverage be WHERE be.active = true ORDER BY be.beverageName ASC");
+         List<Beverage> beverages = query.getResultList();
+         return beverages;
+    }
 
     @Override
     public void updateBeverage (Beverage beverage) throws BeverageNotFoundException
@@ -112,6 +125,11 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
 
             beverageToUpdate.setBeverageName(beverage.getBeverageName());
             beverageToUpdate.setBeverageDesc(beverage.getBeverageDesc());
+            beverageToUpdate.setCountry(beverage.getCountry());
+            beverageToUpdate.setQuantityOnHand(beverage.getQuantityOnHand());
+            beverageToUpdate.setPrice(beverage.getPrice());
+            beverageToUpdate.setActive(beverage.getActive());
+            beverageToUpdate.setBox(beverage.getBox());
             
         }
         else
@@ -127,7 +145,7 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
         Beverage beverageToDelete = retrieveBeverageByBeverageId(beverageId);
         if(beverageToDelete.getBox() == null) {
             
-            em.remove(beverageToDelete);
+            beverageToDelete.setActive(false);
         }
         else
         {

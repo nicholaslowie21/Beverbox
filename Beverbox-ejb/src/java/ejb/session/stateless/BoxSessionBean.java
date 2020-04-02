@@ -5,9 +5,11 @@
  */
 package ejb.session.stateless;
 
+import entity.Beverage;
 import entity.Box;
 import java.util.List;
 import java.util.Set;
+import javax.ejb.EJB;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -28,6 +30,9 @@ import util.exception.InputDataValidationException;
  */
 @Stateless
 public class BoxSessionBean implements BoxSessionBeanLocal {
+
+    @EJB(name = "BeverageSessionBeanLocal")
+    private BeverageSessionBeanLocal beverageSessionBeanLocal;
 
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
@@ -110,8 +115,8 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     }
     
     @Override
-    public List<Box> searchBoxesByActive(Boolean active) {
-         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active == true ORDER BY b.boxName ASC");
+    public List<Box> retrieveAllActive() {
+         Query query = em.createQuery("SELECT b FROM Box b WHERE b.active = true ORDER BY b.boxName ASC");
          List<Box> boxes = query.getResultList();
          
          for(Box box:boxes)
@@ -149,7 +154,7 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
             throw new BoxNotFoundException("Box " + boxId + "does not exist!");
         }
         else {
-            em.remove(boxToDelete);
+            boxToDelete.setActive(false);
         }
         
 }

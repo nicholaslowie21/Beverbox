@@ -14,7 +14,8 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${# Space-separated list of extra javac options}</file>
+                    <file>${libs.JasperReports_6.11.0.classpath}</file>
+                    <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
                     <file>${libs.PrimeFaces_7.0.classpath}</file>
