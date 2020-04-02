@@ -31,19 +31,19 @@
                                     <p:inputText id="globalFilter" onkeyup="PF('dataTableAllBeverages').filter()" style="width:300px" placeholder="Enter keyword"/>
                                 </p:outputPanel>
                             </f:facet>
-                            <p:column headerText="Beverage ID" sortBy="#{beverage.beverageId}">
+                            <p:column headerText="Beverage ID" sortBy="#{beverage.beverageId}" filterBy="#{beverage.beverageId}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageId}" />
                             </p:column>
 
-                            <p:column headerText="Beverage Name" sortBy="#{beverage.beverageName}">
+                            <p:column headerText="Beverage Name" sortBy="#{beverage.beverageName}" filterBy="#{beverage.beverageName}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageName}" />
                             </p:column>                            
 
-                            <p:column headerText="Beverage Country" sortBy="#{beverage.country}">
+                            <p:column headerText="Beverage Country" sortBy="#{beverage.country}" filterBy="#{beverage.country}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.country}" />
                             </p:column>
 
-                            <p:column headerText="Beverage Description" sortBy="#{beverage.beverageDesc}">
+                            <p:column headerText="Beverage Description" sortBy="#{beverage.beverageDesc}" filterBy="#{beverage.beverageDesc}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageDesc}" />
                             </p:column>
                             
@@ -57,11 +57,11 @@
                                  <h:outputText value="#{beverage.type}" />
                     </p:column>  
                             
-                            <p:column headerText="Beverage Price" sortBy="#{beverage.price}">
+                            <p:column headerText="Beverage Price" sortBy="#{beverage.price}" filterBy="#{beverage.price}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.price}" />
                             </p:column>
                            
-                            <p:column headerText="Beverage Quantity On Hand" sortBy="#{beverage.quantityOnHand}">
+                            <p:column headerText="Beverage Quantity On Hand" sortBy="#{beverage.quantityOnHand}" filterBy="#{beverage.quantityOnHand}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.quantityOnHand}" />
                             </p:column>
                             
