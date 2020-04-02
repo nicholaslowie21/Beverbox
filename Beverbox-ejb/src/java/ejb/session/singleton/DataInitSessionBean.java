@@ -10,10 +10,14 @@ import entity.Box;
 import entity.Customer;
 import ejb.session.stateless.OptionSessionBeanLocal;
 import ejb.session.stateless.PromotionSessionBeanLocal;
+import ejb.session.stateless.TransactionSessionBean;
+import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
+import entity.Transaction;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,6 +38,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.CreateNewOptionException;
 
 import util.exception.InputDataValidationException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -43,6 +48,9 @@ import util.exception.InputDataValidationException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB(name = "BoxSessionBeanLocal")
     private BoxSessionBeanLocal boxSessionBeanLocal;
@@ -62,6 +70,8 @@ public class DataInitSessionBean {
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
+    
+    
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
 
@@ -77,6 +87,9 @@ public class DataInitSessionBean {
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
+        
+        List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
+        
         if(promos.size()==0){
             initializePromo();
         }
@@ -92,7 +105,9 @@ public class DataInitSessionBean {
         }
         initializeReview();
     
-
+        if(transactions.isEmpty()) {
+            initializeTransaction();
+        }
         
         List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         if(options.size() == 0) {
@@ -217,5 +232,18 @@ public class DataInitSessionBean {
             ex.printStackTrace();
         }
         
+    }
+    
+    
+    public void initializeTransaction() {
+        try {
+            Transaction t = new Transaction("1234", 10.0, 123, new Date());
+            t.setBevNumber(1);
+            Customer c = em.find(Customer.class, 1l);
+            t.setCustomer(c);
+            transactionSessionBeanLocal.createNewTransaction(t);
+        } catch (UnknownPersistenceException | InputDataValidationException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
