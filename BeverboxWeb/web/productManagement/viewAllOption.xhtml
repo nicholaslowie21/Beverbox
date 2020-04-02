@@ -94,6 +94,37 @@
                         
                         <p:row>
                             <p:column>
+                                <h:outputLabel for="selDuration" value="Duration (months): " />
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}" />
+                                
+<!--                            I don't know why they say the value for duration is null, but they could read for type??? is it data type?    
+                                <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
+                                    <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" itemValue="#{optionDuration}" itemLabel="#{optionDuration}" />
+                                </p:selectOneMenu>-->
+                            </p:column>
+                            <p:column>
+                                <p:message for="selDuration" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selType" value="Type: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selType" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.type}">
+                                    <f:selectItems value="#{viewOptionsManagedBean.availableTypes}" var="optionType" itemValue="#{optionType}" itemLabel="#{optionType}" />
+                                </p:selectOneMenu>   
+                            </p:column>
+                            <p:column>
+                                <p:message for="selType" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
                                 <p:outputLabel for="unitPrice" value="Price " />
                             </p:column>
                             <p:column>
@@ -130,7 +161,7 @@
 
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Option"  actionListener="#{viewOptionsManagedBean.updateOption}" update="@form formAllOptions:dataTableAllOptions" oncomplete="formAllProducts" />
+                                <p:commandButton value="Update Option"  actionListener="#{viewOptionsManagedBean.updateOption}" update="@form formAllOptions:dataTableAllOptions" />
                             </p:column>
                         </p:row>
 
@@ -142,36 +173,3 @@
         </div>
     </ui:define>
 </ui:composition>
-        
-        
-<!--                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="selType" value="Name: " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="selType" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.type}">
-                                    <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="true" />
-                                    <f:selectItems value="#{viewOptionsManagedBean.availableTypes}" var="optionType" />
-                                </p:selectOneMenu>
-                                
-                            </p:column>
-                            <p:column>
-                                <p:message for="selType" />
-                            </p:column>
-                        </p:row>-->
-
-<!--                        <p:row>
-                            <p:column>
-                                <h:outputLabel for="selDuration" value="Duration (months): " />
-                            </p:column>
-                            <p:column>
-                                <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
-                                    <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" />
-                                </p:selectOneMenu>
-                            </p:column>
-                            <p:column>
-                                <p:message for="selDuration" />
-                            </p:column>
-                        </p:row>-->
-       
-
