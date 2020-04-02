@@ -194,6 +194,23 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         }               
     }
     
+
+    @Override
+    public void deleteSubscription (Subscription subscription) throws SubscriptionNotFoundException
+    {
+        if(subscription != null)
+        {
+            Subscription subscriptionToUpdate = retrieveSubscriptionBySubscriptionId(subscription.getSubscriptionId());
+            subscriptionToUpdate.setActive(false);
+            //If it is associated with another object, do we need to update the subscription obj associated there too?
+        }
+        else
+        {
+            throw new SubscriptionNotFoundException("Subscription ID not provided for option to be updated");
+        }
+    }
+
+    
 // I realise that renewSubscription should not be in this subscription session bean, bcs like the business logic shouldn't be here, and that if it is done here, the method will be overly complicated
 //    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException {    
 //        try{

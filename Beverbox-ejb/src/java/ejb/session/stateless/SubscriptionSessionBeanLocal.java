@@ -33,4 +33,6 @@ public interface SubscriptionSessionBeanLocal {
     public Subscription retrieveSubscriptionBySubscriptionId(Long subscriptionId) throws SubscriptionNotFoundException;
 
     public List<Subscription> retrieveAllSubscriptionsByOptionId(Long optionId) throws OptionNotFoundException, SubscriptionNotFoundException;
+
+    public void deleteSubscription(Subscription subscription) throws SubscriptionNotFoundException;
 }

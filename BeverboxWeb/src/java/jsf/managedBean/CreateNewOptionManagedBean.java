@@ -39,7 +39,7 @@ public class CreateNewOptionManagedBean implements Serializable {
     }
     
     @PostConstruct
-    public void postCosntruct() {
+    public void postConstruct() {
         availableDurations = new ArrayList<>();
         availableDurations.add(3);
         availableDurations.add(6);
@@ -69,13 +69,6 @@ public class CreateNewOptionManagedBean implements Serializable {
                 }
             }
             
-            if (!option2Exist) {
-                Long option2Id = optionSessionBeanLocal.createNewOption(new OptionEntity(name, duration, false, description, price, type));
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New option created successfully (Product ID: " + option2Id + ")", null));
-            } else {
-                throw new CreateNewOptionException("Option without sharing already exists");
-            }
-            
             if (getSharing()) {
                 if (!option1Exist) {
                     Long option1Id = optionSessionBeanLocal.createNewOption(new OptionEntity(name, duration, true, description, price + sharingPriceIncrement, type));
@@ -84,6 +77,13 @@ public class CreateNewOptionManagedBean implements Serializable {
                     throw new CreateNewOptionException("Option with sharing already exists");
                 }
             }
+            if (!option2Exist) {
+                Long option2Id = optionSessionBeanLocal.createNewOption(new OptionEntity(name, duration, false, description, price, type));
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New option created successfully (Product ID: " + option2Id + ")", null));
+            } else {
+                throw new CreateNewOptionException("Option without sharing already exists");
+            }
+            
             
         } catch (CreateNewOptionException | InputDataValidationException ex) {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new option: " + ex.getMessage(), null));

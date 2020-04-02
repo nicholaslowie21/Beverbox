@@ -208,8 +208,11 @@ public class DataInitSessionBean {
    
     private void initializeOption() {
         try {
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "A testing option", 16.90, "Regular"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "A testing option", 16.90, "Regular"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "A testing option", 16.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "A testing option", 22.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, false, "A testing option", 48.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "A testing option", 108.90, "ALCOHOL"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "A testing option", 102.90, "ALCOHOL"));
         } catch (CreateNewOptionException | InputDataValidationException ex) {
             ex.printStackTrace();
         }
