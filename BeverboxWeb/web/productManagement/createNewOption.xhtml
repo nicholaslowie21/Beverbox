@@ -20,6 +20,10 @@
                             <p:column>
                                 <p:inputText id="name" value="#{createNewOptionManagedBean.name}" placeholder="Option Name [duration]" size="40" required="true" requiredMessage="Option name is required" />
                             </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                            
                         </p:row>
 
                         <p:row>
@@ -27,10 +31,13 @@
                                 <p:outputLabel for="selDuration" value="Duration (months) " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selDuration" value="#{createNewOptionManagedBean.duration}">
+                                <p:selectOneMenu id="selDuration" value="#{createNewOptionManagedBean.duration}" required="true">
                                     <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="false" />
                                     <f:selectItems value="#{createNewOptionManagedBean.availableDurations}" var="optionDuration" />
                                 </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selDuration" />
                             </p:column>
                         </p:row>
          
@@ -39,10 +46,13 @@
                                 <p:outputLabel for="selType" value="Type " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectOneMenu id="selType" value="#{createNewOptionManagedBean.type}">
+                                <p:selectOneMenu id="selType" value="#{createNewOptionManagedBean.type}" required="true">
                                     <f:selectItem itemValue="" itemLabel="[Select One]" noSelectionOption="false" />
                                     <f:selectItems value="#{createNewOptionManagedBean.availableTypes}" var="optionType" />
                                 </p:selectOneMenu>
+                            </p:column>
+                            <p:column>
+                                <p:message for="selType" />
                             </p:column>
                         </p:row>
                         
@@ -53,6 +63,9 @@
                             <p:column>                            
                                 <p:spinner id="unitPrice" value="#{createNewOptionManagedBean.price}" placeholder="30.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Unit Price is required" />
                             </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
                         </p:row>
 
                         <p:row>
@@ -61,6 +74,9 @@
                             </p:column>
                             <p:column>
                                 <p:inputTextarea id="description" value="#{createNewOptionManagedBean.description}" rows="3" cols="40" requiredMessage="Description is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
                             </p:column>
                         </p:row>
            
@@ -72,6 +88,9 @@
                                 <p:outputLabel value="Sharing price will be automatically incremented by $6.00" />
                                 <br></br>
                                 <p:selectBooleanCheckbox id="sharing" value="#{createNewOptionManagedBean.sharing}" itemLabel="Allowed"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="sharing" />
                             </p:column>
                         </p:row>
 

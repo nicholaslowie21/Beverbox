@@ -11,17 +11,165 @@
         <ez:Breadcrumb pageName="option" />
         <div>
             <h3>Option Management</h3>
+            <!-- Actually why is the path not updated to the new page, even though the new page is renderred, and does it matter?-->
+            <p:commandButton value="Create New Option" action="createNewOption" icon="fa fa-plus" style="margin-right:20px;" />
             
-            <p:commandButton oncomplete="" value="Create New Option" action="createNewOption" icon="fa fa-plus" style="margin-right:20px;" />
-            <h:form>
-                
-            <br></br>
+            <h:form id="formAllOptions">
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <p:dataTable id="dataTableAllOptions" widgetVar="dataTableAllOptions" value="#{viewOptionsManagedBean.optionEntities}" var="option" rowKey="#{option.optionId}" rowIndexVar="row"
+                             filteredValue="#{viewOptionsManagedBean.filteredOptionEntities}"
+                             rows="10" paginator="true" paginatorTemplate="{CurrentPageReport} {FirstPageLink} {PreviousPageLink} {PageLinks} {NextPageLink} {LastPageLink} {RowsPerPageDropdown}" rowsPerPageTemplate="10,20,50">
+
+                    <f:facet name="header">
+                        <p:outputPanel style="text-align: right;">
+                            <h:outputText value="Search all fields:" />
+                            <p:inputText id="globalFilter" onkeyup="PF('dataTableAllOptions').filter()" style="width:300px" placeholder="Enter keyword"/>
+                        </p:outputPanel>
+                    </f:facet>
+
+                    <p:column headerText="Name" sortBy="#{option.name}" filterBy="#{option.name}" filterMatchMode="contains">
+                        <h:outputText value="#{option.name}" />
+                    </p:column>
+
+                    <p:column headerText="Duration (months)" sortBy="#{option.duration}" filterBy="#{option.duration}" filterMatchMode="contains">
+                        <h:outputText value="#{option.duration}" />
+                    </p:column>                     
+                    
+                    <p:column headerText="Price" sortBy="#{option.price}" filterBy="#{option.price}" filterMatchMode="contains" style="text-align: right;">
+                        <h:outputText value="#{option.price}">
+                            <!--I AM NOT SURE WHY THIS RETURNS ME AN ERROR <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="$" />-->
+                        </h:outputText>
+                    </p:column>
+
+                    <p:column headerText="Type" sortBy="#{option.type}" filterBy="#{option.type}" filterMatchMode="contains">
+                        <h:outputText value="#{option.type}" />
+                    </p:column>
+                    
+                    <p:column headerText="Sharing" sortBy="#{option.sharing}" filterBy="#{option.sharing}" filterMatchMode="contains">
+                        <h:outputText value="#{option.sharing}" />
+                    </p:column>
+
+                    <p:column headerText="Description" sortBy="#{option.description}">
+                        <h:outputText value="#{option.description}" />
+                    </p:column>
+
+                    <p:column headerText="Action" >
+                        <p:commandButton actionListener="#{viewOptionsManagedBean.doUpdateOption}" update="formUpdateOption" oncomplete="PF('dialogUpdateOption').show()" icon="ui-icon-pencil" title="Update">
+                            <f:attribute name="optionEntityToUpdate" value="#{option}" />
+                        </p:commandButton>
+                        <p:commandButton icon="ui-icon-trash" actionListener="#{viewOptionsManagedBean.deleteOption}" update="formAllOptions:dataTableAllOptions formAllOptions:messages">
+                            <f:attribute name="optionEntityToDelete" value="#{option}" />
+                            <p:confirm header="Confirmation" message="Are you sure you want to delete #{option.name} (Sharing: #{option.sharing})?" icon="ui-icon-alert" />
+                        </p:commandButton>
+                    </p:column>
+
+                </p:dataTable>
+
+                <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                    <p:commandButton value="Yes" type="button" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                    <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                </p:confirmDialog>
+                </h:form>
+
+            <h:form id="formUpdateOption">
+
+                <p:dialog id="dialogUpdateOption" widgetVar="dialogUpdateOption" header="Update Option" closable="true">
+
+                    <p:messages id="messagesUpdateOption" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="name" value="Option Name: " />
+                            </p:column>
+                            <p:column>
+                                <h:inputText id="name" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.name}" required="true" requiredMessage="Name is required"/>
+                            </p:column>
+                            <p:column>
+                                <p:message for="name" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel for="selDuration" value="Duration (months): " />
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}" />
+                                
+<!--                            I don't know why they say the value for duration is null, but they could read for type??? is it data type?    
+                                <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
+                                    <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" itemValue="#{optionDuration}" itemLabel="#{optionDuration}" />
+                                </p:selectOneMenu>-->
+                            </p:column>
+                            <p:column>
+                                <p:message for="selDuration" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="selType" value="Type: " />
+                            </p:column>
+                            <p:column>
+                                <p:selectOneMenu id="selType" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.type}">
+                                    <f:selectItems value="#{viewOptionsManagedBean.availableTypes}" var="optionType" itemValue="#{optionType}" itemLabel="#{optionType}" />
+                                </p:selectOneMenu>   
+                            </p:column>
+                            <p:column>
+                                <p:message for="selType" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="unitPrice" value="Price " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="unitPrice" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.price}" placeholder="10.00" min="0" max="1000000" stepFactor="0.01" required="true" requiredMessage="Price is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="unitPrice" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Sharing allowed? " />
+                            </p:column>
+                            <p:column>
+                                <p:outputLabel value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.sharing}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="description" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.description}" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Option"  actionListener="#{viewOptionsManagedBean.updateOption}" update="@form formAllOptions:dataTableAllOptions" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
             </h:form>
         </div>
     </ui:define>
 </ui:composition>
-        
-        
-       
-       
-
