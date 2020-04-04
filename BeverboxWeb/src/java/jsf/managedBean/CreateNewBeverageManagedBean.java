@@ -64,7 +64,7 @@ public class CreateNewBeverageManagedBean {
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new beverage: " + ex.getMessage(), null));
         } catch (BeverageNotFoundException | CreateNewBeverageException ex) {
-            Logger.getLogger(CreateNewBoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 

@@ -6,12 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.Size;
 
@@ -43,9 +45,8 @@ public class Beverage implements Serializable {
     @Column(nullable = false)
     private Integer quantityOnHand;
     
-    @ManyToOne
-    @JoinColumn
-    private Box box;
+    @ManyToMany
+    private List<Box> boxes;
     
     @ManyToOne(optional = true)
     private Transaction transaction;
@@ -111,15 +112,14 @@ public class Beverage implements Serializable {
         this.beverageDesc = beverageDesc;
     }
 
-    public Box getBox() {
-        return box;
+    public List<Box> getBoxes() {
+        return boxes;
     }
 
-    public void setBox(Box box) {
-        this.box = box;
+    public void setBoxes(List<Box> boxes) {
+        this.boxes = boxes;
     }
     
-
     public Long getBeverageId() {
         return beverageId;
     }
