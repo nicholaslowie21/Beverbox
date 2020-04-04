@@ -60,10 +60,11 @@ public class SecurityFilter implements Filter {
         
         if(!excludeLoginCheck(requestServletPath))
         {
-            if(isLogin == false)
-            {
-                httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
-            }
+//            if(isLogin == false)
+//            {
+//                httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
+//            }
+            chain.doFilter(request, response);
         }
         else
         {
