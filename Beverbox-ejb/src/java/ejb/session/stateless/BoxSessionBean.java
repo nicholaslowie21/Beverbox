@@ -46,12 +46,13 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
     }
 
     @Override
-    public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException
+    public Long createNewBox(Box newBox, List<Beverage> beverages) throws CreateNewBoxException, InputDataValidationException
     {
         Set<ConstraintViolation<Box>>constraintViolations = validator.validate(newBox);
             
         if(constraintViolations.isEmpty()) {
             try {
+                newBox.setBeverages(beverages);
                 em.persist(newBox);
                 em.flush();
                 

@@ -172,22 +172,22 @@ public class DataInitSessionBean {
     }
     public void initializeBox() {
         try {
-            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic Europe", "England", "Regular"));
+            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic Europe", "England", "Regular"), beverages1);
             Box box1 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId1);
-            box1.setBeverages(beverages1);
+            
             for(Beverage b: beverages1) {
-                b.setBox(box1);
+                b.getBoxes().add(box1);
             }
             
-            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Amazing Asia", "Asia", "Alcohol"));
+            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Amazing Asia", "Asia", "Alcohol"), beverages2);
             Box box2 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId2);
-            box2.setBeverages(beverages2);
+            
             for(Beverage b: beverages2) {
-                b.setBox(box2);
+                b.getBoxes().add(box2);
             }
-            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"));
+            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"), beverages1);
             Box box3 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId3);
-            box3.setBeverages(beverages1);
+            
             
         } catch (CreateNewBoxException | InputDataValidationException | BoxNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);

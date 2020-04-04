@@ -129,7 +129,6 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
             beverageToUpdate.setQuantityOnHand(beverage.getQuantityOnHand());
             beverageToUpdate.setPrice(beverage.getPrice());
             beverageToUpdate.setActive(beverage.getActive());
-            beverageToUpdate.setBox(beverage.getBox());
             
         }
         else
@@ -142,15 +141,9 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
     @Override
     public void deleteBeverage(Long beverageId) throws BeverageNotFoundException, DeleteBeverageException
     {
-        Beverage beverageToDelete = retrieveBeverageByBeverageId(beverageId);
-        if(beverageToDelete.getBox() == null) {
-            
-            beverageToDelete.setActive(false);
-        }
-        else
-        {
-            throw new DeleteBeverageException("Beverage ID " + beverageId + " is associated with existing box(s) and cannot be deleted!");
-        }
+        Beverage beverageToDelete = retrieveBeverageByBeverageId(beverageId); 
+        beverageToDelete.setActive(false);
+
 }
 
     public void persist(Object object) {

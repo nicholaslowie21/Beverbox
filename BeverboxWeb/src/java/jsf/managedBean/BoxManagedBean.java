@@ -13,6 +13,8 @@ import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.inject.Named;
@@ -21,16 +23,19 @@ import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
+import util.exception.BeverageNotFoundException;
 import util.exception.BoxNotFoundException;
+import util.exception.CreateNewBoxException;
 import util.exception.DeleteBoxException;
+import util.exception.InputDataValidationException;
 
 /**
  *
  * @author boonghim
  */
-@Named(value = "viewBoxesManagedBean")
+@Named(value = "boxManagedBean")
 @ViewScoped
-public class ViewBoxesManagedBean implements Serializable {
+public class BoxManagedBean implements Serializable {
 
     @EJB(name = "BoxSessionBeanLocal")
     private BoxSessionBeanLocal boxSessionBeanLocal;
@@ -40,9 +45,14 @@ public class ViewBoxesManagedBean implements Serializable {
     
     @Inject
     private ViewReviewsManagedBean viewReviewsManagedBean;
+
     
-    private Box box;
+    private Box newBox;
     private List<Box> boxes;
+    private List<Beverage> selectedBeverages;
+    private List<Beverage> activeBeverages;
+    private Box box;
+
     private List<Box> filteredBoxes;
     private List<String> boxDescList;
     private List<Beverage> beverages;
@@ -50,10 +60,12 @@ public class ViewBoxesManagedBean implements Serializable {
     /**
      * Creates a new instance of ViewBoxesManagedBean
      */
-    public ViewBoxesManagedBean() {
+    public BoxManagedBean() {
+        newBox = new Box();
         box = new Box();
         boxes = new ArrayList<>();
         filteredBoxes = new ArrayList<>();
+        selectedBeverages =new ArrayList();
         boxDescList = new ArrayList<>();
         boxDescList.add("Regular");
         boxDescList.add("Healthy");
@@ -93,6 +105,31 @@ public class ViewBoxesManagedBean implements Serializable {
         catch(BoxNotFoundException | DeleteBoxException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while deleting box: " + ex.getMessage(), null));
+        }
+    }
+    
+    public void createNewBox(ActionEvent actionEvent) {
+        
+        try
+        {
+            Long boxId = boxSessionBeanLocal.createNewBox(newBox, selectedBeverages);
+            
+            for(Beverage b:selectedBeverages) {
+                b.getBoxes().add(newBox);
+                beverageSessionBeanLocal.updateBeverage(b);
+                
+            }
+            boxes.add(newBox);
+            
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));
+        }
+        catch(InputDataValidationException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new box: " + ex.getMessage(), null));
+        } catch (CreateNewBoxException ex) {
+            Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (BeverageNotFoundException ex) {
+            Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
 
@@ -135,6 +172,46 @@ public class ViewBoxesManagedBean implements Serializable {
 
     public void setViewReviewsManagedBean(ViewReviewsManagedBean viewReviewsManagedBean) {
         this.viewReviewsManagedBean = viewReviewsManagedBean;
+    }
+
+    public BoxSessionBeanLocal getBoxSessionBeanLocal() {
+        return boxSessionBeanLocal;
+    }
+
+    public void setBoxSessionBeanLocal(BoxSessionBeanLocal boxSessionBeanLocal) {
+        this.boxSessionBeanLocal = boxSessionBeanLocal;
+    }
+
+    public Box getNewBox() {
+        return newBox;
+    }
+
+    public void setNewBox(Box newBox) {
+        this.newBox = newBox;
+    }
+
+    public List<Beverage> getSelectedBeverages() {
+        return selectedBeverages;
+    }
+
+    public void setSelectedBeverages(List<Beverage> selectedBeverages) {
+        this.selectedBeverages = selectedBeverages;
+    }
+
+    public List<Beverage> getActiveBeverages() {
+        return activeBeverages;
+    }
+
+    public void setActiveBeverages(List<Beverage> activeBeverages) {
+        this.activeBeverages = activeBeverages;
+    }
+
+    public List<Beverage> getBeverages() {
+        return beverages;
+    }
+
+    public void setBeverages(List<Beverage> beverages) {
+        this.beverages = beverages;
     }
     
     

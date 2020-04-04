@@ -40,6 +40,7 @@ public class BeverageManagedBean implements Serializable {
     private Beverage selectedBeverageToUpdate;
     private List<String> beverageTypes;
     private List<Beverage> noBoxBeverages;
+    private List<Boolean> actives;
    
     /**
      * Creates a new instance of viewBeveragesManagedBean
@@ -50,8 +51,10 @@ public class BeverageManagedBean implements Serializable {
         activeBeverages = new ArrayList<>();
         selectedBeverageToUpdate = new Beverage();
         beverageTypes = new ArrayList<>();
-        noBoxBeverages = new ArrayList<>();
         retrieveAllTypes();
+        actives = new ArrayList<>();
+        actives.add(true);
+        actives.add(false);
     }
     
      @PostConstruct
@@ -60,11 +63,7 @@ public class BeverageManagedBean implements Serializable {
        
         beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         activeBeverages = beverageSessionBeanLocal.retrieveAllActive();
-        for(Beverage b:activeBeverages) {
-            if(b.getBox() == null) {
-                noBoxBeverages.add(b);
-            }
-        }
+       
 
     }
     
@@ -189,12 +188,12 @@ public class BeverageManagedBean implements Serializable {
         this.noBoxBeverages = noBoxBeverages;
     }
 
-    
-    
-    
-    
-    
-    
-    
+    public List<Boolean> getActives() {
+        return actives;
+    }
+
+    public void setActives(List<Boolean> actives) {
+        this.actives = actives;
+    }   
     
 }
