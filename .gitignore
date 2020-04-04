@@ -31,4 +31,7 @@ Beverbox-ejb/dist/
 BeverboxWeb/nbproject/private/
 BeverboxWeb/build/
 BeverboxWeb/dist/
-/BeverboxRsw/nbproject/private/
+
+BeverboxRsw/nbproject/private/
+BeverboxRsw/build/
+BeverboxRsw/dist/
