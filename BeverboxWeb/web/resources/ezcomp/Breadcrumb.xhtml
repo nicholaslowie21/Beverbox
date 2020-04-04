@@ -16,15 +16,20 @@
             <p:breadCrumb homeDisplay="false">
 
                 <p:menuitem icon="fa fa-home" url="#{application.contextPath}/index.xhtml" style="text-decoration-line: none;" />
-                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'box' ||
-                                                                   cc.attrs.pageName == 'beverage' ||
-                                                                       cc.attrs.pageName == 'option' }" />
+
+                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'box' || cc.attrs.pageName == 'beverage' || cc.attrs.pageName == 'option' }" />
                 
                 <p:menuitem value="Box" url="#{application.contextPath}/productManagement/viewAllBox.xhtml" rendered="#{cc.attrs.pageName == 'box'}" />
                 <p:menuitem value="Beverage" url="#{application.contextPath}/productManagement/viewAllBeverage.xhtml" rendered="#{cc.attrs.pageName == 'beverage'}" />
                 <p:menuitem value="Option" url="#{application.contextPath}/productManagement/viewAllOption.xhtml" rendered="#{cc.attrs.pageName == 'option'}" />
 
-
+                <p:menuitem value="Sales Management" rendered="#{cc.attrs.pageName == 'promo' }" />
+                <p:menuitem value="Option" url="#{application.contextPath}/salesManagement/viewAllPromotions.xhtml" rendered="#{cc.attrs.pageName == 'promo'}" />
+                
+                <p:menuitem value="Other" rendered="#{cc.attrs.pageName == 'viewAllArticles' || cc.attrs.pageName == 'ReportManagement' }" />
+                <p:menuitem value="View All Articles" url="#{application.contextPath}/otherManagement/viewAllArticles.xhtml" rendered="#{cc.attrs.pageName == 'viewAllArticles'}" />
+                <p:menuitem value="Option" url="#{application.contextPath}/otherManagement/reportManagement.xhtml" rendered="#{cc.attrs.pageName == 'ReportManagement'}" />
+                
             </p:breadCrumb>
         
         </h:form>
