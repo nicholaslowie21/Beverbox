@@ -44,24 +44,14 @@
                                 <p:outputLabel for="boxDesc" value="Box Description: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="boxDesc" value="#{boxManagedBean.newBox.boxDesc}" placeholder="regular or healthy" required="true" requiredMessage="Box Description is required!" />
+                                <p:inputText id="boxDesc" value="#{boxManagedBean.newBox.boxDesc}" placeholder="This box is regular or healthy" required="true" requiredMessage="Box Description is required!" />
                             </p:column>
                             <p:column>
                                 <p:message for="boxDesc" />
                             </p:column>
                             
                         </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id ="active" value="#{boxManagedBean.newBox.active}" required="true" requiredMessage="Password is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="active" />
-                            </p:column>
-                        </p:row>
+                       
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="beverages" value="Beverages: " style="font-weight: bold;" />

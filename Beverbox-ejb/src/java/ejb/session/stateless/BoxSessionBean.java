@@ -139,6 +139,7 @@ public class BoxSessionBean implements BoxSessionBeanLocal {
             boxToUpdate.setBoxDesc(box.getBoxDesc());
             boxToUpdate.setBoxOrigin(box.getBoxOrigin());
             
+            
         }
         else
         {

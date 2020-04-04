@@ -75,7 +75,9 @@
                                 <p:commandButton update="ccViewReviews:formViewReviews" oncomplete="PF('dialogViewReviews').show()" icon="ui-icon-star" title="Reviews">
                                     <f:setPropertyActionListener value="#{box}" target="#{boxManagedBean.viewReviewsManagedBean.boxToView}" />
                                 </p:commandButton>                        
-                                
+                                <p:commandButton actionListener="#{boxManagedBean.doUpdateBox}" update="formUpdateBox" oncomplete="PF('dialogUpdateBox').show()" icon="ui-icon-pencil" title="Update">
+                                     <f:attribute name="boxToUpdate" value="#{box}" />
+                                </p:commandButton>
                                 <p:commandButton icon="ui-icon-trash" actionListener="#{boxManagedBean.deleteBox}" update="formAllBoxes:dataTableMain formAllBoxes:messages" title="Delete">
                                     <f:attribute name="boxToDelete" value="#{box}" />
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete #{box.boxName} (Box ID: #{box.boxId})?" icon="ui-icon-alert" />
@@ -92,7 +94,84 @@
                 </p:layout>                                               
                 
             </h:form>
-            
+            <h:form id="formUpdateBox">
+
+                <p:dialog id="dialogUpdateBox" widgetVar="dialogUpdateBox" header="Update Box" closable="true">
+
+                    <p:messages id="messagesUpdateBox" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{boxManagedBean.selectedBoxToUpdate.boxId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText value="#{boxManagedBean.selectedBoxToUpdate.boxName}" placeholder="Box001" required="true" requiredMessage="Box Name is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="boxOrigin" value="Origin: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="boxOrigin" value="#{boxManagedBean.selectedBoxToUpdate.boxOrigin}" placeholder="Singapore" required="true" requiredMessage="Origin is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="boxOrigin" />
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="description" value="Description " />
+                            </p:column>
+                            <p:column>
+                                <p:inputTextarea rows="6" cols="33" id="description" value="#{boxManagedBean.selectedBoxToUpdate.boxDesc}" placeholder="This Box is interesting" required="true" requiredMessage="Box is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="description" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id ="active" value="#{boxManagedBean.selectedBoxToUpdate.active}" required="true" requiredMessage="Status is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="active" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update Box" update="@form formAllBoxes:dataTableMain" actionListener="#{boxManagedBean.updateBox}" oncomplete="PF('dialogUpdateBox').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+            </h:form>
         </div>
         
     </ui:define>

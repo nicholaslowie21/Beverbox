@@ -74,11 +74,6 @@ public class BeverageManagedBean implements Serializable {
             beverageTypes.add(b.getType());
         }
     }
-     public void doUpdateBeverage(ActionEvent event)
-    {
-        selectedBeverageToUpdate = (Beverage)event.getComponent().getAttributes().get("beverageToUpdate");
-        
-    }
      
     public void updateBeverage(ActionEvent event)
     {        
@@ -195,5 +190,6 @@ public class BeverageManagedBean implements Serializable {
     public void setActives(List<Boolean> actives) {
         this.actives = actives;
     }   
+    
     
 }

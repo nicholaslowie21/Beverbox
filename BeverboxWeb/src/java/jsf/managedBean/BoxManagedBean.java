@@ -56,6 +56,7 @@ public class BoxManagedBean implements Serializable {
     private List<Box> filteredBoxes;
     private List<String> boxDescList;
     private List<Beverage> beverages;
+    private Box selectedBoxToUpdate;
     
     /**
      * Creates a new instance of ViewBoxesManagedBean
@@ -70,6 +71,7 @@ public class BoxManagedBean implements Serializable {
         boxDescList.add("Regular");
         boxDescList.add("Healthy");
         boxDescList.add("Alcoholic");
+        
     }
     
     @PostConstruct
@@ -132,6 +134,33 @@ public class BoxManagedBean implements Serializable {
             Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+    
+     public void doUpdateBox(ActionEvent event)
+    {
+        selectedBoxToUpdate = (Box)event.getComponent().getAttributes().get("boxToUpdate");
+        
+    }
+     
+    public void updateBox(ActionEvent event)
+    {        
+        try
+        {
+
+            boxSessionBeanLocal.updateBox(selectedBoxToUpdate);
+           
+
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Box updated successfully", null));
+        }
+        catch(BoxNotFoundException ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while updating box: " + ex.getMessage(), null));
+        }
+        catch(Exception ex)
+        {
+            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An unexpected error has occurred: " + ex.getMessage(), null));
+        }
+    }
+    
 
     public Box getBox() {
         return box;
@@ -212,6 +241,14 @@ public class BoxManagedBean implements Serializable {
 
     public void setBeverages(List<Beverage> beverages) {
         this.beverages = beverages;
+    }
+
+    public Box getSelectedBoxToUpdate() {
+        return selectedBoxToUpdate;
+    }
+
+    public void setSelectedBoxToUpdate(Box selectedBoxToUpdate) {
+        this.selectedBoxToUpdate = selectedBoxToUpdate;
     }
     
     
