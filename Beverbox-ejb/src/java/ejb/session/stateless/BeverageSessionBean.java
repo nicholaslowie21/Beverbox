@@ -49,6 +49,7 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
             
             if(constraintViolations.isEmpty()) {
                 try {
+                    newBeverage.setActive(true);
                     em.persist(newBeverage);
                     em.flush();
                     

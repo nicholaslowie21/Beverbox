@@ -75,7 +75,7 @@
                             </p:column>
                             
                             <p:column headerText="Action" style="width: 150px;text-align: center;" >
-                                <p:commandButton update="formAllBeverages" oncomplete="PF('dialogUpdateBeverage').show()" icon="ui-icon-pencil" title="Update">
+                                <p:commandButton update="formUpdateBeverage" oncomplete="PF('dialogUpdateBeverage').show()" icon="ui-icon-pencil" title="Update">
                                     <f:setPropertyActionListener value="#{beverage}" target="#{beverageManagedBean.selectedBeverageToUpdate}" />
                                 </p:commandButton>
                                 
@@ -187,7 +187,7 @@
                         
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Product" update="@form formAllBeverages:dataTableAllBeverages" actionListener="#{beverageManagedBean.updateBeverage}" oncomplete="PF('dialogUpdateBeverage').show();" />
+                                <p:commandButton value="Update Beverage" update="@form formAllBeverages:dataTableAllBeverages" actionListener="#{beverageManagedBean.updateBeverage}" oncomplete="PF('dialogUpdateBeverage').show();" />
                             </p:column>
                         </p:row>
 
