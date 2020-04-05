@@ -33,21 +33,20 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     private EntityManager em;
     
     @Override
-    public Long createNewReview(String reviewContent, Long boxId, Long customerId) throws CustomerNotFoundException, BoxNotFoundException, CreateNewReviewException 
+    public Long createNewReview(Review newReview, Long boxId, Long customerId) throws CustomerNotFoundException, BoxNotFoundException, CreateNewReviewException 
     {
         
         try 
         {
             if (boxId == null) 
             {
-                throw new BoxNotFoundException();
+                throw new BoxNotFoundException("Box Id is null");
             }
             if(customerId == null) 
             {
-                throw new CustomerNotFoundException();
+                throw new CustomerNotFoundException("Customer Id is null");
             }
             
-            Review newReview = new Review(reviewContent);
             em.persist(newReview);
             
             Box box = boxSessionBeanLocal.retrieveBoxByBoxId(boxId);
@@ -73,11 +72,19 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     
     
     @Override
+    public List<Review> retrieveAllReviews() 
+    {
+        Query query = em.createQuery("SELECT r FROM Review r");
+        return query.getResultList();
+    }
+    
+    
+    @Override
     public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException 
     {
         if (customerId == null) 
         {
-            throw new CustomerNotFoundException();
+            throw new CustomerNotFoundException("Customer Id is null!");
         }
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.customer.customerId = :inCustomerId ORDER BY r.reviewId DESC");
         query.setParameter("inCustomerId", customerId);
@@ -90,7 +97,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     {
         if (boxId == null) 
         {
-            throw new BoxNotFoundException();
+            throw new BoxNotFoundException("Box Id is null!");
         }
         Query query = em.createQuery("SELECT r FROM Review r WHERE r.box.boxId = :inBoxId ORDER BY r.reviewId DESC");
         query.setParameter("inBoxId", boxId);
@@ -98,6 +105,7 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     
+    @Override
     public void deleteReview(Long reviewId) throws ReviewNotFoundException 
     {
         Review reviewToDelete = em.find(Review.class, reviewId);

@@ -10,10 +10,16 @@ import entity.Box;
 import entity.Customer;
 import ejb.session.stateless.OptionSessionBeanLocal;
 import ejb.session.stateless.PromotionSessionBeanLocal;
+import ejb.session.stateless.SubscriptionSessionBeanLocal;
+import ejb.session.stateless.TransactionSessionBean;
+import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
+import entity.Subscription;
+import entity.Transaction;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -32,8 +38,12 @@ import util.exception.CreateNewCustomerException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CreateNewOptionException;
+import util.exception.CreateNewSubscriptionException;
 
 import util.exception.InputDataValidationException;
+import util.exception.OptionNotFoundException;
+import util.exception.TransactionNotFoundException;
+import util.exception.UnknownPersistenceException;
 
 /**
  *
@@ -43,6 +53,12 @@ import util.exception.InputDataValidationException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private SubscriptionSessionBeanLocal subscriptionSessionBeanLocal;
+
+    @EJB
+    private TransactionSessionBeanLocal transactionSessionBeanLocal;
 
     @EJB(name = "BoxSessionBeanLocal")
     private BoxSessionBeanLocal boxSessionBeanLocal;
@@ -62,6 +78,8 @@ public class DataInitSessionBean {
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
+    
+    
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
 
@@ -77,6 +95,10 @@ public class DataInitSessionBean {
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
+        
+        List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
+        List<Subscription> subscriptions = subscriptionSessionBeanLocal.retrieveAllSubscriptions();
+        
         if(promos.size()==0){
             initializePromo();
         }
@@ -91,12 +113,18 @@ public class DataInitSessionBean {
             initializeBox();
         }
         initializeReview();
-    
-
         
         List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         if(options.size() == 0) {
             initializeOption();
+        }
+        
+        if(transactions.isEmpty()) {
+            initializeTransaction();
+        }
+        
+        if(subscriptions.isEmpty()) {
+            initializeSubscription();
         }
     }
     
@@ -194,12 +222,17 @@ public class DataInitSessionBean {
         }
     }
     public void initializeReview(){
+        Review r = new Review("This box is amazing and it changed my life!");
         try {
-            reviewSessionBeanLocal.createNewReview("This box is amazing and it changed my life!", 1L, 1L);
-            reviewSessionBeanLocal.createNewReview("This box is not interesting", 1L, 2L);
-            reviewSessionBeanLocal.createNewReview("This box is interesting", 1L, 1L);
-            reviewSessionBeanLocal.createNewReview("This box is not interesting", 1L, 1L);
-            reviewSessionBeanLocal.createNewReview("This box is fantastic and it is life!", 1L, 2L);
+            reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
+            r = new Review("This box is not interesting");
+            reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
+            r = new Review("This box is interesting");
+            reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
+            r = new Review("This box is not interesting");
+            reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
+            r = new Review("This box is fantastic and it is life!");
+            reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
         } catch (CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -217,5 +250,29 @@ public class DataInitSessionBean {
             ex.printStackTrace();
         }
         
+    }
+    
+    
+    public void initializeTransaction() {
+        try {
+            Transaction t = new Transaction("1234", 10.0, 123, new Date());
+            t.setBevNumber(1);
+            Customer c = em.find(Customer.class, 1l);
+            t.setCustomer(c);
+            transactionSessionBeanLocal.createNewTransaction(t);
+        } catch (UnknownPersistenceException | InputDataValidationException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void initializeSubscription() {
+        Subscription s = new Subscription(new Date(), new Date(), 3);
+        s.setActive(true);
+        try {
+            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l, 1l);
+        } catch (CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
+                TransactionNotFoundException | InputDataValidationException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
