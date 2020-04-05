@@ -6,6 +6,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -15,6 +16,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.Size;
 
 /**
@@ -48,8 +50,8 @@ public class Beverage implements Serializable {
     @ManyToMany
     private List<Box> boxes;
     
-    @ManyToOne(optional = true)
-    private Transaction transaction;
+    @OneToMany(mappedBy = "beverage")
+    private List<Transaction> transactions = new ArrayList<>();
     
     public Beverage() {
     }
@@ -80,12 +82,12 @@ public class Beverage implements Serializable {
         this.price = price;
     }
 
-    public Transaction getTransaction() {
-        return transaction;
+    public List<Transaction> getTransactions() {
+        return transactions;
     }
 
-    public void setTransaction(Transaction transaction) {
-        this.transaction = transaction;
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
     }
 
     public String getType() {

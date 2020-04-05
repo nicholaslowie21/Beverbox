@@ -14,21 +14,21 @@ import java.util.List;
  */
 public class RetrieveAllPromotionsRsp {
     
-    private List<Promotion> prompotions;
+    private List<Promotion> promotions;
 
     public RetrieveAllPromotionsRsp() {
     }
 
     public RetrieveAllPromotionsRsp(List<Promotion> prompotions) {
-        this.prompotions = prompotions;
+        this.promotions = prompotions;
     }
 
     public List<Promotion> getPrompotions() {
-        return prompotions;
+        return promotions;
     }
 
     public void setPrompotions(List<Promotion> prompotions) {
-        this.prompotions = prompotions;
+        this.promotions = prompotions;
     }
     
     

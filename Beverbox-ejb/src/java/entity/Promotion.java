@@ -66,6 +66,10 @@ public class Promotion implements Serializable {
     public List<Transaction> getTransactions() {
         return transactions;
     }
+
+    public void setTransactions(List<Transaction> transactions) {
+        this.transactions = transactions;
+    }
     
     
     

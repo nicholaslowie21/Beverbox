@@ -24,7 +24,6 @@ import util.exception.TransactionNotFoundException;
 @Local
 public interface SubscriptionSessionBeanLocal {
 
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException;
     
     public List<Subscription> retrieveAllSubscriptions();
 
@@ -35,4 +34,6 @@ public interface SubscriptionSessionBeanLocal {
     public List<Subscription> retrieveAllSubscriptionsByOptionId(Long optionId) throws OptionNotFoundException, SubscriptionNotFoundException;
 
     public void deleteSubscription(Subscription subscription) throws SubscriptionNotFoundException;
+
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException;
 }

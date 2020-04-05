@@ -71,12 +71,12 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         try
         {
             Set<ConstraintViolation<Transaction>>constraintViolations = validator.validate(newTransaction);
-        
+            
             if(constraintViolations.isEmpty())
             {
                 em.persist(newTransaction);
                 em.flush();
-
+                
                 return newTransaction.getTransactionId();
             }
             else
@@ -118,10 +118,31 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 .setParameter("inId", custId);
         
         List<Transaction> temp = query.getResultList();
+        
         List<Transaction> theList = new ArrayList<>();
         
         for(Transaction t: temp){
             if(t.getBeverage()!=null){
+                theList.add(t);
+            }
+        }
+        
+        return theList;
+    }
+    
+    @Override
+    public List<Transaction> retrieveCustSubscriptionTrans(Customer customer){
+        long custId = customer.getCustomerId();
+        
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.customer.customerId = :inId")
+                .setParameter("inId", custId);
+        
+        List<Transaction> temp = query.getResultList();
+        
+        List<Transaction> theList = new ArrayList<>();
+        
+        for(Transaction t: temp){
+            if(t.getSubscription()!=null){
                 theList.add(t);
             }
         }
@@ -166,7 +187,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         newTrans.setBevNumber(qty);
         
         newTrans.setBeverage(bev);
-        bev.setTransaction(newTrans);
+        bev.getTransactions().add(newTrans);
         
         newTrans.setCustomer(cust);
         cust.getTransactions().add(newTrans);
@@ -185,37 +206,37 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
     public long renewSubscriptionTransaction(Subscription subs){
-        Customer customer = subs.getCustomer();
-        OptionEntity option = subs.getOption();
-        
-        long transId = 0;
-        try{ 
-            transId = createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
-            em.flush();
-            
-            Transaction tempTrans = em.find(Transaction.class, transId);
-            tempTrans.setCustomer(customer);
-            customer.getTransactions().add(tempTrans);
-            
-            int tempEndYear = subs.getEndDate().getYear();
-            int tempEndMonth = subs.getEndDate().getMonth();
-            int tempEndDate = subs.getEndDate().getDate();
-            int tempMonthSubs = subs.getOption().getDuration();
-            
-            tempEndMonth += tempMonthSubs;
-            if(tempEndMonth > 12){
-                tempEndMonth -=12;
-                tempEndYear +=1;
-            }
-            
-            long subsId = subscriptionSessionBean.createNewSubscription(new Subscription(subs.getEndDate(),new Date(tempEndYear, tempEndMonth, tempEndDate) , tempMonthSubs),option.getOptionId(), customer.getCustomerId(), transId);
-            
-            
-        }catch( TransactionNotFoundException | CustomerNotFoundException | CreateNewSubscriptionException | OptionNotFoundException | InputDataValidationException | UnknownPersistenceException ex){
-            eJBContext.setRollbackOnly();
-        }
-        
-        return transId;
+//        Customer customer = subs.getCustomer();
+//        OptionEntity option = subs.getOption();
+//        
+//        long transId = 0;
+//        try{ 
+//            transId = createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
+//            em.flush();
+//            
+//            Transaction tempTrans = em.find(Transaction.class, transId);
+//            tempTrans.setCustomer(customer);
+//            customer.getTransactions().add(tempTrans);
+//            
+//            int tempEndYear = subs.getEndDate().getYear();
+//            int tempEndMonth = subs.getEndDate().getMonth();
+//            int tempEndDate = subs.getEndDate().getDate();
+//            int tempMonthSubs = subs.getOption().getDuration();
+//            
+//            tempEndMonth += tempMonthSubs;
+//            if(tempEndMonth > 12){
+//                tempEndMonth -=12;
+//                tempEndYear +=1;
+//            }
+//            
+//           // long subsId = subscriptionSessionBean.createNewSubscription(new Subscription(subs.getEndDate(),new Date(tempEndYear, tempEndMonth, tempEndDate) , tempMonthSubs),option.getOptionId(), customer.getCustomerId(), transId);
+//            
+//            
+//        }catch( TransactionNotFoundException | CustomerNotFoundException | CreateNewSubscriptionException | OptionNotFoundException | InputDataValidationException | UnknownPersistenceException ex){
+//            eJBContext.setRollbackOnly();
+//        }
+//        
+        return 1l;
     }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)

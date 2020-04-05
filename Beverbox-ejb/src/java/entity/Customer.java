@@ -37,7 +37,7 @@ public class Customer implements Serializable {
     private List<Subscription> subscriptions;
     
     @OneToMany(mappedBy = "customer")
-    private List<Transaction> transactions;
+    private List<Transaction> transactions = new ArrayList<>();
     
     @OneToMany(mappedBy = "customer")
     private List<Review> reviews;

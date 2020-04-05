@@ -25,11 +25,10 @@
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-<<<<<<< HEAD
+                    <file>${&lt;&lt;&lt;&lt;&lt;&lt;&lt; HEAD}</file>
+                </library>
+                <library dirs="200">
                     <file>${libs.PrimeFaces_7.0.classpath}</file>
-=======
-                    <file>${libs.Primefaces_7.0.classpath}</file>
->>>>>>> master
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
             </web-module-libraries>

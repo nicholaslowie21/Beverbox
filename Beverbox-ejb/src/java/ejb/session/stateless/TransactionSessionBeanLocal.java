@@ -35,5 +35,7 @@ public interface TransactionSessionBeanLocal {
     public long renewSubscriptionTransaction(Subscription subs);
 
     public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException, QuantityNotEnoughException;
+
+    public List<Transaction> retrieveCustSubscriptionTrans(Customer customer);
     
 }

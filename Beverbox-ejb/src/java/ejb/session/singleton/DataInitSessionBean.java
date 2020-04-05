@@ -105,27 +105,34 @@ public class DataInitSessionBean {
 
         if(customers.isEmpty()) {
             initializeCust();
+                       
         }
         if(beverages.isEmpty()) {
             initializeBeverages();
+            
         }
         if(boxes.isEmpty()) {
             initializeBox();
+            
         }
         initializeReview();
         
         List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         if(options.size() == 0) {
             initializeOption();
-        }
-        
-        if(transactions.isEmpty()) {
-            initializeTransaction();
+            em.flush();
         }
         
         if(subscriptions.isEmpty()) {
             initializeSubscription();
+            em.flush();
         }
+        
+        if(transactions.isEmpty()){
+            initializeTransaction();
+       
+        }
+        em.flush();
     }
     
     public void initializePromo(){
@@ -255,23 +262,51 @@ public class DataInitSessionBean {
     
     public void initializeTransaction() {
         try {
+            
             Transaction t = new Transaction("1234", 10.0, 123, new Date());
+            t.setBeverage(em.find(Beverage.class,1l));
             t.setBevNumber(1);
-            Customer c = em.find(Customer.class, 1l);
+            Customer c = em.find(Customer.class,1l);
             t.setCustomer(c);
             transactionSessionBeanLocal.createNewTransaction(t);
+            
+            t = new Transaction("1234",15.0,321,new Date());
+            t.setBeverage(em.find(Beverage.class,2l));
+            t.setBevNumber(2);
+            t.setCustomer(c);
+            transactionSessionBeanLocal.createNewTransaction(t);
+            
+            t = new Transaction("1234",15.0,321,new Date());
+            c = em.find(Customer.class,2l);
+            t.setBeverage(em.find(Beverage.class,2l));
+            t.setBevNumber(2);
+            t.setCustomer(c);
+            transactionSessionBeanLocal.createNewTransaction(t);
+            
         } catch (UnknownPersistenceException | InputDataValidationException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     
     public void initializeSubscription() {
-        Subscription s = new Subscription(new Date(), new Date(), 3);
+        Subscription s = new Subscription(new Date(), new Date());
         s.setActive(true);
         try {
-            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l, 1l);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l);
+            
+            s = new Subscription(new Date(),new Date());
+            s.setActive(true);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 2l);
+            
+            s = new Subscription(new Date(), new Date());
+            s.setActive(true);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l);
+            
+            em.flush();
         } catch (CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
                 TransactionNotFoundException | InputDataValidationException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
