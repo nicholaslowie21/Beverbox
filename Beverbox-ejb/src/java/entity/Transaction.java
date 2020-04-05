@@ -32,7 +32,7 @@ public class Transaction implements Serializable {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long transactionId;
 
-    @Column(nullable = false, unique = true, length = 32)
+    @Column(nullable = false, length = 32)
     @NotNull
     @Size(max = 32)
     private String ccNum;
@@ -47,10 +47,10 @@ public class Transaction implements Serializable {
     @Column(nullable = false)
     private Date transDate;
     
-    @Column(nullable = false)
+    @Column
     private Integer bevNumber;
     
-    @ManyToOne(optional = false)
+    @ManyToOne
     private Customer customer;
 
     @OneToOne(optional = true)
@@ -59,7 +59,7 @@ public class Transaction implements Serializable {
     @ManyToOne(optional = true)
     private Promotion promotion;
     
-    @OneToOne(mappedBy = "transaction")
+    @ManyToOne(optional = true)
     private Beverage beverage;
 
     public Transaction(){

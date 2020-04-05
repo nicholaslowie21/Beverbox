@@ -30,5 +30,7 @@ public interface PromotionSessionBeanLocal {
     public List<Promotion> retrieveAllPromotions();
 
     public long restorePromotion(Promotion promo);
+
+    public List<Promotion> retrieveAllActivePromotions();
     
 }

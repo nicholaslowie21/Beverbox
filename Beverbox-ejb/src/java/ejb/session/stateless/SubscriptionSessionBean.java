@@ -53,8 +53,8 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
 
-    @Override
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, Long transactionId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException
+    
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException
     {
         Set<ConstraintViolation<Subscription>>constraintViolations = validator.validate(newSubscription);
         
@@ -75,18 +75,22 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
 
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
 
-                if (transactionId == null) {
-                    throw new TransactionNotFoundException();
-                }
-                Transaction transaction = transactionSessionBeanLocal.retrieveTransactionByTransactionId(transactionId);
-
+                Long newTransId = transactionSessionBeanLocal.createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
+                Transaction newTrans = transactionSessionBeanLocal.retrieveTransactionByTransactionId(newTransId);
+                
                 em.persist(newSubscription);
                 newSubscription.setOption(option);
+                option.getSubscriptions().add(newSubscription);
+                
                 newSubscription.setCustomer(customer);
                 customer.getSubscriptions().add(newSubscription);
-                newSubscription.setTransaction(transaction);
-                transaction.setSubscription(newSubscription);
-
+                
+                newSubscription.setTransaction(newTrans);
+                newTrans.setSubscription(newSubscription);
+                
+                newTrans.setCustomer(customer);
+                customer.getTransactions().add(newTrans);
+                
                 em.flush();
 
                 return newSubscription.getSubscriptionId();
