@@ -16,13 +16,13 @@
                     <p:autoUpdate />
                 </p:growl>
                 <h3>Create New Box</h3>
-                
+                <p:panelGrid>
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="boxName" value="Box Name: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="boxName" value="#{createNewBoxManagedBean.newBox.boxName}" placeholder="Exotic Bananas" required="true" requiredMessage="Box Name is required!" />
+                                <p:inputText id="boxName" value="#{boxManagedBean.newBox.boxName}" placeholder="Exotic Bananas" required="true" requiredMessage="Box Name is required!" />
                             </p:column>
                             <p:column>
                                 <p:message for="boxName" />
@@ -33,7 +33,7 @@
                                 <p:outputLabel for="boxOrigin" value="Box Origin: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="boxOrigin" value="#{createNewBoxManagedBean.newBox.boxOrigin}" placeholder="Singapore" required="true" requiredMessage="Box Origin is required!" />
+                                <p:inputText id="boxOrigin" value="#{boxManagedBean.newBox.boxOrigin}" placeholder="Singapore" required="true" requiredMessage="Box Origin is required!" />
                             </p:column>
                             <p:column>
                                 <p:message for="boxOrigin" />
@@ -44,32 +44,22 @@
                                 <p:outputLabel for="boxDesc" value="Box Description: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="boxDesc" value="#{createNewBoxManagedBean.newBox.boxDesc}" placeholder="regular or healthy" required="true" requiredMessage="Box Description is required!" />
+                                <p:inputText id="boxDesc" value="#{boxManagedBean.newBox.boxDesc}" placeholder="This box is regular or healthy" required="true" requiredMessage="Box Description is required!" />
                             </p:column>
                             <p:column>
                                 <p:message for="boxDesc" />
                             </p:column>
                             
                         </p:row>
-                        <p:row>
-                            <p:column>
-                                <p:outputLabel for="active" value="Active: " style="font-weight: bold;" />
-                            </p:column>
-                            <p:column>
-                                <p:selectBooleanCheckbox id ="active" value="#{createNewBoxManagedBean.newBox.active}" required="true" requiredMessage="Password is required!" />
-                            </p:column>
-                            <p:column>
-                                <p:message for="active" />
-                            </p:column>
-                        </p:row>
+                       
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="beverages" value="Beverages: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:selectManyMenu id="beverages" value="#{createNewBoxManagedBean.selectedBeverages}" 
+                                <p:selectManyMenu id="beverages" value="#{boxManagedBean.selectedBeverages}" 
                           filter="true" filterMatchMode="contains" showCheckbox="true" required="true" requiredMessage="At Least one beverage required!">
-                                    <f:selectItems value="#{beverageManagedBean.noBoxBeverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" /> 
+                                    <f:selectItems value="#{beverageManagedBean.activeBeverages}" var="beverage" itemLabel="#{beverage.beverageName}" itemValue="#{beverage}" /> 
                             <p:column>
                                 <h:outputText value="#{beverage.beverageName}" />
                             </p:column>
@@ -83,10 +73,10 @@
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;
-                                <p:commandButton ajax="false" value="Create New Box"  actionListener="#{createNewBoxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
+                                <p:commandButton ajax="false" value="Create New Box"  actionListener="#{boxManagedBean.createNewBox}" oncomplete="PF('dialogCreateNewBox').show();"  />
                             </p:column>
                         </p:row>
-
+                    </p:panelGrid>
                 </h:form>
         </div>
         

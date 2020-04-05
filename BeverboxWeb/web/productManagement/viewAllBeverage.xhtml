@@ -30,23 +30,23 @@
                                     <p:inputText id="globalFilter" onkeyup="PF('dataTableAllBeverages').filter()" style="width:300px" placeholder="Enter keyword"/>
                                 </p:outputPanel>
                             </f:facet>
-                            <p:column headerText="Beverage ID" sortBy="#{beverage.beverageId}" filterBy="#{beverage.beverageId}" filterMatchMode="contains">
+                            <p:column headerText="ID" style="width: 150px;text-align: center;" sortBy="#{beverage.beverageId}" filterBy="#{beverage.beverageId}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageId}" />
                             </p:column>
 
-                            <p:column headerText="Beverage Name" sortBy="#{beverage.beverageName}" filterBy="#{beverage.beverageName}" filterMatchMode="contains">
+                            <p:column headerText="Name" style="width: 150px;text-align: center;" sortBy="#{beverage.beverageName}" filterBy="#{beverage.beverageName}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageName}" />
                             </p:column>                            
 
-                            <p:column headerText="Beverage Country" sortBy="#{beverage.country}" filterBy="#{beverage.country}" filterMatchMode="contains">
+                            <p:column headerText="Country" style="width: 150px;text-align: center;" sortBy="#{beverage.country}" filterBy="#{beverage.country}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.country}" />
                             </p:column>
 
-                            <p:column headerText="Beverage Description" sortBy="#{beverage.beverageDesc}" filterBy="#{beverage.beverageDesc}" filterMatchMode="contains">
+                            <p:column headerText="Description" style="width: 150px;text-align: center;" sortBy="#{beverage.beverageDesc}" filterBy="#{beverage.beverageDesc}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.beverageDesc}" />
                             </p:column>
                             
-                             <p:column headerText="Beverage Type" sortBy="#{beverage.type}" filterBy="#{beverage.type}" filterMatchMode="exact">
+                             <p:column headerText="Type" style="width: 150px;text-align: center;" sortBy="#{beverage.type}" filterBy="#{beverage.type}" filterMatchMode="exact">
                         <f:facet name="filter">
                             <p:selectOneMenu id="selBeverageType" onchange="PF('dataTableAllBeverages').filter()">
                                 <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
@@ -56,22 +56,29 @@
                                  <h:outputText value="#{beverage.type}" />
                     </p:column>  
                             
-                            <p:column headerText="Beverage Price" sortBy="#{beverage.price}" filterBy="#{beverage.price}" filterMatchMode="contains">
+                            <p:column headerText="Price" style="width: 150px;text-align: center;" sortBy="#{beverage.price}" filterBy="#{beverage.price}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.price}" />
                             </p:column>
                            
-                            <p:column headerText="Beverage Quantity On Hand" sortBy="#{beverage.quantityOnHand}" filterBy="#{beverage.quantityOnHand}" filterMatchMode="contains">
+                            <p:column headerText="Quantity On Hand" style="width: 150px;text-align: center;" sortBy="#{beverage.quantityOnHand}" filterBy="#{beverage.quantityOnHand}" filterMatchMode="contains">
                                 <h:outputText value="#{beverage.quantityOnHand}" />
                             </p:column>
                             
-                            <p:column headerText="Active" sortBy="#{beverage.active}">
+                            <p:column headerText="Active" style="width: 150px;text-align: center;" sortBy="#{beverage.active}" filterBy="#{beverage.active}" filterMatchMode="contains">
+                                    <f:facet name="filter">
+                                        <p:selectOneMenu id="selBeverageActive" onchange="PF('dataTableAllBeverages').filter()">
+                                            <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                            <f:selectItems value="#{beverageManagedBean.actives}" var="beverageActive" itemValue="#{beverage.active}" itemLabel="#{beverage.active}" />
+                                    </p:selectOneMenu>
+                                    </f:facet>
                                 <h:outputText value="#{beverage.active}" />
                             </p:column>
                             
-                            <p:column headerText="Action" >
+                            <p:column headerText="Action" style="width: 150px;text-align: center;" >
                                 <p:commandButton update="formUpdateBeverage" oncomplete="PF('dialogUpdateBeverage').show()" icon="ui-icon-pencil" title="Update">
                                     <f:setPropertyActionListener value="#{beverage}" target="#{beverageManagedBean.selectedBeverageToUpdate}" />
                                 </p:commandButton>
+                                
                                 <p:commandButton icon="ui-icon-trash" actionListener="#{beverageManagedBean.deleteBeverage}" update="formAllBeverages:dataTableAllBeverages formAllBeverages:messages">
                                     <f:attribute name="beverageToDelete" value="#{beverage}" />
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete #{beverage.beverageName} (Beverage ID: #{beverage.beverageId})?" icon="ui-icon-alert" />
@@ -180,7 +187,7 @@
                         
                         <p:row>
                             <p:column colspan="3">
-                                <p:commandButton value="Update Product" update="@form formAllBeverages:dataTableAllBeverages" actionListener="#{beverageManagedBean.updateBeverage}" oncomplete="PF('dialogUpdateBeverage').show();" />
+                                <p:commandButton value="Update Beverage" update="@form formAllBeverages:dataTableAllBeverages" actionListener="#{beverageManagedBean.updateBeverage}" oncomplete="PF('dialogUpdateBeverage').show();" />
                             </p:column>
                         </p:row>
 

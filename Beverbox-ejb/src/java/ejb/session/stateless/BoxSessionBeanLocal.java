@@ -5,6 +5,7 @@
  */
 package ejb.session.stateless;
 
+import entity.Beverage;
 import entity.Box;
 import java.util.List;
 import javax.ejb.Local;
@@ -30,8 +31,8 @@ public interface BoxSessionBeanLocal {
 
     public List<Box> retrieveAllBoxes();
 
-    public Long createNewBox(Box newBox) throws CreateNewBoxException, InputDataValidationException;
-
     public List<Box> retrieveAllActive();
+
+    public Long createNewBox(Box newBox, List<Beverage> beverages) throws CreateNewBoxException, InputDataValidationException;
     
 }
