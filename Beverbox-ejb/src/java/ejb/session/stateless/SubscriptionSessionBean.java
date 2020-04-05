@@ -106,7 +106,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
     @Override
     public List<Subscription> retrieveAllSubscriptions()
     {
-        Query query = em.createQuery("SELECT s FROM Subscriptions s ORDER BY s.name ASC");        
+        Query query = em.createQuery("SELECT s FROM Subscription s");        
         List<Subscription> subscriptions = query.getResultList();
         
         for(Subscription subscription: subscriptions)
