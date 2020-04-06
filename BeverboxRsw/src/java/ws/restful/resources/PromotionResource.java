@@ -54,7 +54,9 @@ public class PromotionResource {
     public Response retrievePromotions() {
         try{
             List<Promotion> promotions = promotionSessionBean.retrieveAllActivePromotions();
-            
+            for(Promotion p: promotions){
+                p.getTransactions().clear();
+            }
             return Response.status(Response.Status.OK).entity(new RetrieveAllPromotionsRsp(promotions)).build();
         }catch(Exception ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());

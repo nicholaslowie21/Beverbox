@@ -6,8 +6,10 @@
 package ws.restful.resources;
 
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.SubscriptionSessionBeanLocal;
 import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.Customer;
+import entity.Subscription;
 import entity.Transaction;
 import java.util.ArrayList;
 import java.util.List;
@@ -25,12 +27,22 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InputDataValidationException;
+import util.exception.OptionNotFoundException;
+import util.exception.PromoCodeNotFoundException;
+import util.exception.SubscriptionNotFoundException;
+import util.exception.TransactionNotFoundException;
+import util.exception.UnknownPersistenceException;
 import ws.restful.model.BevTransaction;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.RenewSubReq;
 import ws.restful.model.RetrieveBevTransactions;
 import ws.restful.model.RetrieveSubTransactions;
 import ws.restful.model.SubTransaction;
+import ws.restful.model.SubscriptionRsp;
+
 
 /**
  * REST Web Service
@@ -40,6 +52,8 @@ import ws.restful.model.SubTransaction;
 @Path("Transaction")
 public class TransactionResource {
 
+    SubscriptionSessionBeanLocal subscriptionSessionBean = lookupSubscriptionSessionBeanLocal();
+
     
 
     @Context
@@ -47,6 +61,7 @@ public class TransactionResource {
 
     CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
     TransactionSessionBeanLocal transactionSessionBean = lookupTransactionSessionBeanLocal();
+    
     
     /**
      * Creates a new instance of TransactionResource
@@ -129,7 +144,52 @@ public class TransactionResource {
         }
         return Response.status(Response.Status.OK).entity(new RetrieveSubTransactions(subTransactions)).build();
     }
-
+    
+    @Path("renewSubscription")
+    @PUT
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response renewSubscription(RenewSubReq renewSubReq) {
+        String promoCode = "";
+        Boolean cashback = true;
+        long subId = 0l;
+        long custId = 0l;
+        if(renewSubReq!=null){
+            promoCode = renewSubReq.getPromoCode();
+            cashback = renewSubReq.isCashback();
+            subId = renewSubReq.getSubsId();
+            custId = renewSubReq.getCustId();
+        } else {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        }
+        
+        Subscription theNewSub = new Subscription();
+        try {
+            Subscription newSub = subscriptionSessionBean.renewSubscription(promoCode, cashback, subId, custId);
+            theNewSub = newSub;
+        } catch (SubscriptionNotFoundException |TransactionNotFoundException | CustomerNotFoundException | PromoCodeNotFoundException | OptionNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Something went missing!");
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        } catch (CreateNewSubscriptionException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Something went wrong while creating subscription!");
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        } catch (InputDataValidationException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Input data is wrong!");
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        } catch (UnknownPersistenceException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+        
+        return Response.status(Response.Status.OK).entity(new SubscriptionRsp(theNewSub)).build();
+    }
+    
     /**
      * PUT method for updating or creating an instance of TransactionResource
      * @param content representation for the resource
@@ -153,6 +213,16 @@ public class TransactionResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (TransactionSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/TransactionSessionBean!ejb.session.stateless.TransactionSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private SubscriptionSessionBeanLocal lookupSubscriptionSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (SubscriptionSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/SubscriptionSessionBean!ejb.session.stateless.SubscriptionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

@@ -2,6 +2,7 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import entity.OptionEntity;
+import entity.Promotion;
 import entity.Subscription;
 import entity.Transaction;
 import java.time.LocalDate;
@@ -26,12 +27,16 @@ import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
+import util.exception.PromoCodeNotFoundException;
 import util.exception.SubscriptionNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
 @Stateless
 public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
+
+    @EJB
+    private PromotionSessionBeanLocal promotionSessionBean;
 
     @EJB(name = "TransactionSessionBeanLocal")
     private TransactionSessionBeanLocal transactionSessionBeanLocal;
@@ -41,7 +46,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
 
     @EJB(name = "OptionSessionBeanLocal")
     private OptionSessionBeanLocal optionSessionBeanLocal;
-
+    
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
     
@@ -214,6 +219,62 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         }
     }
 
+    public Subscription renewSubscription(String promoCode, boolean cashback, long subsId, long custId) throws SubscriptionNotFoundException, CustomerNotFoundException, PromoCodeNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException{
+        Subscription subscription = em.find(Subscription.class,subsId);
+        Customer customer = em.find(Customer.class,custId);
+        
+        if(subscription==null){
+            throw new SubscriptionNotFoundException("Subscription is not found!");
+        }
+        
+        if(customer==null){
+            throw new CustomerNotFoundException("Customer is not found!");
+        }
+        
+        Double totalPrice = subscription.getOption().getPrice();
+        Double addLogs = 0.0;
+        
+        Promotion thePromo = new Promotion();
+        
+        if(!promoCode.equals("")){
+            Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
+            addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
+            thePromo = promo;
+        }
+        Double currLogs = customer.getAccumulatedCashback();
+        if(cashback){
+            if(totalPrice<=currLogs){
+                totalPrice = 0.0;
+                currLogs -= totalPrice;
+            } else {
+                totalPrice -= currLogs;
+                currLogs = 0.0;
+            }
+            customer.setAccumulatedCashback(currLogs);
+        }
+        
+        if(!promoCode.equals("")){
+            customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
+        }
+        Date newStartDate = new Date(subscription.getEndDate().getTime());
+        Date newEndDate = addMonths(subscription.getEndDate(), subscription.getOption().getDuration());
+        Long theId = createNewSubscription(new Subscription(newStartDate, newEndDate), subscription.getOption().getOptionId(), custId);
+        
+        Subscription newSubs = retrieveSubscriptionBySubscriptionId(theId);
+        Transaction theTrans = newSubs.getTransaction();
+        
+        if(!promoCode.equals("")){
+            theTrans.setPromotion(thePromo);
+            thePromo.getTransactions().add(theTrans);
+        }
+        
+        return newSubs;
+    }
+    
+    public static Date addMonths(Date date, int numMonths){
+        date.setMonth((date.getMonth() + numMonths));
+        return date;
+     }
     
 // I realise that renewSubscription should not be in this subscription session bean, bcs like the business logic shouldn't be here, and that if it is done here, the method will be overly complicated
 //    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException {    

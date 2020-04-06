@@ -15,6 +15,7 @@ import util.exception.OptionNotFoundException;
 import util.exception.SubscriptionNotFoundException;
 import util.exception.UnknownPersistenceException;
 import util.exception.InputDataValidationException;
+import util.exception.PromoCodeNotFoundException;
 import util.exception.TransactionNotFoundException;
 
 /**
@@ -36,4 +37,6 @@ public interface SubscriptionSessionBeanLocal {
     public void deleteSubscription(Subscription subscription) throws SubscriptionNotFoundException;
 
     public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException;
+
+    public Subscription renewSubscription(String promoCode, boolean cashback, long subsId, long custId) throws SubscriptionNotFoundException, CustomerNotFoundException, PromoCodeNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException;
 }
