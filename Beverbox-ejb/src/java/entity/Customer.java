@@ -27,7 +27,7 @@ public class Customer implements Serializable {
     private String customerEmail;
     @Column(nullable = false)
     private String customerPassword;
-    private Double accumulatedCashback;
+    private Double accumulatedCashback = 0.0;
     @Column(nullable = false)
     private String customerCCNum;
     @Column(nullable = false)
