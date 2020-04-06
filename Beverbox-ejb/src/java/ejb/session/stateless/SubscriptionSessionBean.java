@@ -58,8 +58,8 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         validator = validatorFactory.getValidator();
     }
 
-    
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException
+    @Override
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, String promoCode, Boolean cashback) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException, PromoCodeNotFoundException
     {
         Set<ConstraintViolation<Subscription>>constraintViolations = validator.validate(newSubscription);
         
@@ -79,13 +79,45 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 }
 
                 Customer customer = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+                
+                Double totalPrice = option.getPrice();
+                Double addLogs = 0.0;
+                
+                Promotion thePromo = new Promotion();
+        
+                if(!promoCode.equals("")){
+                    Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
+                    addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
+                    thePromo = promo;
+                }
+                Double currLogs = customer.getAccumulatedCashback();
+                if(cashback){
+                    if(totalPrice<=currLogs){
+                        totalPrice = 0.0;
+                        currLogs -= totalPrice;
+                    } else {
+                        totalPrice -= currLogs;
+                        currLogs = 0.0;
+                    }
+                    customer.setAccumulatedCashback(currLogs);
+                }
 
-                Long newTransId = transactionSessionBeanLocal.createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
+                if(!promoCode.equals("")){
+                    customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
+                }
+        
+                
+                Long newTransId = transactionSessionBeanLocal.createNewTransaction(new Transaction(customer.getCustomerCCNum(), totalPrice, customer.getCustomerCVV(), new Date()));
                 Transaction newTrans = transactionSessionBeanLocal.retrieveTransactionByTransactionId(newTransId);
                 
                 em.persist(newSubscription);
                 newSubscription.setOption(option);
                 option.getSubscriptions().add(newSubscription);
+                
+                if(!promoCode.equals("")){
+                    newTrans.setPromotion(thePromo);
+                    thePromo.getTransactions().add(newTrans);
+                }
                 
                 newSubscription.setCustomer(customer);
                 customer.getSubscriptions().add(newSubscription);
@@ -231,42 +263,12 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             throw new CustomerNotFoundException("Customer is not found!");
         }
         
-        Double totalPrice = subscription.getOption().getPrice();
-        Double addLogs = 0.0;
         
-        Promotion thePromo = new Promotion();
-        
-        if(!promoCode.equals("")){
-            Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
-            addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
-            thePromo = promo;
-        }
-        Double currLogs = customer.getAccumulatedCashback();
-        if(cashback){
-            if(totalPrice<=currLogs){
-                totalPrice = 0.0;
-                currLogs -= totalPrice;
-            } else {
-                totalPrice -= currLogs;
-                currLogs = 0.0;
-            }
-            customer.setAccumulatedCashback(currLogs);
-        }
-        
-        if(!promoCode.equals("")){
-            customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
-        }
         Date newStartDate = new Date(subscription.getEndDate().getTime());
         Date newEndDate = addMonths(subscription.getEndDate(), subscription.getOption().getDuration());
-        Long theId = createNewSubscription(new Subscription(newStartDate, newEndDate), subscription.getOption().getOptionId(), custId);
+        Long theId = createNewSubscription(new Subscription(newStartDate, newEndDate), subscription.getOption().getOptionId(), custId,promoCode,cashback);
         
         Subscription newSubs = retrieveSubscriptionBySubscriptionId(theId);
-        Transaction theTrans = newSubs.getTransaction();
-        
-        if(!promoCode.equals("")){
-            theTrans.setPromotion(thePromo);
-            thePromo.getTransactions().add(theTrans);
-        }
         
         return newSubs;
     }
