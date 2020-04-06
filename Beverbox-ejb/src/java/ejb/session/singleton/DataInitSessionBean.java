@@ -42,6 +42,7 @@ import util.exception.CreateNewSubscriptionException;
 
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
+import util.exception.PromoCodeNotFoundException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
 
@@ -292,21 +293,23 @@ public class DataInitSessionBean {
         Subscription s = new Subscription(new Date(), new Date());
         s.setActive(true);
         try {
-            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l,"",false);
             
             s = new Subscription(new Date(),new Date());
             s.setActive(true);
-            subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 2l);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 2l,"",false);
             
             s = new Subscription(new Date(), new Date());
             s.setActive(true);
-            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l,"",false);
             
             em.flush();
         } catch (CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
                 TransactionNotFoundException | InputDataValidationException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnknownPersistenceException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (PromoCodeNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
