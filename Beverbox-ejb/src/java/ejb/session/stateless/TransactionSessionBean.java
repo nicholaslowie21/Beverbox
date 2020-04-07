@@ -26,6 +26,7 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
@@ -43,12 +44,18 @@ import util.exception.UnknownPersistenceException;
 public class TransactionSessionBean implements TransactionSessionBeanLocal {
 
     @EJB
+    private CustomerSessionBeanLocal customerSessionBean;
+
+    @EJB
+    private BeverageSessionBeanLocal beverageSessionBean;
+
+    @EJB
     private SubscriptionSessionBeanLocal subscriptionSessionBean;
 
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
-
+    
     
     @PersistenceContext(unitName = "Beverbox-ejbPU")
     private EntityManager em;
@@ -151,12 +158,16 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
     @Override
-    public long createBevTransaction(Beverage bev, String promoCode, Integer qty, boolean useCashBack, Customer cust) throws PromoCodeNotFoundException, QuantityNotEnoughException{
+    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException{
         Promotion thePromo = null;
         Double newCashBack; // to add into wallet
         
+        Beverage bev = beverageSessionBean.retrieveBeverageByBeverageId(bevId);
+        Customer cust = customerSessionBean.retrieveCustomerByCustomerId(custId);
+        
         Double totalamt = bev.getPrice()*qty;
         double totalamtCopy = totalamt;
+        
         
         if(qty>bev.getQuantityOnHand()){
             throw new QuantityNotEnoughException();
@@ -250,4 +261,8 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         
         return msg;
     }    
+
+    public void persist(Object object) {
+        em.persist(object);
+    }
 }
