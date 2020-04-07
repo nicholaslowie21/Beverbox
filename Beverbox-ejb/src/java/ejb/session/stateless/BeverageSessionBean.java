@@ -145,15 +145,8 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
         Beverage beverageToDelete = retrieveBeverageByBeverageId(beverageId); 
         beverageToDelete.setActive(false);
 
-}
-
-    public void persist(Object object) {
-        em.persist(object);
     }
 
-    public void persist1(Object object) {
-        em.persist(object);
-    }
     
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Beverage>>constraintViolations)
     {
