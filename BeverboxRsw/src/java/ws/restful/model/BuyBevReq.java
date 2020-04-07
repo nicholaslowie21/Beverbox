@@ -10,6 +10,9 @@ package ws.restful.model;
  * @author User
  */
 public class BuyBevReq {
+    
+    private String email;
+    private String password;
     private String promoCode;
     private boolean cashback;
     private long bevId;
@@ -19,13 +22,33 @@ public class BuyBevReq {
     public BuyBevReq() {
     }
 
-    public BuyBevReq(String promoCode, boolean cashback, long bevId, long custId, int qty) {
+    public BuyBevReq(String email, String password, String promoCode, boolean cashback, long bevId, long custId, int qty) {
+        this.email = email;
+        this.password = password;
         this.promoCode = promoCode;
         this.cashback = cashback;
         this.bevId = bevId;
         this.custId = custId;
         this.qty = qty;
     }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    
 
     public String getPromoCode() {
         return promoCode;

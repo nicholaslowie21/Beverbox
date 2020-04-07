@@ -161,16 +161,40 @@ public class TransactionResource {
         Boolean cashback = true;
         long subId = 0l;
         long custId = 0l;
+        
+        String email = "";
+        String password = "";
+        
+        
         if(renewSubReq!=null){
             promoCode = renewSubReq.getPromoCode();
             cashback = renewSubReq.isCashback();
             subId = renewSubReq.getSubsId();
             custId = renewSubReq.getCustId();
+            email = renewSubReq.getEmail();
+            password = renewSubReq.getPassword();
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         }
+        
+        //for authorizatioin purpose
+        try {
+            Customer customerCheck = customerSessionBean.retrieveCustomerByEmail(email);
+            
+            if(!customerCheck.getCustomerPassword().equals(password)){
+                ErrorRsp errorRsp = new ErrorRsp("Password is wrong.");
+            
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+            
+        } catch (CustomerNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        }
+        
         
         Subscription theNewSub = new Subscription();
         try {
@@ -206,16 +230,38 @@ public class TransactionResource {
         Boolean cashback = true;
         long optId = 0l;
         long custId = 0l;
+        String email = "";
+        String password = "";
         if(createSubReq!=null){
             promoCode = createSubReq.getPromoCode();
             cashback = createSubReq.isCashback();
             optId = createSubReq.getOptId();
             custId = createSubReq.getCustId();
+            email = createSubReq.getEmail();
+            password = createSubReq.getPassword();
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         }
+        
+        
+        //for authorizatioin purpose
+        try {
+            Customer customerCheck = customerSessionBean.retrieveCustomerByEmail(email);
+            
+            if(!customerCheck.getCustomerPassword().equals(password)){
+                ErrorRsp errorRsp = new ErrorRsp("Password is wrong.");
+            
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+            
+        } catch (CustomerNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        }
+        
         
         OptionEntity theOption = new OptionEntity();
         
@@ -276,17 +322,40 @@ public class TransactionResource {
         long bevId = 0l;
         long custId = 0l;
         int qty = 0;
+        String email = "";
+        String password = "";
+        
         if(buyBevReq!=null){
             promoCode = buyBevReq.getPromoCode();
             cashback = buyBevReq.isCashback();
             bevId = buyBevReq.getBevId();
             custId = buyBevReq.getCustId();
             qty = buyBevReq.getQty();
+            email = buyBevReq.getEmail();
+            password = buyBevReq.getPassword();
         } else {
             ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         }
+        
+        
+        //for authorizatioin purpose
+        try {
+            Customer customerCheck = customerSessionBean.retrieveCustomerByEmail(email);
+            
+            if(!customerCheck.getCustomerPassword().equals(password)){
+                ErrorRsp errorRsp = new ErrorRsp("Password is wrong.");
+            
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+            
+        } catch (CustomerNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        }
+        
         
         long theTransId = 0l;
         try {
