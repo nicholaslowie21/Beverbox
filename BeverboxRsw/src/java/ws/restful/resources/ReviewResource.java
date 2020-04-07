@@ -49,16 +49,15 @@ public class ReviewResource {
     public ReviewResource() {
     }
 
-    /**
-     * Retrieves representation of an instance of ws.restful.resources.ReviewResource
-     * @return an instance of java.lang.String
-     */
+
     
-    @Path("retrieveAllReview")
+    @Path("retrieveAllReviews")
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviewsByCustomerId(@QueryParam("customerId") Long customerId) {
+    public Response retrieveAllReviewsByCustomerId(@QueryParam("customerId") Long customerId) 
+    {
+        System.err.println("Customer ID: " + customerId.toString());
         try 
         {
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByCustomerId(customerId);
@@ -77,7 +76,10 @@ public class ReviewResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviewsByBoxId(@PathParam("boxId") Long boxId) {
+    public Response retrieveAllReviewsByBoxId(@PathParam("boxId") Long boxId) 
+    {
+        System.out.println("ENTER HERE");
+        System.err.println("Box ID: " + boxId);
         try 
         {
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByBoxId(boxId);
