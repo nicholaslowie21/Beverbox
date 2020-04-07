@@ -26,6 +26,14 @@
             </h:form>
             
         </p:panel>
+        <br /><br />
+        <p:panel header="Customer Report">
+            
+            <h:form>
+                <p:commandButton ajax="false" value="Generate Customer Report" actionListener="#{jasperReportManagedBean.generateCustomerReport}" />
+            </h:form>
+            
+        </p:panel>
         
     </ui:define>
 </ui:composition>
