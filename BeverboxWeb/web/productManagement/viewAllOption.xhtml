@@ -14,6 +14,8 @@
             <!-- Actually why is the path not updated to the new page, even though the new page is renderred, and does it matter?-->
             <p:commandButton value="Create New Option" action="createNewOption" icon="fa fa-plus" style="margin-right:20px;" />
             
+            <br></br>
+            <br></br>
             <h:form id="formAllOptions">
                 <p:messages id="messages" redisplay="false" closable="true" />
 
@@ -28,29 +30,35 @@
                         </p:outputPanel>
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{option.name}" filterBy="#{option.name}" filterMatchMode="contains">
+                    <p:column headerText="Name" sortBy="#{option.name}" filterBy="#{option.name}" filterMatchMode="contains" style="text-align: center;">
                         <h:outputText value="#{option.name}" />
                     </p:column>
 
-                    <p:column headerText="Duration (months)" sortBy="#{option.duration}" filterBy="#{option.duration}" filterMatchMode="contains">
+                    <p:column headerText="Duration (months)" sortBy="#{option.duration}" filterBy="#{option.duration}" filterMatchMode="contains" style="text-align: center;">
                         <h:outputText value="#{option.duration}" />
                     </p:column>                     
                     
-                    <p:column headerText="Price" sortBy="#{option.price}" filterBy="#{option.price}" filterMatchMode="contains" style="text-align: right;">
+                    <p:column headerText="Price" sortBy="#{option.price}" filterBy="#{option.price}" filterMatchMode="contains" style="text-align: center;">
                         <h:outputText value="#{option.price}">
                             <!--I AM NOT SURE WHY THIS RETURNS ME AN ERROR <f:convertNumber minFractionDigits="2" maxFractionDigits="2" type="currency" currencyCode="$" />-->
                         </h:outputText>
                     </p:column>
 
-                    <p:column headerText="Type" sortBy="#{option.type}" filterBy="#{option.type}" filterMatchMode="contains">
+                    <p:column headerText="Type" sortBy="#{option.type}" filterBy="#{option.type}" filterMatchMode="contains" style="text-align: center;">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selType" onchange="PF('dataTableAllOptions').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{viewOptionsManagedBean.availableTypes}" var="availableType" itemValue="#{availableType}" itemLabel="#{availableType}" />
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{option.type}" />
                     </p:column>
                     
-                    <p:column headerText="Sharing" sortBy="#{option.sharing}" filterBy="#{option.sharing}" filterMatchMode="contains">
+                    <p:column headerText="Sharing" sortBy="#{option.sharing}" filterBy="#{option.sharing}" filterMatchMode="contains" style="text-align: center;">
                         <h:outputText value="#{option.sharing}" />
                     </p:column>
 
-                    <p:column headerText="Description" sortBy="#{option.description}">
+                    <p:column headerText="Description" sortBy="#{option.description}" style="text-align: center;">
                         <h:outputText value="#{option.description}" />
                     </p:column>
 
@@ -98,11 +106,11 @@
                             </p:column>
                             <p:column>
                                 <p:outputLabel id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}" />
-                                
-<!--                            I don't know why they say the value for duration is null, but they could read for type??? is it data type?    
-                                <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
-                                    <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" itemValue="#{optionDuration}" itemLabel="#{optionDuration}" />
-                                </p:selectOneMenu>-->
+<!--                                <f:facet name="">
+                                    <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
+                                        <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" itemValue="#{optionDuration}" itemLabel="#{optionDuration}" />
+                                    </p:selectOneMenu>
+                                </f:facet>-->
                             </p:column>
                             <p:column>
                                 <p:message for="selDuration" />
