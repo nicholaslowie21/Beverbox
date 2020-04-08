@@ -108,7 +108,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
     
     
     @Override
-    public Customer customerLogin(String email, String password) throws CustomerNotFoundException, InvalidLoginCredentialException 
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException 
     {
         try 
         {
@@ -126,7 +126,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             }
         } 
         catch (CustomerNotFoundException ex) {
-            throw new CustomerNotFoundException(ex.getMessage());
+            throw new InvalidLoginCredentialException(ex.getMessage());
         }
     }
     

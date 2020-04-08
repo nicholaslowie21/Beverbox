@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeleteReviewException;
 import util.exception.ReviewNotFoundException;
 
 /**
@@ -107,19 +108,27 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     
     
     @Override
-    public void deleteReview(Long reviewId) throws ReviewNotFoundException 
+    public void deleteReview(Long reviewId, String email) throws ReviewNotFoundException, DeleteReviewException 
     {
         Review reviewToDelete = em.find(Review.class, reviewId);
         if (reviewToDelete == null) 
         {
-            throw new ReviewNotFoundException();
+            throw new ReviewNotFoundException("Review not found!");
         }
-        Customer customer = reviewToDelete.getCustomer();
-        customer.getReviews().remove(reviewToDelete);
         
-        Box box = reviewToDelete.getBox();
-        box.getReviews().remove(reviewToDelete);
-        
-        em.remove(reviewToDelete);
+        if(reviewToDelete.getCustomer().getCustomerEmail().equals(email)) 
+        {
+            Customer customer = reviewToDelete.getCustomer();
+            customer.getReviews().remove(reviewToDelete);
+
+            Box box = reviewToDelete.getBox();
+            box.getReviews().remove(reviewToDelete);
+
+            em.remove(reviewToDelete);
+        }
+        else 
+        {
+            throw new DeleteReviewException("This review is not created by the customer!");
+        }
     }
 }

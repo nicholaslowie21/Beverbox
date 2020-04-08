@@ -6,6 +6,7 @@ import javax.ejb.Local;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeleteReviewException;
 import util.exception.ReviewNotFoundException;
 
 /**
@@ -23,6 +24,6 @@ public interface ReviewSessionBeanLocal {
 
     public List<Review> retrieveAllReviews();
 
-    public void deleteReview(Long reviewId) throws ReviewNotFoundException;
+    public void deleteReview(Long reviewId, String email) throws ReviewNotFoundException, DeleteReviewException;
 
 }

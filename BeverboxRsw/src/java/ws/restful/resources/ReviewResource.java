@@ -24,6 +24,8 @@ import javax.ws.rs.core.Response;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeleteReviewException;
+import util.exception.InvalidLoginCredentialException;
 import util.exception.ReviewNotFoundException;
 import ws.restful.model.CreateNewReviewReq;
 import ws.restful.model.CreateNewReviewRsp;
@@ -43,11 +45,9 @@ public class ReviewResource {
     private UriInfo context;
     
     ReviewSessionBeanLocal reviewSessionBean = lookupReviewSessionBeanLocal();
+    CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
     
     
-    /**
-     * Creates a new instance of ReviewResource
-     */
     public ReviewResource() {
     }
 
@@ -57,10 +57,12 @@ public class ReviewResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviewsByCustomerEmail(@QueryParam("email") String email) 
+    public Response retrieveAllReviewsByCustomerEmail(@QueryParam("email") String email, @QueryParam("password") String password) 
     {
         try 
         {
+            Customer c = customerSessionBean.customerLogin(email, password);
+            
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByCustomerEmail(email);
             for(Review r: reviews) 
             {
@@ -71,7 +73,12 @@ public class ReviewResource {
             }
             RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
-        } 
+        }
+        catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
         catch (CustomerNotFoundException ex) 
         {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -84,10 +91,13 @@ public class ReviewResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviewsByBoxId(@PathParam("boxId") Long boxId) 
+    public Response retrieveAllReviewsByBoxId(@QueryParam("email") String email, @QueryParam("password") String password,
+                                              @PathParam("boxId") Long boxId) 
     {
         try 
         {
+            Customer c = customerSessionBean.customerLogin(email, password);
+            
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByBoxId(boxId);
             
             for(Review r: reviews) 
@@ -99,6 +109,11 @@ public class ReviewResource {
             }
             RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
+        }
+        catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
         }
         catch (BoxNotFoundException ex) 
         {
@@ -112,15 +127,23 @@ public class ReviewResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewReview(CreateNewReviewReq createNewReviewReq) {
+    public Response createNewReview(@QueryParam("email") String email, @QueryParam("password") String password,
+                                    CreateNewReviewReq createNewReviewReq) {
         if(createNewReviewReq != null) 
         {
             try 
             {
+                Customer c = customerSessionBean.customerLogin(email, password);
+                
                 Long reviewId = reviewSessionBean.createNewReview(createNewReviewReq.getReview(), createNewReviewReq.getBoxId(), createNewReviewReq.getCustomerId());
                 
                 CreateNewReviewRsp createNewReviewRsp = new CreateNewReviewRsp(reviewId);
                 return Response.status(Response.Status.OK).entity(createNewReviewRsp).build();
+            }
+            catch (InvalidLoginCredentialException ex) {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
             }
             catch(CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) 
             {
@@ -128,7 +151,6 @@ public class ReviewResource {
                 
                 return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
             }
-            
         }
         else 
         {
@@ -143,16 +165,22 @@ public class ReviewResource {
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response deleteReview(@PathParam("reviewId") Long reviewId) 
+    public Response deleteReview(@QueryParam("email") String email, @QueryParam("password") String password,
+                                @PathParam("reviewId") Long reviewId) 
     {
-        System.err.println("DELETE ID: " + reviewId);
         try 
         {
-            reviewSessionBean.deleteReview(reviewId);
+            Customer c = customerSessionBean.customerLogin(email, password);
             
+            reviewSessionBean.deleteReview(reviewId, email);
             return Response.status(Response.Status.OK).build(); 
         } 
-        catch (ReviewNotFoundException ex) 
+        catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+        catch (ReviewNotFoundException | DeleteReviewException ex) 
         {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
                 
@@ -165,6 +193,16 @@ public class ReviewResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ReviewSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/ReviewSessionBean!ejb.session.stateless.ReviewSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
