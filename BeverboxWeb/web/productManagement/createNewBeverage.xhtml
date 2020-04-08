@@ -84,7 +84,28 @@
                                 <p:message for="quantityOnHand" />
                             </p:column>
                         </p:row>
-                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="limitedEdition" value="Limited Edition: " style="font-weight: bold;"/>
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id="limitedEdition" value="#{createNewBeverageManagedBean.newBeverage.limitedEdition}" required="true" requiredMessage="Limited Edition is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="limitedEdition" />
+                            </p:column>
+                        </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="maxPurchase" value="Max Purchase: " style="font-weight: bold;"/>
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="maxPurchase" value="#{createNewBeverageManagedBean.newBeverage.maxPurchase}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Max Purchase is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="maxPurchase" />
+                            </p:column>
+                        </p:row>
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;

@@ -64,6 +64,20 @@
                                 <h:outputText value="#{beverage.quantityOnHand}" />
                             </p:column>
                             
+                            <p:column headerText="Limited Edition" style="width: 150px;text-align: center;" sortBy="#{beverage.limitedEdition}" filterBy="#{beverage.limitedEdition}" filterMatchMode="contains">
+                                    <f:facet name="filter">
+                                        <p:selectOneMenu id="selBeverageLimited" onchange="PF('dataTableAllBeverages').filter()">
+                                            <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="false" />
+                                            <f:selectItems value="#{beverageManagedBean.limited}" var="beverageLimited" itemValue="#{beverage.limitedEdition}" itemLabel="#{beverage.limitedEdition}" />
+                                    </p:selectOneMenu>
+                                    </f:facet>
+                                <h:outputText value="#{beverage.limitedEdition}" />
+                            </p:column>
+                            
+                            <p:column headerText="Max Purchase" style="width: 150px;text-align: center;" sortBy="#{beverage.maxPurchase}" filterBy="#{beverage.maxPurchase}" filterMatchMode="contains">
+                                <h:outputText value="#{beverage.maxPurchase}" />
+                            </p:column>
+                            
                             <p:column headerText="Active" style="width: 150px;text-align: center;" sortBy="#{beverage.active}" filterBy="#{beverage.active}" filterMatchMode="contains">
                                     <f:facet name="filter">
                                         <p:selectOneMenu id="selBeverageActive" onchange="PF('dataTableAllBeverages').filter()">
@@ -170,6 +184,30 @@
                             </p:column>
                             <p:column>
                                 <p:message for="quantityOnHand" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="limitedEdition" value="Limited Edition: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <p:selectBooleanCheckbox id ="limitedEdition" value="#{beverageManagedBean.selectedBeverageToUpdate.limitedEdition}" required="true" requiredMessage="Limited Edition is required!" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="limitedEdition" />
+                            </p:column>
+                        </p:row>
+                        
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="maxPurchase" value="Max Purchase: " />
+                            </p:column>
+                            <p:column>
+                                <p:spinner id="maxPurchase" value="#{beverageManagedBean.selectedBeverageToUpdate.maxPurchase}" placeholder="100" min="0" max="1000000" required="true" requiredMessage="Quantity On Hand is required" />
+                            </p:column>
+                            <p:column>
+                                <p:message for="maxPurchase" />
                             </p:column>
                         </p:row>
                         

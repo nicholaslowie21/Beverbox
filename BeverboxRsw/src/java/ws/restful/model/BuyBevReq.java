@@ -9,28 +9,28 @@ package ws.restful.model;
  *
  * @author User
  */
-public class RenewSubReq {
+public class BuyBevReq {
     
     private String email;
     private String password;
     private String promoCode;
     private boolean cashback;
-    private long subsId;
+    private long bevId;
     private long custId;
+    private int qty;
 
-    public RenewSubReq() {
+    public BuyBevReq() {
     }
 
-    public RenewSubReq(String email, String password, String promoCode, boolean cashback, long subsId, long custId) {
+    public BuyBevReq(String email, String password, String promoCode, boolean cashback, long bevId, long custId, int qty) {
         this.email = email;
         this.password = password;
         this.promoCode = promoCode;
         this.cashback = cashback;
-        this.subsId = subsId;
+        this.bevId = bevId;
         this.custId = custId;
+        this.qty = qty;
     }
-
-    
 
     public String getEmail() {
         return email;
@@ -47,9 +47,9 @@ public class RenewSubReq {
     public void setPassword(String password) {
         this.password = password;
     }
+
     
-    
-    
+
     public String getPromoCode() {
         return promoCode;
     }
@@ -66,12 +66,12 @@ public class RenewSubReq {
         this.cashback = cashback;
     }
 
-    public long getSubsId() {
-        return subsId;
+    public long getBevId() {
+        return bevId;
     }
 
-    public void setSubsId(long subsId) {
-        this.subsId = subsId;
+    public void setBevId(long bevId) {
+        this.bevId = bevId;
     }
 
     public long getCustId() {
@@ -80,6 +80,14 @@ public class RenewSubReq {
 
     public void setCustId(long custId) {
         this.custId = custId;
+    }
+
+    public int getQty() {
+        return qty;
+    }
+
+    public void setQty(int qty) {
+        this.qty = qty;
     }
     
     
