@@ -1,7 +1,9 @@
 package ws.restful.resources;
 
 import ejb.session.stateless.ArticleSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.Article;
+import entity.Customer;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -14,9 +16,12 @@ import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
 import javax.ws.rs.Path;
 import javax.ws.rs.PathParam;
+import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.ArticleNotFoundException;
+import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllArticlesRsp;
 import ws.restful.model.RetrieveArticleRsp;
@@ -29,12 +34,12 @@ import ws.restful.model.RetrieveArticleRsp;
 @Path("Article")
 public class ArticleResource {
 
-
+    
     @Context
     private UriInfo context;
     
     ArticleSessionBeanLocal articleSessionBean = lookupArticleSessionBeanLocal();
-    
+    CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
     
     
     public ArticleResource() {
@@ -43,10 +48,20 @@ public class ArticleResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllArticles() {
-        List<Article> articles = articleSessionBean.retrieveAllArticles();
+    public Response retrieveAllArticles(@QueryParam("email") String email, @QueryParam("password") String password) {
+        try 
+        {
+            Customer c = customerSessionBean.customerLogin(email, password);
+            List<Article> articles = articleSessionBean.retrieveAllArticles();
         
-        return Response.status(Response.Status.OK).entity(new RetrieveAllArticlesRsp(articles)).build();
+            return Response.status(Response.Status.OK).entity(new RetrieveAllArticlesRsp(articles)).build();
+        } 
+        catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
+        
     }
 
     
@@ -54,12 +69,20 @@ public class ArticleResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveArticleByArticleId(@PathParam("articleId") Long articleId) {
+    public Response retrieveArticleByArticleId(@QueryParam("email") String email, @QueryParam("password") String password,
+                                                @PathParam("articleId") Long articleId) {
         try 
-        {
+        {   
+            Customer c = customerSessionBean.customerLogin(email, password);
+            
             Article article = articleSessionBean.retrieveArticleByArticleId(articleId);
             return Response.status(Response.Status.OK).entity(new RetrieveArticleRsp(article)).build();
-        } 
+        }
+        catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
+        }
         catch (ArticleNotFoundException ex) 
         {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
@@ -73,6 +96,16 @@ public class ArticleResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (ArticleSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/ArticleSessionBean!ejb.session.stateless.ArticleSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
