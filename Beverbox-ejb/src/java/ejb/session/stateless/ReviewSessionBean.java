@@ -79,15 +79,16 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     
+    
     @Override
-    public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException 
+    public List<Review> retrieveAllReviewsByCustomerEmail(String email) throws CustomerNotFoundException 
     {
-        if (customerId == null) 
+        if (email == null) 
         {
-            throw new CustomerNotFoundException("Customer Id is null!");
+            throw new CustomerNotFoundException("Customer's email is null!");
         }
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.customer.customerId = :inCustomerId ORDER BY r.reviewId DESC");
-        query.setParameter("inCustomerId", customerId);
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.customer.customerEmail = :inEmail ORDER BY r.reviewId DESC");
+        query.setParameter("inEmail", email);
         return query.getResultList();
     }
     
