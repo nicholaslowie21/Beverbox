@@ -46,6 +46,10 @@ public class Beverage implements Serializable {
     private Double price;
     @Column(nullable = false)
     private Integer quantityOnHand;
+    @Column(nullable = false)
+    private Boolean limitedEdition;
+    @Column(nullable = false)
+    private Integer maxPurchase;
     
     @ManyToMany
     private List<Box> boxes;
@@ -56,13 +60,15 @@ public class Beverage implements Serializable {
     public Beverage() {
     }
 
-    public Beverage(String beverageName, String beverageDesc, String country, String type, Double price, Integer quantityOnHand) {
+    public Beverage(String beverageName, String beverageDesc, String country, String type, Double price, Integer quantityOnHand, Boolean limitedEdition, Integer maxPurchase) {
         this.beverageName = beverageName;
         this.beverageDesc = beverageDesc;
         this.country = country;
         this.type = type;
         this.price = price;
         this.quantityOnHand = quantityOnHand;
+        this.limitedEdition = limitedEdition;
+        this.maxPurchase = maxPurchase;
         this.active = true;
     }
 
@@ -144,6 +150,22 @@ public class Beverage implements Serializable {
 
     public void setQuantityOnHand(Integer quantityOnHand) {
         this.quantityOnHand = quantityOnHand;
+    }
+
+    public Boolean getLimitedEdition() {
+        return limitedEdition;
+    }
+
+    public void setLimitedEdition(Boolean limitedEdition) {
+        this.limitedEdition = limitedEdition;
+    }
+
+    public Integer getMaxPurchase() {
+        return maxPurchase;
+    }
+
+    public void setMaxPurchase(Integer maxPurchase) {
+        this.maxPurchase = maxPurchase;
     }
     
 
