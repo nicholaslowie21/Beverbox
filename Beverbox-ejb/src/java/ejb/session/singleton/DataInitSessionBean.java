@@ -1,5 +1,6 @@
 package ejb.session.singleton;
 
+import ejb.session.stateless.ArticleSessionBeanLocal;
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
@@ -13,6 +14,7 @@ import ejb.session.stateless.PromotionSessionBeanLocal;
 import ejb.session.stateless.SubscriptionSessionBeanLocal;
 import ejb.session.stateless.TransactionSessionBean;
 import ejb.session.stateless.TransactionSessionBeanLocal;
+import entity.Article;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
@@ -32,6 +34,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.BeverageNotFoundException;
 import util.exception.BoxNotFoundException;
+import util.exception.CreateNewArticleException;
 import util.exception.CreateNewBeverageException;
 import util.exception.CreateNewBoxException;
 import util.exception.CreateNewCustomerException;
@@ -79,6 +82,9 @@ public class DataInitSessionBean {
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
+    @EJB
+    private ArticleSessionBeanLocal articleSessionBeanLocal;
+    
     
     
     @PersistenceContext(unitName = "Beverbox-ejbPU")
@@ -97,6 +103,8 @@ public class DataInitSessionBean {
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
         
+        List<Review> reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        List<Article> articles = articleSessionBeanLocal.retrieveAllArticles();
         List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
         List<Subscription> subscriptions = subscriptionSessionBeanLocal.retrieveAllSubscriptions();
         
@@ -116,7 +124,12 @@ public class DataInitSessionBean {
             initializeBox();
             
         }
-        initializeReview();
+        if(reviews.isEmpty()) {
+            initializeReview();
+        }
+        if(articles.isEmpty()) {
+            initializeArticle();
+        }
         
         List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         if(options.size() == 0) {
@@ -314,6 +327,17 @@ public class DataInitSessionBean {
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PromoCodeNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void initializeArticle() {
+        try {
+            articleSessionBeanLocal.createNewArticle(new Article("Title 1","Article 1"));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 2","Article 2"));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 3","Article 3"));
+        } catch (CreateNewArticleException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

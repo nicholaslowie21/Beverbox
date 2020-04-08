@@ -24,6 +24,7 @@ public class ApplicationConfig extends Application {
      * If required, comment out calling this method in getClasses().
      */
     private void addRestResourceClasses(Set<Class<?>> resources) {
+        resources.add(ws.restful.resources.ArticleResource.class);
         resources.add(ws.restful.resources.BeverageResource.class);
         resources.add(ws.restful.resources.BoxResource.class);
         resources.add(ws.restful.resources.PromotionResource.class);

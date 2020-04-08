@@ -17,12 +17,12 @@ public interface ReviewSessionBeanLocal {
 
     public Long createNewReview(Review newReview, Long boxId, Long customerId) throws CustomerNotFoundException, BoxNotFoundException, CreateNewReviewException;
 
-    public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException;
+    public List<Review> retrieveAllReviewsByCustomerEmail(String email) throws CustomerNotFoundException;
 
     public List<Review> retrieveAllReviewsByBoxId(Long boxId) throws BoxNotFoundException;
 
     public List<Review> retrieveAllReviews();
 
     public void deleteReview(Long reviewId) throws ReviewNotFoundException;
-    
+
 }

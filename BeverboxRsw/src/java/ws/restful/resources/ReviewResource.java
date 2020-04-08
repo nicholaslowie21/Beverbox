@@ -1,6 +1,8 @@
 package ws.restful.resources;
 
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
+import entity.Customer;
 import entity.Review;
 import java.util.List;
 import java.util.logging.Level;
@@ -41,7 +43,7 @@ public class ReviewResource {
     private UriInfo context;
     
     ReviewSessionBeanLocal reviewSessionBean = lookupReviewSessionBeanLocal();
-
+    
     
     /**
      * Creates a new instance of ReviewResource
@@ -55,12 +57,18 @@ public class ReviewResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllReviewsByCustomerId(@QueryParam("customerId") Long customerId) 
+    public Response retrieveAllReviewsByCustomerEmail(@QueryParam("email") String email) 
     {
-        System.err.println("Customer ID: " + customerId.toString());
         try 
         {
-            List<Review> reviews = reviewSessionBean.retrieveAllReviewsByCustomerId(customerId);
+            List<Review> reviews = reviewSessionBean.retrieveAllReviewsByCustomerEmail(email);
+            for(Review r: reviews) 
+            {
+                r.getBox().getReviews().clear();
+                r.setBox(null);
+                r.getCustomer().getReviews().clear();
+                r.setCustomer(null);
+            }
             RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         } 
@@ -78,11 +86,17 @@ public class ReviewResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllReviewsByBoxId(@PathParam("boxId") Long boxId) 
     {
-        System.out.println("ENTER HERE");
-        System.err.println("Box ID: " + boxId);
         try 
         {
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByBoxId(boxId);
+            
+            for(Review r: reviews) 
+            {
+                r.getBox().getReviews().clear();
+                r.setBox(null);
+                r.getCustomer().getReviews().clear();
+                r.setCustomer(null);
+            }
             RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         }
@@ -125,11 +139,13 @@ public class ReviewResource {
     }
     
     
+    @Path("deleteReview/{reviewId}")
     @DELETE
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
     public Response deleteReview(@PathParam("reviewId") Long reviewId) 
     {
+        System.err.println("DELETE ID: " + reviewId);
         try 
         {
             reviewSessionBean.deleteReview(reviewId);
