@@ -265,7 +265,6 @@ public class TransactionResource {
         
         OptionEntity theOption = new OptionEntity();
         
-        
         try {
             OptionEntity tempOption = optionSessionBean.retrieveOptionByOptionId(optId);
             theOption = tempOption;
@@ -279,13 +278,6 @@ public class TransactionResource {
         Date endDate = addMonths(new Date(), theOption.getDuration());
         Subscription newSub = new Subscription(startDate,endDate);
         
-        try {
-            Customer cust = customerSessionBean.retrieveCustomerByCustomerId(custId);
-        } catch (CustomerNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("This customer is not found!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
         
         Subscription theNewSub = new Subscription();
         try {
