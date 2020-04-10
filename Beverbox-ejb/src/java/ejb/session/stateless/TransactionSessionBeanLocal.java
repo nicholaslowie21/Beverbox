@@ -11,10 +11,12 @@ import entity.Subscription;
 import entity.Transaction;
 import java.util.List;
 import javax.ejb.Local;
+import util.exception.BevTransactionLimitException;
 import util.exception.BeverageNotFoundException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.QuantityLimitException;
 import util.exception.QuantityNotEnoughException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -38,6 +40,5 @@ public interface TransactionSessionBeanLocal {
 
     public List<Transaction> retrieveCustSubscriptionTrans(Customer customer);
 
-    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException;
-    
+    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws BevTransactionLimitException,QuantityLimitException, PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException;
 }
