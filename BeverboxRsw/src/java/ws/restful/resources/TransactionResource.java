@@ -32,12 +32,14 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import util.exception.BevTransactionLimitException;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.QuantityLimitException;
 import util.exception.QuantityNotEnoughException;
 import util.exception.SubscriptionNotFoundException;
 import util.exception.TransactionNotFoundException;
@@ -265,7 +267,6 @@ public class TransactionResource {
         
         OptionEntity theOption = new OptionEntity();
         
-        
         try {
             OptionEntity tempOption = optionSessionBean.retrieveOptionByOptionId(optId);
             theOption = tempOption;
@@ -279,13 +280,6 @@ public class TransactionResource {
         Date endDate = addMonths(new Date(), theOption.getDuration());
         Subscription newSub = new Subscription(startDate,endDate);
         
-        try {
-            Customer cust = customerSessionBean.retrieveCustomerByCustomerId(custId);
-        } catch (CustomerNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("This customer is not found!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
         
         Subscription theNewSub = new Subscription();
         try {
@@ -376,6 +370,14 @@ public class TransactionResource {
             ErrorRsp errorRsp = new ErrorRsp("This customer is not found!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+        } catch (BevTransactionLimitException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
+        } catch (QuantityLimitException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
         }
         
         Transaction thisNewTrans = new Transaction();
