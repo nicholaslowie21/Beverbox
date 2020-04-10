@@ -102,6 +102,7 @@ public class DataInitSessionBean {
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
+        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         
         List<Review> reviews = reviewSessionBeanLocal.retrieveAllReviews();
         List<Article> articles = articleSessionBeanLocal.retrieveAllArticles();
@@ -130,8 +131,7 @@ public class DataInitSessionBean {
         if(articles.isEmpty()) {
             initializeArticle();
         }
-        
-        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
+       
         if(options.size() == 0) {
             initializeOption();
             em.flush();

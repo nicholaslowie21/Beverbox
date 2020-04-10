@@ -28,7 +28,7 @@ public interface SubscriptionSessionBeanLocal {
     
     public List<Subscription> retrieveAllSubscriptions();
 
-    public List<Subscription> retrieveAllSubscriptionsByCustomerId(Long customerId) throws CustomerNotFoundException, SubscriptionNotFoundException;
+    public List<Subscription> retrieveAllActiveSubscriptionsByCustomerId(Long customerId) throws CustomerNotFoundException, SubscriptionNotFoundException;
 
     public Subscription retrieveSubscriptionBySubscriptionId(Long subscriptionId) throws SubscriptionNotFoundException;
 

@@ -33,31 +33,6 @@ public class OptionResource {
     public OptionResource() {
     }
 
-//    As of now, I don't think I need this. But if I do, remember to also create the OptionRsp model
-//    @Path("retrieveOption/{optionId}")
-//    @GET
-//    @Consumes(MediaType.TEXT_PLAIN)
-//    @Produces(MediaType.APPLICATION_JSON)
-//    public Response retrieveOptionByOptionId(@PathParam("optionId") Long productId) {
-//        try {
-//            OptionEntity option = optionSessionBean.retrieveOptionByOptionId(productId);
-////            Not sure whether I am preventing this cyclic marshelling correctly, or whether I need to prevent in the first place
-////            for (Subscription subscription: option.getSubscriptions()) {
-////                subscription.getOption().clear();
-////            }
-//            
-//            return Response.status(Response.Status.OK).entity(new RetrieveOptionRsp(option)).build();
-//        } catch (OptionNotFoundException ex) {
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            
-//            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
-//        } catch (Exception ex) {
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            
-//            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-//        }
-//    }
-
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllOptions() {
