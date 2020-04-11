@@ -34,25 +34,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import util.exception.BevTransactionLimitException;
 import util.exception.BeverageNotFoundException;
-import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
-import util.exception.InputDataValidationException;
-import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.QuantityLimitException;
 import util.exception.QuantityNotEnoughException;
-import util.exception.SubscriptionNotFoundException;
 import util.exception.TransactionNotFoundException;
-import util.exception.UnknownPersistenceException;
 import ws.restful.model.BevTransaction;
 import ws.restful.model.BuyBevReq;
-import ws.restful.model.CreateSubReq;
 import ws.restful.model.ErrorRsp;
-import ws.restful.model.RenewSubReq;
 import ws.restful.model.RetrieveBevTransactions;
 import ws.restful.model.RetrieveSubTransactions;
 import ws.restful.model.SubTransaction;
-import ws.restful.model.SubscriptionRsp;
 
 
 /**
@@ -69,8 +61,6 @@ public class TransactionResource {
     CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
     TransactionSessionBeanLocal transactionSessionBean = lookupTransactionSessionBeanLocal();
     BeverageSessionBeanLocal beverageSessionBean = lookupBeverageSessionBeanLocal();
-    OptionSessionBeanLocal optionSessionBean = lookupOptionSessionBeanLocal();
-    SubscriptionSessionBeanLocal subscriptionSessionBean = lookupSubscriptionSessionBeanLocal();
     
     /**
      * Creates a new instance of TransactionResource
@@ -152,158 +142,6 @@ public class TransactionResource {
             subTransactions.add(new SubTransaction(t));
         }
         return Response.status(Response.Status.OK).entity(new RetrieveSubTransactions(subTransactions)).build();
-    }
-    
-    @Path("renewSubscription")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response renewSubscription(RenewSubReq renewSubReq) {
-        String promoCode = "";
-        Boolean cashback = true;
-        long subId = 0l;
-        long custId = 0l;
-        
-        String email = "";
-        String password = "";
-        
-        
-        if(renewSubReq!=null){
-            promoCode = renewSubReq.getPromoCode();
-            cashback = renewSubReq.isCashback();
-            subId = renewSubReq.getSubsId();
-            custId = renewSubReq.getCustId();
-            email = renewSubReq.getEmail();
-            password = renewSubReq.getPassword();
-        } else {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
-        
-        //for authorizatioin purpose
-        try {
-            Customer customerCheck = customerSessionBean.retrieveCustomerByEmail(email);
-            
-            if(!customerCheck.getCustomerPassword().equals(password)){
-                ErrorRsp errorRsp = new ErrorRsp("Password is wrong.");
-            
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-            }
-            
-        } catch (CustomerNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
-        
-        
-        Subscription theNewSub = new Subscription();
-        try {
-            Subscription newSub = subscriptionSessionBean.renewSubscription(promoCode, cashback, subId, custId);
-            theNewSub = newSub;
-        } catch (SubscriptionNotFoundException |TransactionNotFoundException | CustomerNotFoundException | PromoCodeNotFoundException | OptionNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Something went missing!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        } catch (CreateNewSubscriptionException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Something went wrong while creating subscription!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        } catch (InputDataValidationException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Input data is wrong!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        } catch (UnknownPersistenceException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        }
-        
-        return Response.status(Response.Status.OK).entity(new SubscriptionRsp(theNewSub)).build();
-    }
-    
-    @Path("createSubscription")
-    @PUT
-    @Produces(MediaType.APPLICATION_JSON)
-    @Consumes(MediaType.APPLICATION_JSON)
-    public Response createSubscription(CreateSubReq createSubReq) {
-        String promoCode = "";
-        Boolean cashback = true;
-        long optId = 0l;
-        long custId = 0l;
-        String email = "";
-        String password = "";
-        if(createSubReq!=null){
-            promoCode = createSubReq.getPromoCode();
-            cashback = createSubReq.isCashback();
-            optId = createSubReq.getOptId();
-            custId = createSubReq.getCustId();
-            email = createSubReq.getEmail();
-            password = createSubReq.getPassword();
-        } else {
-            ErrorRsp errorRsp = new ErrorRsp("Invalid renewal request!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
-        
-        
-        //for authorizatioin purpose
-        try {
-            Customer customerCheck = customerSessionBean.retrieveCustomerByEmail(email);
-            
-            if(!customerCheck.getCustomerPassword().equals(password)){
-                ErrorRsp errorRsp = new ErrorRsp("Password is wrong.");
-            
-                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-            }
-            
-        } catch (CustomerNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
-        
-        
-        OptionEntity theOption = new OptionEntity();
-        
-        try {
-            OptionEntity tempOption = optionSessionBean.retrieveOptionByOptionId(optId);
-            theOption = tempOption;
-        } catch (OptionNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Such option is not found!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        }
-        
-        Date startDate = new Date();
-        Date endDate = addMonths(new Date(), theOption.getDuration());
-        Subscription newSub = new Subscription(startDate,endDate);
-        
-        
-        Subscription theNewSub = new Subscription();
-        try {
-            Long theSubsId = subscriptionSessionBean.createNewSubscription(newSub, optId, custId, promoCode, cashback);
-            theNewSub = subscriptionSessionBean.retrieveSubscriptionBySubscriptionId(theSubsId);
-        } catch (SubscriptionNotFoundException| TransactionNotFoundException | CustomerNotFoundException | PromoCodeNotFoundException | OptionNotFoundException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Something went missing!");
-            
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        } catch (CreateNewSubscriptionException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Something went wrong while creating subscription!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        } catch (InputDataValidationException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Input data is wrong!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        } catch (UnknownPersistenceException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
-            
-            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        }
-        
-        return Response.status(Response.Status.OK).entity(new SubscriptionRsp(theNewSub)).build();
     }
     
     @Path("createBevTransaction")
@@ -392,11 +230,6 @@ public class TransactionResource {
         
         return Response.status(Response.Status.OK).entity(new BevTransaction(thisNewTrans)).build();
     }
-    
-    public static Date addMonths(Date date, int numMonths){
-        date.setMonth((date.getMonth() + numMonths));
-        return date;
-     }
 
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
         try {
@@ -412,26 +245,6 @@ public class TransactionResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (TransactionSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/TransactionSessionBean!ejb.session.stateless.TransactionSessionBeanLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
-    private SubscriptionSessionBeanLocal lookupSubscriptionSessionBeanLocal() {
-        try {
-            javax.naming.Context c = new InitialContext();
-            return (SubscriptionSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/SubscriptionSessionBean!ejb.session.stateless.SubscriptionSessionBeanLocal");
-        } catch (NamingException ne) {
-            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
-            throw new RuntimeException(ne);
-        }
-    }
-
-    private OptionSessionBeanLocal lookupOptionSessionBeanLocal() {
-        try {
-            javax.naming.Context c = new InitialContext();
-            return (OptionSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/OptionSessionBean!ejb.session.stateless.OptionSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);

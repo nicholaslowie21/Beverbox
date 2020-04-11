@@ -161,7 +161,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
     }
     
     @Override
-    public List<Subscription> retrieveAllSubscriptionsByCustomerId(Long customerId) throws CustomerNotFoundException, SubscriptionNotFoundException
+    public List<Subscription> retrieveAllActiveSubscriptionsByCustomerId(Long customerId) throws CustomerNotFoundException, SubscriptionNotFoundException
     {
         try {
             if (customerId == null) {
@@ -170,15 +170,16 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             
             Query query = em.createQuery("SELECT s FROM Subscription s WHERE s.customer = :inCustomer ORDER BY s.subscriptionId ASC");
         
-            query.setParameter("inCustomer", customerId);
+            Customer c = customerSessionBeanLocal.retrieveCustomerByCustomerId(customerId);
+            query.setParameter("inCustomer", c);
             List<Subscription> subscriptions = query.getResultList();
 
-            for(Subscription subscription:subscriptions)
-            {
-                subscription.getCustomer();
-                subscription.getOption();
-                subscription.getTransaction();
-            }
+//            for(Subscription subscription:subscriptions)
+//            {
+//                subscription.getCustomer();
+//                subscription.getOption();
+//                subscription.getTransaction();
+//            }
 
             return subscriptions;
         }
@@ -200,12 +201,12 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
             query.setParameter("inOption", optionId);
             List<Subscription> subscriptions = query.getResultList();
 
-            for(Subscription subscription:subscriptions)
-            {
-                subscription.getCustomer();
-                subscription.getOption();
-                subscription.getTransaction();
-            }
+//            for(Subscription subscription:subscriptions)
+//            {
+//                subscription.getCustomer();
+//                subscription.getOption();
+//                subscription.getTransaction();
+//            }
 
             return subscriptions;
         }
@@ -223,9 +224,9 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         if(subscription!= null)
         {
 //            But actually if one to one, this is not necessary right
-            subscription.getCustomer();
-            subscription.getOption();
-            subscription.getTransaction();
+//            subscription.getCustomer();
+//            subscription.getOption();
+//            subscription.getTransaction();
             
             return subscription;
         }
@@ -251,57 +252,6 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         }
     }
 
-    public Subscription renewSubscription(String promoCode, boolean cashback, long subsId, long custId) throws SubscriptionNotFoundException, CustomerNotFoundException, PromoCodeNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException{
-        Subscription subscription = em.find(Subscription.class,subsId);
-        Customer customer = em.find(Customer.class,custId);
-        
-        if(subscription==null){
-            throw new SubscriptionNotFoundException("Subscription is not found!");
-        }
-        
-        if(customer==null){
-            throw new CustomerNotFoundException("Customer is not found!");
-        }
-        
-        
-        Date newStartDate = new Date(subscription.getEndDate().getTime());
-        Date newEndDate = addMonths(subscription.getEndDate(), subscription.getOption().getDuration());
-        Long theId = createNewSubscription(new Subscription(newStartDate, newEndDate), subscription.getOption().getOptionId(), custId,promoCode,cashback);
-        
-        Subscription newSubs = retrieveSubscriptionBySubscriptionId(theId);
-        
-        return newSubs;
-    }
-    
-    public static Date addMonths(Date date, int numMonths){
-        date.setMonth((date.getMonth() + numMonths));
-        return date;
-     }
-    
-// I realise that renewSubscription should not be in this subscription session bean, bcs like the business logic shouldn't be here, and that if it is done here, the method will be overly complicated
-//    public Long renewSubscription(Long subscriptionId) throws SubscriptionNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, TransactionNotFoundException, InputDataValidationException {    
-//        try{
-//            Subscription oldSubscription = retrieveSubscriptionBySubscriptionId(subscriptionId);
-//            long monthDuration = oldSubscription.getMonthDuration();
-//            Date endDate = oldSubscription.getEndDate();
-//            YearMonth oldEndYearMonth = YearMonth.of(endDate.getYear(), endDate.getMonth());
-//            
-//            Date today = new Date();
-//            
-//            if (today.before(endDate)) {
-//                YearMonth newEndYearMonth = oldEndYearMonth.plusMonths(monthDuration);
-//                Date newEndDate = new Date(newEndYearMonth.getYear() - 1900, newEndYearMonth.getMonthValue(), 1);
-//                createNewSubscription(new Subscription(endDate, newEndDate, oldSubscription.getMonthDuration()), oldSubscription.getOption().getOptionId(), oldSubscription.getCustomer().getCustomerId(), oldSubscription.getTransaction().getTransactionId());
-//            } else {
-////                When the date the customer press renew subscription is 
-//            }
-//        } catch (SubscriptionNotFoundException ex){
-//            throw new CreateNewSubscriptionException("An error occured while renewing your subscription" + ex.getMessage());
-//        }
-//
-//        return subscriptionId;
-//    }
-    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Subscription>>constraintViolations)
     {
         String msg = "Input data validation error!:";
