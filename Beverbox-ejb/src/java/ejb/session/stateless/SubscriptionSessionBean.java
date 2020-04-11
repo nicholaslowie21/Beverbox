@@ -252,34 +252,6 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         }
     }
 
-    @Override
-    public Subscription renewSubscription(String promoCode, boolean cashback, long subsId, long custId) throws SubscriptionNotFoundException, CustomerNotFoundException, PromoCodeNotFoundException, CreateNewSubscriptionException, OptionNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException{
-        Subscription subscription = em.find(Subscription.class,subsId);
-        Customer customer = em.find(Customer.class,custId);
-        
-        if(subscription==null){
-            throw new SubscriptionNotFoundException("Subscription is not found!");
-        }
-        
-        if(customer==null){
-            throw new CustomerNotFoundException("Customer is not found!");
-        }
-        
-        
-        Date newStartDate = new Date(subscription.getEndDate().getTime());
-        Date newEndDate = addMonths(subscription.getEndDate(), subscription.getOption().getDuration());
-        Long theId = createNewSubscription(new Subscription(newStartDate, newEndDate), subscription.getOption().getOptionId(), custId,promoCode,cashback);
-        
-        Subscription newSubs = retrieveSubscriptionBySubscriptionId(theId);
-        
-        return newSubs;
-    }
-    
-    public static Date addMonths(Date date, int numMonths){
-        date.setMonth((date.getMonth() + numMonths));
-        return date;
-     }
-    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Subscription>>constraintViolations)
     {
         String msg = "Input data validation error!:";
