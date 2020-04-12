@@ -61,8 +61,13 @@ public class BoxResource {
         try{
             List<Box> boxes = boxSessionBean.retrieveAllActive();
             for(Box b: boxes){
-               b.getBeverages().clear();
-               b.getReviews().clear();
+                
+                for(Beverage beverage: b.getBeverages()) {
+                   beverage.getBoxes().clear();
+                  
+               }
+                b.getReviews().clear();
+                //b.getBeverages().clear();
                
             }
             
