@@ -6,7 +6,9 @@
 package ws.restful.resources;
 
 import ejb.session.stateless.BeverageSessionBeanLocal;
+import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.Beverage;
+import entity.Customer;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -34,10 +36,15 @@ import ws.restful.model.RetrieveBeverageRsp;
 @Path("Beverage")
 public class BeverageResource {
 
+    
+
     @Context
     private UriInfo context;
     
     private BeverageSessionBeanLocal beverageSessionBean = lookupBeverageSessionBeanLocal();
+    
+    private CustomerSessionBeanLocal customerSessionBean = lookupCustomerSessionBeanLocal();
+    
     /**
      * Creates a new instance of BeverageResource
      */
@@ -51,8 +58,9 @@ public class BeverageResource {
     @Path("retrieveAllBeverages")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllBeverages() {
+    public Response retrieveAllBeverages(@QueryParam("email") String email, @QueryParam("password") String password) {
         try{
+            Customer c = customerSessionBean.customerLogin(email, password);
             List<Beverage> beverages = beverageSessionBean.retrieveAllActive();
             for(Beverage b: beverages){
                 b.getBoxes().clear();
@@ -68,8 +76,9 @@ public class BeverageResource {
     @Path("retrieveBeverage")
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveBeverage(@QueryParam("beverageId") Long beverageId) {
+    public Response retrieveBeverage(@QueryParam("email") String email, @QueryParam("password") String password, @QueryParam("beverageId") Long beverageId) {
         try{
+            Customer c = customerSessionBean.customerLogin(email, password);
             Beverage beverage = beverageSessionBean.retrieveBeverageByBeverageId(beverageId);
             beverage.getBoxes().clear();
             beverage.getTransactions().clear();
@@ -96,6 +105,16 @@ public class BeverageResource {
         try {
             javax.naming.Context c = new InitialContext();
             return (BeverageSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/BeverageSessionBean!ejb.session.stateless.BeverageSessionBeanLocal");
+        } catch (NamingException ne) {
+            Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
+            throw new RuntimeException(ne);
+        }
+    }
+
+    private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
+        try {
+            javax.naming.Context c = new InitialContext();
+            return (CustomerSessionBeanLocal) c.lookup("java:global/Beverbox/Beverbox-ejb/CustomerSessionBean!ejb.session.stateless.CustomerSessionBeanLocal");
         } catch (NamingException ne) {
             Logger.getLogger(getClass().getName()).log(Level.SEVERE, "exception caught", ne);
             throw new RuntimeException(ne);
