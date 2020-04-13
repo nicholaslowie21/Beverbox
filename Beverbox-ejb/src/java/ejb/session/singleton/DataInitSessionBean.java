@@ -1,6 +1,7 @@
 package ejb.session.singleton;
 
 import ejb.session.stateless.AdminSessionBeanLocal;
+import ejb.session.stateless.ArticleSessionBeanLocal;
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
@@ -15,6 +16,7 @@ import ejb.session.stateless.SubscriptionSessionBeanLocal;
 import ejb.session.stateless.TransactionSessionBean;
 import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.Admin;
+import entity.Article;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
@@ -35,6 +37,7 @@ import javax.persistence.PersistenceContext;
 import util.exception.BeverageNotFoundException;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewAdminException;
+import util.exception.CreateNewArticleException;
 import util.exception.CreateNewBeverageException;
 import util.exception.CreateNewBoxException;
 import util.exception.CreateNewCustomerException;
@@ -85,6 +88,9 @@ public class DataInitSessionBean {
     @EJB
     private PromotionSessionBeanLocal promotionSessionBean;
     
+    @EJB
+    private ArticleSessionBeanLocal articleSessionBeanLocal;
+    
     
     
     @PersistenceContext(unitName = "Beverbox-ejbPU")
@@ -103,7 +109,10 @@ public class DataInitSessionBean {
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
+        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         
+        List<Review> reviews = reviewSessionBeanLocal.retrieveAllReviews();
+        List<Article> articles = articleSessionBeanLocal.retrieveAllArticles();
         List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
         List<Subscription> subscriptions = subscriptionSessionBeanLocal.retrieveAllSubscriptions();
         
@@ -127,9 +136,13 @@ public class DataInitSessionBean {
             initializeBox();
             
         }
-        initializeReview();
-        
-        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
+        if(reviews.isEmpty()) {
+            initializeReview();
+        }
+        if(articles.isEmpty()) {
+            initializeArticle();
+        }
+       
         if(options.size() == 0) {
             initializeOption();
             em.flush();
@@ -170,9 +183,9 @@ public class DataInitSessionBean {
     public void initializeCust() {
         
         try {
-            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "abc road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123, "def road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133, "ghhi road"));
         } catch (CreateNewCustomerException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -182,30 +195,34 @@ public class DataInitSessionBean {
         try {
             beverages1 = new ArrayList();
             beverages2 = new ArrayList();
-            Long bevId1 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Exotic Bananas", "Banana Drink", "Mexico", "Non-Alcoholic", 10.00, 10));
+            Long bevId1 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Exotic Bananas", "Banana Drink", "Mexico", "Non-Alcoholic", 10.00, 10, false, 5));
             Beverage bev1 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId1);
-            Long bevId2 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Crazy Cranberry", "Cranberry Drink", "Bolivia", "Non-Alcoholic", 8.00, 10));
+            Long bevId2 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Crazy Cranberry", "Cranberry Drink", "Bolivia", "Non-Alcoholic", 8.00, 10, false, 5));
             Beverage bev2 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId2);
-            Long bevId3 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Vodka Raspberry", "Vodka and Raspberry Drink", "Russia", "Alcoholic", 12.00, 10));
+            Long bevId3 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Vodka Raspberry", "Vodka and Raspberry Drink", "Russia", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev3 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId3);
-            Long bevId4 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Hawaiian Madness", "Pineapple and Cherry Drink", "Hawaii", "Alcoholic", 12.00, 10));
+            Long bevId4 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Hawaiian Madness", "Pineapple and Cherry Drink", "Hawaii", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev4 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId4);
-            Long bevId5 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Watermelon Tea", "Watermelon and Tea Drink", "Thailand", "Non-Alcoholic", 6.00, 10));
+            Long bevId5 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Watermelon Tea", "Watermelon and Tea Drink", "Thailand", "Non-Alcoholic", 6.00, 10, false, 5));
             Beverage bev5 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId5);
-            Long bevId6 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Soju Madness", "Soju Mix Drink", "Korea", "Alcoholic", 12.00, 10));
+            Long bevId6 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Soju Madness", "Soju Mix Drink", "Korea", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev6 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId6);
-            Long bevId7 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Sake Swish", "Sake Drink", "Japan", "Alcoholic", 12.00, 10));
+            Long bevId7 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Sake Swish", "Sake Drink", "Japan", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev7 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId7);
-            Long bevId8 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Durian Teh Bing", "Durian Drink", "Thailand", "Non-Alcoholic", 8.00, 10));
+            Long bevId8 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Durian Teh Bing", "Durian Drink", "Thailand", "Non-Alcoholic", 8.00, 10, false, 5));
             Beverage bev8 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId8);
-            Long bevId9 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10));
+            Long bevId9 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10, false, 5));
             Beverage bev9 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId9);
-            Long bevId10 =beverageSessionBeanLocal.createNewBeverage(new Beverage("American Lazlo", "Vegetable Drink", "America", "Non-Alcoholic", 7.00, 10));
+            Long bevId10 =beverageSessionBeanLocal.createNewBeverage(new Beverage("American Lazlo", "Vegetable Drink", "America", "Non-Alcoholic", 7.00, 10, false, 5));
             Beverage bev10 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId10);
-            Long bevId11 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Asian madness", "Mixed Fruit Drink", "Myanmar", "Non-Alcoholic", 7.00, 10));
+            Long bevId11 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Asian madness", "Mixed Fruit Drink", "Myanmar", "Non-Alcoholic", 7.00, 10, false, 5));
             Beverage bev11 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId11);
-            Long bevId12 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Thai Terrific", "Baileys Milk tea Drink", "Thailand", "Alcoholic", 7.00, 10));
+            Long bevId12 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Thai Terrific", "Baileys Milk tea Drink", "Thailand", "Alcoholic", 7.00, 10, false, 5));
             Beverage bev12 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId12);
+            Long bevId13 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Bombastic Bombay", "Bombay Chai tea Latte", "India", "Non-Alcoholic", 10.00, 10, true, 5));
+            Beverage bev13 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId13);
+            Long bevId14 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Sizzling Scotland", "Fizzy Drink", "England", "Alcoholic", 10.00, 10, true, 5));
+            Beverage bev14 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId14);
             beverages1.add(bev1);
             beverages1.add(bev2);
             beverages1.add(bev5);
@@ -331,6 +348,17 @@ public class DataInitSessionBean {
         } catch (UnknownPersistenceException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (PromoCodeNotFoundException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    
+    public void initializeArticle() {
+        try {
+            articleSessionBeanLocal.createNewArticle(new Article("Title 1","Article 1"));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 2","Article 2"));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 3","Article 3"));
+        } catch (CreateNewArticleException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }

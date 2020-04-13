@@ -2,7 +2,7 @@ package util.exception;
 
 /**
  *
- * @author zhixuan
+ * @author vanes
  */
 public class InvalidLoginCredentialException extends Exception {
 

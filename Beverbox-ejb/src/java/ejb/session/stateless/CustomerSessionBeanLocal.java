@@ -5,6 +5,7 @@ import java.util.List;
 import javax.ejb.Local;
 import util.exception.CreateNewCustomerException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -20,4 +21,6 @@ public interface CustomerSessionBeanLocal {
     public void updateCustomer(Customer customer) throws CustomerNotFoundException;
 
     public Customer retrieveCustomerByEmail(String email) throws CustomerNotFoundException;
+
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException;
 }

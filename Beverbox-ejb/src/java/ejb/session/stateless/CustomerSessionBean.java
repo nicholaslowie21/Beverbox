@@ -2,6 +2,8 @@ package ejb.session.stateless;
 
 import entity.Customer;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
@@ -11,6 +13,7 @@ import javax.persistence.PersistenceException;
 import javax.persistence.Query;
 import util.exception.CreateNewCustomerException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -100,6 +103,30 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
         else
         {
             throw new CustomerNotFoundException("Customer ID not provided for customer to be updated");
+        }
+    }
+    
+    
+    @Override
+    public Customer customerLogin(String email, String password) throws InvalidLoginCredentialException 
+    {
+        try 
+        {
+            Customer c = retrieveCustomerByEmail(email);
+            if (c.getCustomerPassword().equals(password)) 
+            {
+                c.getSubscriptions().size();
+                c.getTransactions().size();
+                c.getReviews().size();
+                return c;
+            }
+            else 
+            {
+                throw new InvalidLoginCredentialException("Invalid password!");
+            }
+        } 
+        catch (CustomerNotFoundException ex) {
+            throw new InvalidLoginCredentialException(ex.getMessage());
         }
     }
     

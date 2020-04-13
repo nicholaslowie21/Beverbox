@@ -13,6 +13,7 @@ import javax.persistence.Query;
 import util.exception.BoxNotFoundException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
+import util.exception.DeleteReviewException;
 import util.exception.ReviewNotFoundException;
 
 /**
@@ -79,15 +80,16 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     }
     
     
+    
     @Override
-    public List<Review> retrieveAllReviewsByCustomerId(Long customerId) throws CustomerNotFoundException 
+    public List<Review> retrieveAllReviewsByCustomerEmail(String email) throws CustomerNotFoundException 
     {
-        if (customerId == null) 
+        if (email == null) 
         {
-            throw new CustomerNotFoundException("Customer Id is null!");
+            throw new CustomerNotFoundException("Customer's email is null!");
         }
-        Query query = em.createQuery("SELECT r FROM Review r WHERE r.customer.customerId = :inCustomerId ORDER BY r.reviewId DESC");
-        query.setParameter("inCustomerId", customerId);
+        Query query = em.createQuery("SELECT r FROM Review r WHERE r.customer.customerEmail = :inEmail ORDER BY r.reviewId DESC");
+        query.setParameter("inEmail", email);
         return query.getResultList();
     }
     
@@ -106,19 +108,27 @@ public class ReviewSessionBean implements ReviewSessionBeanLocal {
     
     
     @Override
-    public void deleteReview(Long reviewId) throws ReviewNotFoundException 
+    public void deleteReview(Long reviewId, String email) throws ReviewNotFoundException, DeleteReviewException 
     {
         Review reviewToDelete = em.find(Review.class, reviewId);
         if (reviewToDelete == null) 
         {
-            throw new ReviewNotFoundException();
+            throw new ReviewNotFoundException("Review not found!");
         }
-        Customer customer = reviewToDelete.getCustomer();
-        customer.getReviews().remove(reviewToDelete);
         
-        Box box = reviewToDelete.getBox();
-        box.getReviews().remove(reviewToDelete);
-        
-        em.remove(reviewToDelete);
+        if(reviewToDelete.getCustomer().getCustomerEmail().equals(email)) 
+        {
+            Customer customer = reviewToDelete.getCustomer();
+            customer.getReviews().remove(reviewToDelete);
+
+            Box box = reviewToDelete.getBox();
+            box.getReviews().remove(reviewToDelete);
+
+            em.remove(reviewToDelete);
+        }
+        else 
+        {
+            throw new DeleteReviewException("This review is not created by the customer!");
+        }
     }
 }

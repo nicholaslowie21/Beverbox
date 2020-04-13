@@ -41,6 +41,7 @@ public class BeverageManagedBean implements Serializable {
     private List<String> beverageTypes;
     private List<Beverage> noBoxBeverages;
     private List<Boolean> actives;
+    private List<Boolean> limited;
    
     /**
      * Creates a new instance of viewBeveragesManagedBean
@@ -55,6 +56,9 @@ public class BeverageManagedBean implements Serializable {
         actives = new ArrayList<>();
         actives.add(true);
         actives.add(false);
+        limited = new ArrayList<>();
+        limited.add(true);
+        limited.add(false);
     }
     
      @PostConstruct
@@ -190,6 +194,14 @@ public class BeverageManagedBean implements Serializable {
     public void setActives(List<Boolean> actives) {
         this.actives = actives;
     }   
+
+    public List<Boolean> getLimited() {
+        return limited;
+    }
+
+    public void setLimited(List<Boolean> limited) {
+        this.limited = limited;
+    }
     
     
 }

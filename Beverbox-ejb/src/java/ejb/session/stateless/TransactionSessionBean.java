@@ -26,12 +26,14 @@ import javax.validation.ConstraintViolation;
 import javax.validation.Validation;
 import javax.validation.Validator;
 import javax.validation.ValidatorFactory;
+import util.exception.BevTransactionLimitException;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
+import util.exception.QuantityLimitException;
 import util.exception.QuantityNotEnoughException;
 import util.exception.TransactionNotFoundException;
 import util.exception.UnknownPersistenceException;
@@ -158,7 +160,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
     }
     
     @Override
-    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException{
+    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws BevTransactionLimitException,QuantityLimitException, PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException{
         Promotion thePromo = null;
         Double newCashBack; // to add into wallet
         
@@ -170,9 +172,28 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         
         
         if(qty>bev.getQuantityOnHand()){
-            throw new QuantityNotEnoughException();
+            throw new QuantityNotEnoughException("There is no enough stock for the ordered quantity");
         }
         
+        if(qty>bev.getMaxPurchase()){
+            throw new QuantityLimitException("The quantity ordered is more than the limit");
+        }
+        
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.customer.customerId = :inId and t.beverage IS NOT NULL ORDER BY t.transDate")
+                .setParameter("inId", custId);
+        
+        List<Transaction> transactionsHistory = query.getResultList();
+        
+        if(transactionsHistory.size()!=0){
+            long timeNow = new Date().getTime();
+            long subsDate = transactionsHistory.get(0).getTransDate().getTime();
+        
+            long diff = timeNow - subsDate;
+            if(diff>=0 && diff < 7*(24 * 60 * 60 * 1000)){
+                throw new BevTransactionLimitException("Only 1 beverage transaction per week is allowed!");
+            }
+        }   
+            
         if(useCashBack){
             Double theCashBackNow = cust.getAccumulatedCashback();
             if(theCashBackNow>=totalamt){
