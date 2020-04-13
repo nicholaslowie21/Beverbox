@@ -63,9 +63,12 @@ public class BoxResource {
             for(Box b: boxes){
                 
                 for(Beverage beverage: b.getBeverages()) {
-                   beverage.getBoxes().clear();
-                  
-               }
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+                }
+                for(Review r: b.getReviews()){
+                    r.setBox(null);
+                }
                 b.getReviews().clear();
                 //b.getBeverages().clear();
                
