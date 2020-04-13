@@ -61,6 +61,7 @@ public class ViewAdminsManagedBean implements Serializable {
         try 
         {
             adminSessionBeanLocal.deleteAdmin(adminToDelete.getAdminId());
+            admins.remove(adminToDelete);
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Admin deleted successfully", null));
         } 
         catch (AdminNotFoundException ex) 

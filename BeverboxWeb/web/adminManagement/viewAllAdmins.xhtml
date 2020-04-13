@@ -28,8 +28,13 @@
                             <h:outputText value="Email: #{admin.adminEmail}" escape="false" /><br/>
                             <h:outputText value="Password: #{admin.adminPassword}" escape="false" /><br/>
 
-                            <p:commandButton actionListener="#{viewAdminsManagedBean.doUpdateAdmin}" update="formAdmins" oncomplete="PF('dialogUpdateAdmin').show()" icon="ui-icon-pencil" title="Update">
+                            <p:commandButton actionListener="#{viewAdminsManagedBean.doUpdateAdmin}" update="formUpdateAdmin" oncomplete="PF('dialogUpdateAdmin').show()" icon="ui-icon-pencil" title="Update">
                                 <f:attribute name="adminToUpdate" value="#{admin}" />
+                            </p:commandButton>
+                            
+                            <p:commandButton icon="ui-icon-trash" actionListener="#{viewAdminsManagedBean.deleteAdmin}" update="formAdmins:listOfAdmins formAdmins:messages">
+                                <f:attribute name="adminToDelete" value="#{admin}" />
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{admin.adminName} (Admin ID: #{admin.adminId})?" icon="ui-icon-alert" />
                             </p:commandButton>
 
                         </p:panel>
