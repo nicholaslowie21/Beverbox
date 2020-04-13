@@ -68,8 +68,11 @@ public class BoxResource {
                 }
                 for(Review r: b.getReviews()){
                     r.setBox(null);
+                    r.getCustomer().getReviews().clear();
+                    r.getCustomer().getSubscriptions().clear();
+                    r.getCustomer().getTransactions().clear();
                 }
-                b.getReviews().clear();
+                //b.getReviews().clear();
                 //b.getBeverages().clear();
                
             }
@@ -93,8 +96,10 @@ public class BoxResource {
                    beverage.setBoxes(null);
                    beverage.getTransactions().clear();
             }
+            /*for(Review review: box.getReviews()) {
+                review.setBox(null);
+            }*/
             
-            box.getReviews().clear();
             
             return Response.status(Response.Status.OK).entity(new RetrieveBoxRsp(box)).build();
         }catch(Exception ex){
