@@ -88,7 +88,12 @@ public class BoxResource {
     public Response retrieveBox(@QueryParam("boxId") Long boxId) {
         try{
             Box box = boxSessionBean.retrieveBoxByBoxId(boxId);
-            box.getBeverages().clear();
+            
+            for(Beverage beverage: box.getBeverages()) {
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+            }
+            
             box.getReviews().clear();
             
             return Response.status(Response.Status.OK).entity(new RetrieveBoxRsp(box)).build();
@@ -106,7 +111,11 @@ public class BoxResource {
         try{
             List<Box> boxes = boxSessionBean.searchBoxesByName(boxName);
             for(Box b: boxes){
-               b.getBeverages().clear();
+               
+                for(Beverage beverage: b.getBeverages()) {
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+                }
                b.getReviews().clear();
                
             }
