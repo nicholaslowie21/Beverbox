@@ -26,6 +26,7 @@ import javax.validation.ValidatorFactory;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.InvalidPromotionException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.SubscriptionNotFoundException;
@@ -59,7 +60,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
     }
 
     @Override
-    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, String promoCode, Boolean cashback) throws CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException, PromoCodeNotFoundException
+    public Long createNewSubscription(Subscription newSubscription, Long optionId, Long customerId, String promoCode, Boolean cashback) throws InvalidPromotionException,CreateNewSubscriptionException, OptionNotFoundException, CustomerNotFoundException, InputDataValidationException, UnknownPersistenceException, TransactionNotFoundException, PromoCodeNotFoundException
     {
         Set<ConstraintViolation<Subscription>>constraintViolations = validator.validate(newSubscription);
         
@@ -87,6 +88,13 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
         
                 if(!promoCode.equals("")){
                     Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
+                    
+                    if(thePromo.getPromoType().equals("NEW MEMBER")){
+                        if(transactionSessionBeanLocal.retrieveCustTransaction(customer.getCustomerId()).size()!=0){
+                            throw new InvalidPromotionException("Sorry, this promo code is invalid for you");
+                        }
+                    }
+                    
                     addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
                     thePromo = promo;
                 }

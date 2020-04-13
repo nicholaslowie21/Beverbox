@@ -35,6 +35,7 @@ import javax.ws.rs.core.Response;
 import util.exception.BevTransactionLimitException;
 import util.exception.BeverageNotFoundException;
 import util.exception.CustomerNotFoundException;
+import util.exception.InvalidPromotionException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.QuantityLimitException;
 import util.exception.QuantityNotEnoughException;
@@ -216,6 +217,10 @@ public class TransactionResource {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
+        } catch (InvalidPromotionException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
         
         Transaction thisNewTrans = new Transaction();

@@ -44,6 +44,7 @@ import util.exception.CreateNewOptionException;
 import util.exception.CreateNewSubscriptionException;
 
 import util.exception.InputDataValidationException;
+import util.exception.InvalidPromotionException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.TransactionNotFoundException;
@@ -321,7 +322,7 @@ public class DataInitSessionBean {
             subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l,"",false);
             
             em.flush();
-        } catch (CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
+        } catch (InvalidPromotionException | CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
                 TransactionNotFoundException | InputDataValidationException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnknownPersistenceException ex) {

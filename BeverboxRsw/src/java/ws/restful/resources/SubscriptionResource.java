@@ -26,6 +26,7 @@ import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
 import util.exception.InvalidLoginCredentialException;
+import util.exception.InvalidPromotionException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.SubscriptionNotFoundException;
@@ -159,6 +160,10 @@ public class SubscriptionResource {
             ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        } catch (InvalidPromotionException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
         
         return Response.status(Response.Status.OK).entity(new SubscriptionRsp(theNewSub)).build();
@@ -243,6 +248,10 @@ public class SubscriptionResource {
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         } catch (UnknownPersistenceException ex) {
             ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        } catch (InvalidPromotionException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }

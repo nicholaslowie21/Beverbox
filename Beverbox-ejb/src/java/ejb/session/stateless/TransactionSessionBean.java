@@ -31,6 +31,7 @@ import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewSubscriptionException;
 import util.exception.CustomerNotFoundException;
 import util.exception.InputDataValidationException;
+import util.exception.InvalidPromotionException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.QuantityLimitException;
@@ -159,16 +160,27 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         return theList;
     }
     
+    public List<Transaction> retrieveCustTransaction(long custId){
+        Query query = em.createQuery("SELECT t FROM Transaction t WHERE t.customer.customerId = :inId")
+                .setParameter("inId", custId);
+        
+        List<Transaction> temp = query.getResultList();
+        
+        return temp;
+    }
+    
     @Override
-    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws BevTransactionLimitException,QuantityLimitException, PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException{
+    public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws InvalidPromotionException,BevTransactionLimitException,QuantityLimitException, PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException{
         Promotion thePromo = null;
         Double newCashBack; // to add into wallet
         
         Beverage bev = beverageSessionBean.retrieveBeverageByBeverageId(bevId);
         Customer cust = customerSessionBean.retrieveCustomerByCustomerId(custId);
         
+        System.out.println("cust nya pn "+cust.getAccumulatedCashback());
+        
         Double totalamt = bev.getPrice()*qty;
-        double totalamtCopy = totalamt;
+        double totalamtCopy = new Double(totalamt);
         
         
         if(qty>bev.getQuantityOnHand()){
@@ -207,6 +219,13 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         
         if( !promoCode.equals("")){
             thePromo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
+            
+            if(thePromo.getPromoType().equals("NEW MEMBER")){
+                if(retrieveCustTransaction(cust.getCustomerId()).size()!=0){
+                    throw new InvalidPromotionException("Sorry, this promo code is invalid for you");
+                }
+            }
+            
             if(thePromo!=null){
                 newCashBack = totalamtCopy * thePromo.getPromoPercentage()/100;
                 cust.setAccumulatedCashback(cust.getAccumulatedCashback()+newCashBack);
@@ -214,6 +233,7 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
                 throw new PromoCodeNotFoundException("Promotion not found!");
             }
         }
+        
         
         Transaction newTrans = new Transaction(cust.getCustomerCCNum(), totalamt, cust.getCustomerCVV(), new Date());
         newTrans.setBevNumber(qty);
