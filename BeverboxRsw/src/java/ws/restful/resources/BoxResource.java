@@ -63,10 +63,16 @@ public class BoxResource {
             for(Box b: boxes){
                 
                 for(Beverage beverage: b.getBeverages()) {
-                   beverage.getBoxes().clear();
-                  
-               }
-                b.getReviews().clear();
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+                }
+                for(Review r: b.getReviews()){
+                    r.setBox(null);
+                    r.getCustomer().getReviews().clear();
+                    r.getCustomer().getSubscriptions().clear();
+                    r.getCustomer().getTransactions().clear();
+                }
+                //b.getReviews().clear();
                 //b.getBeverages().clear();
                
             }
@@ -85,8 +91,15 @@ public class BoxResource {
     public Response retrieveBox(@QueryParam("boxId") Long boxId) {
         try{
             Box box = boxSessionBean.retrieveBoxByBoxId(boxId);
-            box.getBeverages().clear();
-            box.getReviews().clear();
+            
+            for(Beverage beverage: box.getBeverages()) {
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+            }
+            /*for(Review review: box.getReviews()) {
+                review.setBox(null);
+            }*/
+            
             
             return Response.status(Response.Status.OK).entity(new RetrieveBoxRsp(box)).build();
         }catch(Exception ex){
@@ -103,7 +116,11 @@ public class BoxResource {
         try{
             List<Box> boxes = boxSessionBean.searchBoxesByName(boxName);
             for(Box b: boxes){
-               b.getBeverages().clear();
+               
+                for(Beverage beverage: b.getBeverages()) {
+                   beverage.setBoxes(null);
+                   beverage.getTransactions().clear();
+                }
                b.getReviews().clear();
                
             }
