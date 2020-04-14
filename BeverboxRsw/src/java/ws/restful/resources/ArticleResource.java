@@ -48,20 +48,10 @@ public class ArticleResource {
     
     @GET
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveAllArticles(@QueryParam("email") String email, @QueryParam("password") String password) {
-        try 
-        {
-            Customer c = customerSessionBean.customerLogin(email, password);
-            List<Article> articles = articleSessionBean.retrieveAllArticles();
+    public Response retrieveAllArticles() {
+        List<Article> articles = articleSessionBean.retrieveAllArticles();
         
-            return Response.status(Response.Status.OK).entity(new RetrieveAllArticlesRsp(articles)).build();
-        } 
-        catch (InvalidLoginCredentialException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
-        }
-        
+        return Response.status(Response.Status.OK).entity(new RetrieveAllArticlesRsp(articles)).build();
     }
 
     
@@ -69,19 +59,11 @@ public class ArticleResource {
     @GET
     @Consumes(MediaType.TEXT_PLAIN)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response retrieveArticleByArticleId(@QueryParam("email") String email, @QueryParam("password") String password,
-                                                @PathParam("articleId") Long articleId) {
+    public Response retrieveArticleByArticleId(@PathParam("articleId") Long articleId) {
         try 
-        {   
-            Customer c = customerSessionBean.customerLogin(email, password);
-            
+        {
             Article article = articleSessionBean.retrieveArticleByArticleId(articleId);
             return Response.status(Response.Status.OK).entity(new RetrieveArticleRsp(article)).build();
-        }
-        catch (InvalidLoginCredentialException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-            
-            return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
         }
         catch (ArticleNotFoundException ex) 
         {
