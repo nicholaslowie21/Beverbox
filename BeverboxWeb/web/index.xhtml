@@ -11,17 +11,12 @@
         
         <ez:Breadcrumb pageName="index" />
         
-        <h:panelGroup>
+        <h:panelGroup rendered="#{sessionScope.isLogin == false}">
             <article>
                 <h3>Welcome!</h3>
                 <p>
-                    This is the web-app for BeverBox Staff:                    
-                </p>
-                <p>
-                    <ul>
-                        <li>Enhancement of existing use cases to meet v5.0 expanded logical data model.</li>
-                        <li>Implementation of new use cases in v5.0 (except customer related use cases).</li>
-                    </ul>
+                    This is the web-app for BeverBox Staff! 
+                    Please log in to access the app.                  
                 </p>
             </article>
             <br/>
@@ -33,7 +28,11 @@
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
             <article>
-                <h3>Welcome staff!</h3>                    
+                <h3>Welcome staff!</h3> 
+                <h4>Here is your current account information: </h4>
+                <h:outputText value="ID    : #{sessionScope.currentAdmin.adminId}" /> <br/>
+                <h:outputText value="Name  : #{sessionScope.currentAdmin.adminName}" /><br/>
+                <h:outputText value="Email : #{sessionScope.currentAdmin.adminEmail}" />
             </article>
         </h:panelGroup>
         

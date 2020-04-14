@@ -36,10 +36,10 @@ public class Box implements Serializable {
     @Size(max = 32)
     private String boxOrigin;
     @Column(nullable = true, length = 32)
-    @Size(max = 32)
+    @Size(max = 1000)
     private String boxDesc;
     @Column(nullable = false)
-    private Boolean active;
+    private Boolean active = true;
 
     @ManyToMany(mappedBy = "boxes")
     private List<Beverage> beverages;

@@ -105,12 +105,9 @@
                                 <h:outputLabel for="selDuration" value="Duration (months): " />
                             </p:column>
                             <p:column>
-                                <p:outputLabel id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}" />
-<!--                                <f:facet name="">
-                                    <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}">
-                                        <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="optionDuration" itemValue="#{optionDuration}" itemLabel="#{optionDuration}" />
-                                    </p:selectOneMenu>
-                                </f:facet>-->
+                                <p:selectOneMenu id="selDuration" value="#{viewOptionsManagedBean.selectedOptionEntityToUpdate.duration}" required="true">
+                                    <f:selectItems value="#{viewOptionsManagedBean.availableDurations}"/>
+                                </p:selectOneMenu>
                             </p:column>
                             <p:column>
                                 <p:message for="selDuration" />
