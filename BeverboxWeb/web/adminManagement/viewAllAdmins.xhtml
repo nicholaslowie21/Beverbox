@@ -1,0 +1,117 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        <ez:Breadcrumb pageName="viewAllAdmins" />
+        
+        <div>
+            
+            <h3>View All Admins</h3>
+
+            <p:outputPanel style="text-align: right;">
+                <p:button value="Create New Admin" outcome="createNewAdmin.xhtml" />
+            </p:outputPanel>
+
+            <h:form id="formAdmins">
+                <p:messages id="messages" redisplay="false" closable="true" />
+
+                <h:panelGroup id="listOfAdmins">
+                    <ui:repeat value="#{viewAdminsManagedBean.admins}" var="admin">
+                        <p:panel id="panelAdminDetails" header="#{admin.adminName}" toggleable="true">
+                            <h:outputText value="Admin ID: #{admin.adminId}" escape="false" /><br/>
+                            <h:outputText value="Email: #{admin.adminEmail}" escape="false" /><br/>
+                            <h:outputText value="Password: #{admin.adminPassword}" escape="false" /><br/>
+
+                            <p:commandButton actionListener="#{viewAdminsManagedBean.doUpdateAdmin}" update="formUpdateAdmin" oncomplete="PF('dialogUpdateAdmin').show()" icon="ui-icon-pencil" title="Update">
+                                <f:attribute name="adminToUpdate" value="#{admin}" />
+                            </p:commandButton>
+                            
+                            <p:commandButton icon="ui-icon-trash" actionListener="#{viewAdminsManagedBean.deleteAdmin}" update="formAdmins:listOfAdmins formAdmins:messages">
+                                <f:attribute name="adminToDelete" value="#{admin}" />
+                                <p:confirm header="Confirmation" message="Are you sure you want to delete #{admin.adminName} (Admin ID: #{admin.adminId})?" icon="ui-icon-alert" />
+                            </p:commandButton>
+
+                        </p:panel>
+
+                    </ui:repeat>
+                </h:panelGroup>
+            </h:form>
+
+            <h:form id="formUpdateAdmin">
+
+                <p:dialog id="dialogUpdateAdmin" widgetVar="dialogUpdateAdmin" header="Update Admin" closable="true">
+
+                    <p:messages id="messagesUpdateAdmin" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{viewAdminsManagedBean.selectedAdminToUpdate.adminId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{viewAdminsManagedBean.selectedAdminToUpdate.adminName}" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Email: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="email" value="#{viewAdminsManagedBean.selectedAdminToUpdate.adminEmail}" required="true" requiredMessage="Email is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Password: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="password" value="#{viewAdminsManagedBean.selectedAdminToUpdate.adminPassword}" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update" update="@form formAdmins:listOfAdmins" actionListener="#{viewAdminsManagedBean.updateAdmin}" oncomplete="PF('dialogUpdateAdmin').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+        </div>
+
+    </ui:define>
+</ui:composition>

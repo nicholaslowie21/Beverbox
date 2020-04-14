@@ -21,6 +21,16 @@ public class Admin implements Serializable {
     private String adminEmail;
     private String adminPassword;
     
+    public Admin() {
+        
+    }
+    
+    public Admin(String name, String email, String password) {
+        adminName = name;
+        adminEmail = email;
+        adminPassword = password;
+    }
+    
     public Long getAdminId() {
         return adminId;
     }

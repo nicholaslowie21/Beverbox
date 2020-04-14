@@ -10,6 +10,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import util.exception.AdminNotFoundException;
 import util.exception.CreateNewAdminException;
+import util.exception.InvalidLoginCredentialException;
 
 /**
  *
@@ -49,7 +50,7 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
     
     @Override
     public Admin retrieveAdminByAdminName(String adminName) throws AdminNotFoundException {
-        Query query = em.createQuery("SELECT c FROM Admin c WHERE c.customerName = :inAdminName");
+        Query query = em.createQuery("SELECT a FROM Admin a WHERE a.adminName = :inAdminName");
         query.setParameter("inAdminName", adminName);
         try
         {
@@ -58,6 +59,40 @@ public class AdminSessionBean implements AdminSessionBeanLocal {
         catch(NoResultException | NonUniqueResultException ex)
         {
             throw new AdminNotFoundException("Admin with name " + adminName + " does not exist!");
+        }
+    }
+    
+    @Override
+    public Admin retrieveAdminByAdminEmail(String adminEmail) throws AdminNotFoundException {
+        Query query = em.createQuery("SELECT a FROM Admin a WHERE a.adminEmail = :inAdminEmail");
+        query.setParameter("inAdminEmail", adminEmail);
+        try
+        {
+            return (Admin)query.getSingleResult();
+        }
+        catch(NoResultException | NonUniqueResultException ex)
+        {
+            throw new AdminNotFoundException("Admin with email " + adminEmail + " does not exist!");
+        }
+    }
+    
+    @Override
+    public Admin adminLogin(String email, String password) throws InvalidLoginCredentialException {
+        try
+        {
+            Admin admin = retrieveAdminByAdminEmail(email);
+            if (admin.getAdminPassword().equals(password))
+            {
+                return admin;
+            }
+            else
+            {
+                throw new InvalidLoginCredentialException("Invalid email or password!");
+            }
+        }
+        catch(AdminNotFoundException ex)
+        {
+            throw new InvalidLoginCredentialException("Invalid email or password!");
         }
     }
 

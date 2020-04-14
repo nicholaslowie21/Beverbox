@@ -1,5 +1,6 @@
 package ejb.session.singleton;
 
+import ejb.session.stateless.AdminSessionBeanLocal;
 import ejb.session.stateless.ArticleSessionBeanLocal;
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
@@ -14,6 +15,7 @@ import ejb.session.stateless.PromotionSessionBeanLocal;
 import ejb.session.stateless.SubscriptionSessionBeanLocal;
 import ejb.session.stateless.TransactionSessionBean;
 import ejb.session.stateless.TransactionSessionBeanLocal;
+import entity.Admin;
 import entity.Article;
 import entity.OptionEntity;
 import entity.Promotion;
@@ -34,6 +36,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import util.exception.BeverageNotFoundException;
 import util.exception.BoxNotFoundException;
+import util.exception.CreateNewAdminException;
 import util.exception.CreateNewArticleException;
 import util.exception.CreateNewBeverageException;
 import util.exception.CreateNewBoxException;
@@ -58,6 +61,9 @@ import util.exception.UnknownPersistenceException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB(name = "AdminSessionBeanLocal")
+    private AdminSessionBeanLocal adminSessionBeanLocal;
 
     @EJB
     private SubscriptionSessionBeanLocal subscriptionSessionBeanLocal;
@@ -99,6 +105,7 @@ public class DataInitSessionBean {
 
     @PostConstruct
     public void PostConstruct(){
+        List<Admin> admins = adminSessionBeanLocal.retrieveAllAdmins();
         List<Customer> customers = customerSessionBeanLocal.retrieveAllCustomers();
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
@@ -110,13 +117,17 @@ public class DataInitSessionBean {
         List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
         List<Subscription> subscriptions = subscriptionSessionBeanLocal.retrieveAllSubscriptions();
         
+        if (admins.isEmpty()) {
+            initializeAdmin();
+        }
+        
         if(promos.size()==0){
             initializePromo();
         }
 
         if(customers.isEmpty()) {
-            initializeCust();
-                       
+            initializeCust();   
+            
         }
         if(beverages.isEmpty()) {
             initializeBeverages();
@@ -148,6 +159,16 @@ public class DataInitSessionBean {
        
         }
         em.flush();
+    }
+    
+    public void initializeAdmin() {
+        try {
+            adminSessionBeanLocal.createNewAdmin(new Admin("Alice", "alice@gmail.com", "admin1"));
+            adminSessionBeanLocal.createNewAdmin(new Admin("Ben", "ben@gmail.com", "admin2"));
+            adminSessionBeanLocal.createNewAdmin(new Admin("Charlie", "charlie@gmail.com", "admin3"));
+        } catch (CreateNewAdminException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
     public void initializePromo(){
