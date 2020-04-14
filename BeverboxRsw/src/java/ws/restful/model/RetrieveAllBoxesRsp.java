@@ -14,7 +14,7 @@ import java.util.List;
  */
 public class RetrieveAllBoxesRsp {
     private List<Box> boxes;
-
+    
     public RetrieveAllBoxesRsp() {
     }
 
