@@ -9,6 +9,7 @@ import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.Beverage;
 import entity.Customer;
+import entity.Transaction;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -84,6 +85,29 @@ public class BeverageResource {
             beverage.getTransactions().clear();
             
             return Response.status(Response.Status.OK).entity(new RetrieveBeverageRsp(beverage)).build();
+        }catch(Exception ex){
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    @Path("retrieveLimited")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveLimited(@QueryParam("email") String email, @QueryParam("password") String password, @QueryParam("beverageId") Long beverageId) {
+        try{
+            Customer c = customerSessionBean.customerLogin(email, password);
+            List<Beverage> beverages = beverageSessionBean.retrieveAllLimited();
+            for(Beverage be:beverages){
+                be.getBoxes().clear();
+                for(Transaction transaction: be.getTransactions()) {
+                    transaction.setBeverage(null);
+                }
+            }
+
+            
+            return Response.status(Response.Status.OK).entity(new RetrieveAllBeveragesRsp(beverages)).build();
         }catch(Exception ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             

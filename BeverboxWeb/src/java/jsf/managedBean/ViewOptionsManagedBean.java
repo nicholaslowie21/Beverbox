@@ -28,7 +28,7 @@ public class ViewOptionsManagedBean implements Serializable {
     private List<OptionEntity> optionEntities;
     private List<OptionEntity> filteredOptionEntities;
     private OptionEntity selectedOptionEntityToUpdate;
-    private List<Integer> availableDurations;
+    private List<String> availableDurations;
     private List<String> availableTypes;
     private Boolean allowChange;
     
@@ -54,10 +54,10 @@ public class ViewOptionsManagedBean implements Serializable {
         getAvailableTypes().add("ALCOHOL");
         
         setAvailableDurations(new ArrayList<>());
-        getAvailableDurations().add(3);
-        getAvailableDurations().add(6);
-        getAvailableDurations().add(9);
-        getAvailableDurations().add(12);
+        getAvailableDurations().add("3");
+        getAvailableDurations().add("6");
+        getAvailableDurations().add("9");
+        getAvailableDurations().add("12");
     }
     
 //    View Options only for active options
@@ -127,11 +127,11 @@ public class ViewOptionsManagedBean implements Serializable {
         this.filteredOptionEntities = filteredOptionEntities;
     }
     
-    public List<Integer> getAvailableDurations() {
+    public List<String> getAvailableDurations() {
         return availableDurations;
     }
 
-    public void setAvailableDurations(List<Integer> availableDurations) {
+    public void setAvailableDurations(List<String> availableDurations) {
         this.availableDurations = availableDurations;
     }
 

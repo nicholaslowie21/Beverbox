@@ -27,7 +27,7 @@
                                 <p:commandButton actionListener="#{viewArticlesManagedBean.doUpdateArticle}" update="formUpdateArticle" oncomplete="PF('dialogUpdateArticle').show()" icon="ui-icon-pencil" title="Update">
                                     <f:attribute name="articleToUpdate" value="#{article}" />
                                 </p:commandButton>
-                                <p:commandButton actionListener="#{viewArticlesManagedBean.deleteArticle}" update="formArticles:messages formArticles:listOfArticles" icon="ui-icon-trash" title="Delete">
+                                <p:commandButton actionListener="#{viewArticlesManagedBean.deleteArticle}" action="viewAllArticles" update="formArticles:listOfArticles formArticles:messages" icon="ui-icon-trash" title="Delete">
                                     <f:attribute name="articleToDelete" value="#{article}" />
                                     <p:confirm header="Confirmation" message="Are you sure you want to delete #{article.articleTitle} ?" icon="ui-icon-alert" />
                                 </p:commandButton>

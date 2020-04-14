@@ -21,10 +21,6 @@
             <h:form id="formAllBoxes">
                 <p:messages id="messages" redisplay="false" closable="true" />
                 <p:layout>
-                    <p:layoutUnit position="west">
-                        
-                    </p:layoutUnit>
-
                     <p:layoutUnit position="center">
                         
                         <p:dataTable id="dataTableMain" widgetVar="dataTableMain" value="#{boxManagedBean.boxes}" var="box" rowKey="#{box.boxId}" rowIndexVar="row"                             
@@ -37,7 +33,7 @@
                                 </p:outputPanel>
                             </f:facet>
                             
-                            <p:column headerText="ID" style="width: 100px;text-align: center;" sortBy="#{box.boxId}" filterBy="#{box.boxId}" filterMatchMode="contains">
+                            <p:column headerText="ID" style="width: 30px;text-align: center;" sortBy="#{box.boxId}" filterBy="#{box.boxId}" filterMatchMode="contains">
                                 <h:outputText value="#{box.boxId}" />
                             </p:column>
 
@@ -45,15 +41,14 @@
                                 <h:outputText value="#{box.boxName}" />
                             </p:column>                            
 
-                            <p:column headerText="Origin" style="width: 100px;text-align: center;" sortBy="#{box.boxOrigin}" filterBy="#{box.boxOrigin}" filterMatchMode="contains">
+                            <p:column headerText="Origin" style="width: 50px;text-align: center;" sortBy="#{box.boxOrigin}" filterBy="#{box.boxOrigin}" filterMatchMode="contains">
                                 <h:outputText value="#{box.boxOrigin}" />
                             </p:column>
-                            
                            
                             <p:column headerText="Description" style="width: 100px;text-align: center;" sortBy="#{box.boxDesc}" filterBy="#{box.boxDesc}" filterMatchMode="contains">
                                 <h:outputText value="#{box.boxDesc}" />
                             </p:column>
-                            <p:column headerText="Beverages">
+                            <p:column headerText="Beverages" style="width: 200px;text-align: center;">
                                 <p:dataScroller value="#{box.beverages}" var="b" chunkSize="10">
                                 
                                         <h:panelGrid columns="2" cellpadding="5">
@@ -63,13 +58,13 @@
                                         </h:panelGrid>
                                  </p:dataScroller>
                             </p:column>
-                            <p:column headerText="Active" style="width: 100px;text-align: center;" sortBy="#{box.active}" filterBy="#{box.active}" filterMatchMode="contains">
+                            <p:column headerText="Active" style="width: 50px;text-align: center;" sortBy="#{box.active}" filterBy="#{box.active}" filterMatchMode="contains">
                                 <h:outputText value="#{box.active}" />
                             </p:column>
 
                             
                             
-                            <p:column headerText="Action" >
+                            <p:column headerText="Action" style="width: 100px;text-align: center;" >
                                 
                                 
                                 <p:commandButton update="ccViewReviews:formViewReviews" oncomplete="PF('dialogViewReviews').show()" icon="ui-icon-star" title="Reviews">
