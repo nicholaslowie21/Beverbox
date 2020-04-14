@@ -116,6 +116,13 @@ public class BeverageSessionBean implements BeverageSessionBeanLocal {
          List<Beverage> beverages = query.getResultList();
          return beverages;
     }
+    
+    @Override
+    public List<Beverage> retrieveAllLimited() {
+         Query query = em.createQuery("SELECT be FROM Beverage be WHERE be.limitedEdition = true");
+         List<Beverage> beverages = query.getResultList();
+         return beverages;
+    }
 
     @Override
     public void updateBeverage (Beverage beverage) throws BeverageNotFoundException

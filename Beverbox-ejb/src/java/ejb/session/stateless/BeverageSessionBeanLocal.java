@@ -35,5 +35,7 @@ public interface BeverageSessionBeanLocal {
     public List<Beverage> searchBeverageByCountry(String country);
 
     public List<Beverage> retrieveAllActive();
+
+    public List<Beverage> retrieveAllLimited();
     
 }
