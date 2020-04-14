@@ -992,9 +992,13 @@ exists or setup the property manually. For example like this:
 <<<<<<< HEAD
 =======
         <copyfiles files="${libs.JasperReports_6.11.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+<<<<<<< Updated upstream
 >>>>>>> 15189e8d7754f340328ed503692a28406e3070e3
         <copyfiles files="${libs.PrimeFaces_7.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
         <copyfiles files="${libs.JasperReports_6.11.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+=======
+        <copyfiles files="${libs.PrimeFaces_7.0.classpath}" iftldtodir="${build.web.dir}/WEB-INF" todir="${dist.ear.dir}/lib"/>
+>>>>>>> Stashed changes
         <mkdir dir="${build.web.dir}/META-INF"/>
         <manifest file="${build.web.dir}/META-INF/MANIFEST.MF" mode="update"/>
     </target>
@@ -1003,9 +1007,13 @@ exists or setup the property manually. For example like this:
 <<<<<<< HEAD
 =======
         <copyfiles files="${libs.JasperReports_6.11.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+<<<<<<< Updated upstream
 >>>>>>> 15189e8d7754f340328ed503692a28406e3070e3
         <copyfiles files="${libs.PrimeFaces_7.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
         <copyfiles files="${libs.JasperReports_6.11.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+=======
+        <copyfiles files="${libs.PrimeFaces_7.0.classpath}" todir="${build.web.dir}/WEB-INF/lib"/>
+>>>>>>> Stashed changes
     </target>
     <target depends="init" if="dist.ear.dir" name="-clean-webinf-lib">
         <delete dir="${build.web.dir}/WEB-INF/lib"/>
