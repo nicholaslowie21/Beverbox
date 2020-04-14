@@ -18,8 +18,8 @@
                         <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
                     </p:submenu>
                     <p:submenu label="Admin Management System" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Create New Admin" outcome="/index" icon="fa fa-home" />
-                        <p:menuitem value="View All Admin" outcome="/index" icon="fa fa-home" />
+                        <p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="fa fa-user-plus" />
+                        <p:menuitem value="View All Admin" outcome="/adminManagement/viewAllAdmins.xhtml" icon="fa fa-users" />
                     </p:submenu>
                     <p:submenu label="Product Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Option" outcome="/productManagement/viewAllOption.xhtml" icon="fa fa-clock-o" />

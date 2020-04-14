@@ -38,9 +38,7 @@ public class SecurityFilter implements Filter {
         this.filterConfig = filterConfig;
     }    
     
-    public void doFilter(ServletRequest request, ServletResponse response,
-            FilterChain chain)
-            throws IOException, ServletException {
+    public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         
         HttpServletRequest httpServletRequest = (HttpServletRequest)request;
         HttpServletResponse httpServletResponse = (HttpServletResponse)response;
@@ -56,15 +54,16 @@ public class SecurityFilter implements Filter {
 
         Boolean isLogin = (Boolean)httpSession.getAttribute("isLogin");
         
-        
-        
         if(!excludeLoginCheck(requestServletPath))
         {
-//            if(isLogin == false)
-//            {
-//                httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
-//            }
-            chain.doFilter(request, response);
+            if(isLogin == true)
+            {
+                chain.doFilter(request, response);
+            }
+            else
+            {
+                httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
+            }
         }
         else
         {
