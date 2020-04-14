@@ -6,7 +6,9 @@
 package ejb.session.stateless;
 
 import entity.Promotion;
+import entity.Subscription;
 import entity.Transaction;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;

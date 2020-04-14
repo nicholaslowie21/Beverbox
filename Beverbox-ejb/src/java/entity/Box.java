@@ -41,7 +41,7 @@ public class Box implements Serializable {
     @Column(nullable = false)
     private Boolean active;
 
-    @ManyToMany
+    @ManyToMany(mappedBy = "boxes")
     private List<Beverage> beverages;
     
     @OneToMany(mappedBy="box")
@@ -92,10 +92,6 @@ public class Box implements Serializable {
     }
 
     public List<Beverage> getBeverages() {
-        if(beverages.isEmpty()) {
-            System.err.println("is empty");
-            System.err.println(this.boxName);
-        }
         return beverages;
     }
 

@@ -33,6 +33,9 @@ public class Customer implements Serializable {
     @Column(nullable = false)
     private Integer customerCVV;
     
+    @Column(nullable = false)
+    private String address;
+    
     @OneToMany(mappedBy = "customer")
     private List<Subscription> subscriptions;
     
@@ -48,12 +51,21 @@ public class Customer implements Serializable {
         reviews = new ArrayList<>();
     }
 
-    public Customer(String customerName, String customerEmail, String customerPassword, String customerCCNum, Integer customerCVV) {
+    public Customer(String customerName, String customerEmail, String customerPassword, String customerCCNum, Integer customerCVV, String address) {
         this.customerName = customerName;
         this.customerEmail = customerEmail;
         this.customerPassword = customerPassword;
         this.customerCCNum = customerCCNum;
         this.customerCVV = customerCVV;
+        this.address = address;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 
     

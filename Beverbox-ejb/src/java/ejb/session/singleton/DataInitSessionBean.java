@@ -44,6 +44,7 @@ import util.exception.CreateNewOptionException;
 import util.exception.CreateNewSubscriptionException;
 
 import util.exception.InputDataValidationException;
+import util.exception.InvalidPromotionException;
 import util.exception.OptionNotFoundException;
 import util.exception.PromoCodeNotFoundException;
 import util.exception.TransactionNotFoundException;
@@ -102,6 +103,7 @@ public class DataInitSessionBean {
         List<Beverage> beverages = beverageSessionBeanLocal.retrieveAllBeverages();
         List<Box> boxes = boxSessionBeanLocal.retrieveAllBoxes();
         List<Promotion> promos = promotionSessionBean.retrieveAllPromotions();
+        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
         
         List<Review> reviews = reviewSessionBeanLocal.retrieveAllReviews();
         List<Article> articles = articleSessionBeanLocal.retrieveAllArticles();
@@ -130,8 +132,7 @@ public class DataInitSessionBean {
         if(articles.isEmpty()) {
             initializeArticle();
         }
-        
-        List<OptionEntity> options = optionSessionBeanLocal.retrieveAllOptions();
+       
         if(options.size() == 0) {
             initializeOption();
             em.flush();
@@ -162,9 +163,9 @@ public class DataInitSessionBean {
     public void initializeCust() {
         
         try {
-            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "abc road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123, "def road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133, "ghhi road"));
         } catch (CreateNewCustomerException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -321,7 +322,7 @@ public class DataInitSessionBean {
             subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l,"",false);
             
             em.flush();
-        } catch (CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
+        } catch (InvalidPromotionException | CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
                 TransactionNotFoundException | InputDataValidationException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         } catch (UnknownPersistenceException ex) {

@@ -22,7 +22,7 @@ import javax.ws.rs.PUT;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import ws.restful.model.ErrorRsp;
-import ws.restful.model.RetrieveAllPromotionsRsp;
+import ws.restful.model.RetrieveAllPromotions;
 
 /**
  * REST Web Service
@@ -57,7 +57,7 @@ public class PromotionResource {
             for(Promotion p: promotions){
                 p.getTransactions().clear();
             }
-            return Response.status(Response.Status.OK).entity(new RetrieveAllPromotionsRsp(promotions)).build();
+            return Response.status(Response.Status.OK).entity(new RetrieveAllPromotions(promotions)).build();
         }catch(Exception ex){
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
