@@ -4,6 +4,7 @@ import ejb.session.stateless.CustomerSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import entity.Customer;
 import entity.Review;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -31,6 +32,7 @@ import ws.restful.model.CreateNewReviewReq;
 import ws.restful.model.CreateNewReviewRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllReviewsRsp;
+import ws.restful.model.ReviewWrapper;
 
 /**
  * REST Web Service
@@ -64,14 +66,13 @@ public class ReviewResource {
             Customer c = customerSessionBean.customerLogin(email, password);
             
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByCustomerEmail(email);
+            List<ReviewWrapper> reviewWrappers = new ArrayList<>();
+            
             for(Review r: reviews) 
             {
-                r.getBox().getReviews().clear();
-                r.setBox(null);
-                r.getCustomer().getReviews().clear();
-                r.setCustomer(null);
+                reviewWrappers.add(new ReviewWrapper(r));
             }
-            RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
+            RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviewWrappers);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         }
         catch (InvalidLoginCredentialException ex) {
@@ -99,15 +100,13 @@ public class ReviewResource {
             Customer c = customerSessionBean.customerLogin(email, password);
             
             List<Review> reviews = reviewSessionBean.retrieveAllReviewsByBoxId(boxId);
+            List<ReviewWrapper> reviewWrappers = new ArrayList<>();
             
             for(Review r: reviews) 
             {
-                r.getBox().getReviews().clear();
-                r.setBox(null);
-                r.getCustomer().getReviews().clear();
-                r.setCustomer(null);
+                reviewWrappers.add(new ReviewWrapper(r));
             }
-            RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviews);
+            RetrieveAllReviewsRsp retrieveAllReviewsRsp =  new RetrieveAllReviewsRsp(reviewWrappers);
             return Response.status(Response.Status.OK).entity(retrieveAllReviewsRsp).build();
         }
         catch (InvalidLoginCredentialException ex) {
