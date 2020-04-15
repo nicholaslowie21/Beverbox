@@ -10,22 +10,22 @@ import java.util.List;
 public class RetrieveAllReviewsRsp {
     
     
-    private List<Review> reviews;
+    private List<ReviewWrapper> reviews;
 
     
     public RetrieveAllReviewsRsp() {
     }
 
-    public RetrieveAllReviewsRsp(List<Review> reviews) {
+    public RetrieveAllReviewsRsp(List<ReviewWrapper> reviews) {
         this.reviews = reviews;
     }
     
     
-    public List<Review> getReviews() {
+    public List<ReviewWrapper> getReviews() {
         return reviews;
     }
 
-    public void setReviews(List<Review> reviews) {
+    public void setReviews(List<ReviewWrapper> reviews) {
         this.reviews = reviews;
     }
     
