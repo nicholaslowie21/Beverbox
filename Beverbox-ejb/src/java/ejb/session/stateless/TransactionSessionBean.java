@@ -257,40 +257,6 @@ public class TransactionSessionBean implements TransactionSessionBeanLocal {
         return newTrans.getTransactionId();
     }
     
-    public long renewSubscriptionTransaction(Subscription subs){
-//        Customer customer = subs.getCustomer();
-//        OptionEntity option = subs.getOption();
-//        
-//        long transId = 0;
-//        try{ 
-//            transId = createNewTransaction(new Transaction(customer.getCustomerCCNum(), option.getPrice(), customer.getCustomerCVV(), new Date()));
-//            em.flush();
-//            
-//            Transaction tempTrans = em.find(Transaction.class, transId);
-//            tempTrans.setCustomer(customer);
-//            customer.getTransactions().add(tempTrans);
-//            
-//            int tempEndYear = subs.getEndDate().getYear();
-//            int tempEndMonth = subs.getEndDate().getMonth();
-//            int tempEndDate = subs.getEndDate().getDate();
-//            int tempMonthSubs = subs.getOption().getDuration();
-//            
-//            tempEndMonth += tempMonthSubs;
-//            if(tempEndMonth > 12){
-//                tempEndMonth -=12;
-//                tempEndYear +=1;
-//            }
-//            
-//           // long subsId = subscriptionSessionBean.createNewSubscription(new Subscription(subs.getEndDate(),new Date(tempEndYear, tempEndMonth, tempEndDate) , tempMonthSubs),option.getOptionId(), customer.getCustomerId(), transId);
-//            
-//            
-//        }catch( TransactionNotFoundException | CustomerNotFoundException | CreateNewSubscriptionException | OptionNotFoundException | InputDataValidationException | UnknownPersistenceException ex){
-//            eJBContext.setRollbackOnly();
-//        }
-//        
-        return 1l;
-    }
-    
     private String prepareInputDataValidationErrorsMessage(Set<ConstraintViolation<Transaction>>constraintViolations)
     {
         String msg = "Input data validation error!:";

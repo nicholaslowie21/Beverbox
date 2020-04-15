@@ -37,8 +37,6 @@ public interface TransactionSessionBeanLocal {
 
     public Transaction retrieveTransactionByTransactionId(long id) throws TransactionNotFoundException;
 
-    public long renewSubscriptionTransaction(Subscription subs);
-
     public List<Transaction> retrieveCustSubscriptionTrans(Customer customer);
 
     public long createBevTransaction(long bevId, String promoCode, Integer qty, boolean useCashBack, long custId) throws InvalidPromotionException, BevTransactionLimitException, QuantityLimitException, PromoCodeNotFoundException, QuantityNotEnoughException, BeverageNotFoundException, CustomerNotFoundException;

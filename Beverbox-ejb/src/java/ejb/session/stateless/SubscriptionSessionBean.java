@@ -84,19 +84,26 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 Double totalPrice = option.getPrice();
                 Double addLogs = 0.0;
                 
+                //OK I made some changes. It was using thePromo or something. So I have used promo, and that has removed the Null Pointer Excepion, but now it's Forbidden HTTP
                 Promotion thePromo = new Promotion();
+                Boolean validPromo = false;
         
                 if(!promoCode.equals("")){
                     Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
-                    
-                    if(thePromo.getPromoType().equals("NEW MEMBER")){
-                        if(transactionSessionBeanLocal.retrieveCustTransaction(customer.getCustomerId()).size()!=0){
-                            throw new InvalidPromotionException("Sorry, this promo code is invalid for you");
+                    if (promo != null) {
+                        if(promo.getPromoType().equals("NEW MEMBER")){
+                            if(transactionSessionBeanLocal.retrieveCustTransaction(customer.getCustomerId()).size()!=0){
+                                throw new InvalidPromotionException("Sorry, this promo code is invalid for you");
+                            }
                         }
+
+                        addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
+                        thePromo = promo;
+                        customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
+                        validPromo = true;
+                    } else {
+                        throw new PromoCodeNotFoundException("Promo Code enterred is invalid");
                     }
-                    
-                    addLogs = promo.getPromoPercentage()*1.0/100*totalPrice;
-                    thePromo = promo;
                 }
                 Double currLogs = customer.getAccumulatedCashback();
                 if(cashback){
@@ -110,9 +117,9 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                     customer.setAccumulatedCashback(currLogs);
                 }
 
-                if(!promoCode.equals("")){
-                    customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
-                }
+//                if(!promoCode.equals("")){
+//                    customer.setAccumulatedCashback(customer.getAccumulatedCashback()+addLogs);
+//                }
         
                 
                 Long newTransId = transactionSessionBeanLocal.createNewTransaction(new Transaction(customer.getCustomerCCNum(), totalPrice, customer.getCustomerCVV(), new Date()));
@@ -122,7 +129,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 newSubscription.setOption(option);
                 option.getSubscriptions().add(newSubscription);
                 
-                if(!promoCode.equals("")){
+                if(validPromo){
                     newTrans.setPromotion(thePromo);
                     thePromo.getTransactions().add(newTrans);
                 }

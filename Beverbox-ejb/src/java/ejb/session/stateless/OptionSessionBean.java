@@ -3,6 +3,7 @@ package ejb.session.stateless;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Transaction;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 import javax.ejb.Stateless;
@@ -67,6 +68,22 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
         }
         
         return options;
+    }
+    
+    @Override
+    public List<OptionEntity> retrieveAllActiveOptions()
+    {   
+        List<OptionEntity> options = retrieveAllOptions();
+        List<OptionEntity> activeOptions = new ArrayList<>();
+        
+        for(OptionEntity option:options)
+        {
+            if (option.getActive()) {
+                activeOptions.add(option);
+            }
+        }
+        
+        return activeOptions;
     }
     
     @Override
