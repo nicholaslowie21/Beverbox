@@ -127,23 +127,16 @@ public class ReviewResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Produces(MediaType.APPLICATION_JSON)
-    public Response createNewReview(@QueryParam("email") String email, @QueryParam("password") String password,
-                                    CreateNewReviewReq createNewReviewReq) {
+    public Response createNewReview(CreateNewReviewReq createNewReviewReq) {
         if(createNewReviewReq != null) 
         {
             try 
             {
-                Customer c = customerSessionBean.customerLogin(email, password);
                 
                 Long reviewId = reviewSessionBean.createNewReview(createNewReviewReq.getReview(), createNewReviewReq.getBoxId(), createNewReviewReq.getCustomerId());
                 
                 CreateNewReviewRsp createNewReviewRsp = new CreateNewReviewRsp(reviewId);
                 return Response.status(Response.Status.OK).entity(createNewReviewRsp).build();
-            }
-            catch (InvalidLoginCredentialException ex) {
-                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-
-                return Response.status(Response.Status.UNAUTHORIZED).entity(errorRsp).build();
             }
             catch(CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) 
             {

@@ -36,12 +36,15 @@ public class CreateNewBeverageManagedBean {
     
     private Beverage newBeverage;
     private List<Beverage> beverages;
+    private List<String> beverageTypes;
     /**
      * Creates a new instance of CreateNewBeverageManagedBean
      */
     public CreateNewBeverageManagedBean() {
         newBeverage = new Beverage();
         beverages = new ArrayList<>();
+        beverageTypes = new ArrayList<>();
+        retrieveAllTypes();
     }
     
     @PostConstruct
@@ -67,7 +70,15 @@ public class CreateNewBeverageManagedBean {
             Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
-
+    
+    public void retrieveAllTypes() {
+        beverageTypes.add("Alcoholic");
+        beverageTypes.add("Non-Alcoholic");
+        for(Beverage b: beverages) {
+            beverageTypes.add(b.getType());
+        }
+    }
+    
     public List<Beverage> getBeverages() {
         return beverages;
     }
@@ -82,6 +93,14 @@ public class CreateNewBeverageManagedBean {
 
     public void setNewBeverage(Beverage newBeverage) {
         this.newBeverage = newBeverage;
+    }
+
+    public List<String> getBeverageTypes() {
+        return beverageTypes;
+    }
+
+    public void setBeverageTypes(List<String> beverageTypes) {
+        this.beverageTypes = beverageTypes;
     }
     
     
