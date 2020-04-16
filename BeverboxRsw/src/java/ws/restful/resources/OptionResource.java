@@ -21,6 +21,7 @@ import javax.ws.rs.core.Response;
 import util.exception.OptionNotFoundException;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveAllOptionsRsp;
+import ws.restful.model.RetrieveOptionRsp;
 
 @Path("Option")
 public class OptionResource {
@@ -51,6 +52,24 @@ public class OptionResource {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+    }
+    
+    
+    @Path("retrieveOption/{optionId}")
+    @GET
+    @Consumes(MediaType.TEXT_PLAIN)
+    @Produces(MediaType.APPLICATION_JSON)
+    public Response retrieveAOptionByOptionId(@PathParam("optionId") Long optionId) {
+        try {
+            OptionEntity option = optionSessionBean.retrieveOptionByOptionId(optionId);
+            
+            option.getSubscriptions().clear();
+            return Response.status(Response.Status.OK).entity(new RetrieveOptionRsp(option)).build();
+        } catch (OptionNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         }
     }
     

@@ -89,7 +89,7 @@ public class SubscriptionSessionBean implements SubscriptionSessionBeanLocal {
                 if(!promoCode.equals("")){
                     Promotion promo = promotionSessionBean.retrievePromotionByPromoCode(promoCode);
                     
-                    if(thePromo.getPromoType().equals("NEW MEMBER")){
+                    if(promo.getPromoType().equals("NEW MEMBER")){
                         if(transactionSessionBeanLocal.retrieveCustTransaction(customer.getCustomerId()).size()!=0){
                             throw new InvalidPromotionException("Sorry, this promo code is invalid for you");
                         }
