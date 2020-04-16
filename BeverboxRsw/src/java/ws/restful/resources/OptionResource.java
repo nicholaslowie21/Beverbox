@@ -37,7 +37,7 @@ public class OptionResource {
     @Produces(MediaType.APPLICATION_JSON)
     public Response retrieveAllOptions() {
         try {
-            List<OptionEntity> options = optionSessionBean.retrieveAllOptions();
+            List<OptionEntity> options = optionSessionBean.retrieveAllActiveOptions();
           
             for(OptionEntity option: options) {
 //                for(Subscription subscription: option.getSubscriptions()) {
