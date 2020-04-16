@@ -17,7 +17,7 @@
                     <p:submenu label="System">
                         <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
                     </p:submenu>
-                    <p:submenu label="Admin Management System" rendered="#{sessionScope.isLogin == true}">
+                    <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
                         <p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="fa fa-user-plus" />
                         <p:menuitem value="View All Admin" outcome="/adminManagement/viewAllAdmins.xhtml" icon="fa fa-users" />
                     </p:submenu>
@@ -27,11 +27,11 @@
                         <p:menuitem value="Beverage" outcome="/productManagement/viewAllBeverage.xhtml" icon="fa fa-glass" />
                     </p:submenu>
                     <p:submenu label="Sales Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Promotion" outcome="/salesManagement/viewAllPromotions.xhtml" icon="fa fa-home" />
+                        <p:menuitem value="Promotion" outcome="/salesManagement/viewAllPromotions.xhtml" icon="fa fa-diamond" />
                     </p:submenu>
                     <p:submenu label="Other" rendered="#{sessionScope.isLogin == true}"  >
-                        <p:menuitem value="Report Management" outcome="/otherManagement/reportManagement.xhtml" icon="fa fa-home" />
-                        <p:menuitem value="Article Management" outcome="/otherManagement/viewAllArticles.xhtml" icon="fa fa-home" />
+                        <p:menuitem value="Report Management" outcome="/otherManagement/reportManagement.xhtml" icon="fa fa-area-chart" />
+                        <p:menuitem value="Article Management" outcome="/otherManagement/viewAllArticles.xhtml" icon="fa fa-comments-o" />
                     </p:submenu>
                 </p:panelMenu>
             </h:form>
