@@ -23,6 +23,8 @@ public interface OptionSessionBeanLocal {
     public Long createNewOption(OptionEntity newOption) throws CreateNewOptionException, InputDataValidationException;
     
     public List<OptionEntity> retrieveAllOptions();
+    
+    public List<OptionEntity> retrieveAllActiveOptions();
 
     public OptionEntity retrieveOptionByOptionId(Long optionId) throws OptionNotFoundException;
 
