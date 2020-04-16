@@ -11,9 +11,10 @@
         <ez:Breadcrumb pageName="viewAllArticles" />        
         <h3>View All Articles</h3>
 
-        <p:outputPanel style="text-align: right;">
-            <p:button value="Create New Article" outcome="createNewArticle.xhtml" />
+        <p:outputPanel>
+            <p:button value="Create New Article" outcome="createNewArticle.xhtml" icon="fa fa-plus" />
         </p:outputPanel>
+        <br />
         
         <h:form id="formArticles">
             <p:messages id="messages" redisplay="false" closable="true" />
@@ -45,9 +46,9 @@
         
         <h:form id="formUpdateArticle">
 
-            <p:dialog id="dialogUpdateArticle" widgetVar="dialogUpdateArticle" position="center top" header="Update Article" closable="true">
+            <p:dialog id="dialogUpdateArticle" widgetVar="dialogUpdateArticle" width="500" position="center top" header="Update Article" closable="true">
                 <p:messages id="messageUpdateArticle" redisplay="false" />
-                <p:panelGrid>
+                <p:panelGrid style="width: 100%">
                     <p:row>
                         <p:column>
                             <h:outputLabel value="Title" />
