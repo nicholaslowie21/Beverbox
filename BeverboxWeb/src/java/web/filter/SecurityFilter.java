@@ -5,6 +5,7 @@
  */
 package web.filter;
 
+import entity.Admin;
 import java.io.IOException;
 import java.io.PrintStream;
 import java.io.PrintWriter;
@@ -58,6 +59,16 @@ public class SecurityFilter implements Filter {
         {
             if(isLogin == true)
             {
+                 
+                if(requestServletPath.equals("/adminManagement/createNewAdmin.xhtml")
+                        || requestServletPath.equals("/adminManagement/viewAllAdmins.xhtml")){
+                        
+                    Admin currentAdmin = (Admin)httpSession.getAttribute("currentAdmin");
+                    if(!currentAdmin.getAdminName().equals("manager")){
+                        httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
+                    }
+                }
+                
                 chain.doFilter(request, response);
             }
             else

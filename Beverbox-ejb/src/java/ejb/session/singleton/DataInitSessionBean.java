@@ -163,6 +163,7 @@ public class DataInitSessionBean {
     
     public void initializeAdmin() {
         try {
+            adminSessionBeanLocal.createNewAdmin(new Admin("manager", "manager@gmail.com", "password"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Alice", "alice@gmail.com", "admin1"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Ben", "ben@gmail.com", "admin2"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Charlie", "charlie@gmail.com", "admin3"));
