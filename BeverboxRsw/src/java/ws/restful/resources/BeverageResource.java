@@ -8,7 +8,9 @@ package ws.restful.resources;
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
 import entity.Beverage;
+import entity.Box;
 import entity.Customer;
+import entity.Review;
 import entity.Transaction;
 import java.util.List;
 import java.util.logging.Level;
@@ -81,8 +83,21 @@ public class BeverageResource {
         try{
             Customer c = customerSessionBean.customerLogin(email, password);
             Beverage beverage = beverageSessionBean.retrieveBeverageByBeverageId(beverageId);
-            beverage.getBoxes().clear();
+            
+            for(Box box:beverage.getBoxes()) {
+                box.getBeverages().clear();
+                box.getReviews().clear();
+                for(Review r: box.getReviews()) {
+                    r.setBox(null);
+                    r.getCustomer().getReviews().clear();
+                    r.getCustomer().getSubscriptions().clear();
+                    r.getCustomer().getTransactions().clear();
+                }
+
+            }
+             
             beverage.getTransactions().clear();
+            
             
             return Response.status(Response.Status.OK).entity(new RetrieveBeverageRsp(beverage)).build();
         }catch(Exception ex){
@@ -100,9 +115,23 @@ public class BeverageResource {
             Customer c = customerSessionBean.customerLogin(email, password);
             List<Beverage> beverages = beverageSessionBean.retrieveAllLimited();
             for(Beverage be:beverages){
-                be.getBoxes().clear();
+                for(Box box:be.getBoxes()) {
+                    box.getBeverages().clear();
+                    box.getReviews().clear();
+                    for(Review r: box.getReviews()) {
+                        r.setBox(null);
+                        r.getCustomer().getReviews().clear();
+                        r.getCustomer().getSubscriptions().clear();
+                        r.getCustomer().getTransactions().clear();
+                        r.setCustomer(null);
+                    }
+                    be.getTransactions().clear();
+                   
+            }
                 for(Transaction transaction: be.getTransactions()) {
                     transaction.setBeverage(null);
+                    transaction.setCustomer(null);
+                    
                 }
             }
 
