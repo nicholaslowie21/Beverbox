@@ -6,34 +6,56 @@
                 xmlns:p="http://primefaces.org/ui">
 
     <section id="mainmenu" class="mainmenu">
-        <h3>Main Menu</h3>
         <nav>
             <h:form>
                 <p:growl>
                     <p:autoUpdate />
                 </p:growl>
 
-                <p:panelMenu style="width:200px">
-                    <p:submenu label="System">
-                        <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
+                <p:megaMenu orientation="Horizontal" style=" margin-bottom: 20px" > 
+                    <p:submenu label="System" >
+                        
+                        <p:column>
+                            <p:submenu style="display: none">
+                                <p:menuitem value="Home" outcome="/index" icon="fa fa-home" />
+                            </p:submenu>
+                        </p:column>
+                        
                     </p:submenu>
-                    <p:submenu label="Admin Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="fa fa-user-plus" />
-                        <p:menuitem value="View All Admin" outcome="/adminManagement/viewAllAdmins.xhtml" icon="fa fa-users" />
+                    <p:submenu label="Admin Management System" rendered="#{sessionScope.isLogin == true}">
+                        <p:column>
+                            <p:submenu style="display: none">
+                                <p:menuitem value="Create New Admin" outcome="/adminManagement/createNewAdmin.xhtml" icon="fa fa-user-plus" />
+                                <p:menuitem value="View All Admin" outcome="/adminManagement/viewAllAdmins.xhtml" icon="fa fa-users" />
+                            </p:submenu>
+                        </p:column>
                     </p:submenu>
                     <p:submenu label="Product Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Option" outcome="/productManagement/viewAllOption.xhtml" icon="fa fa-clock-o" />
-                        <p:menuitem value="Box" outcome="/productManagement/viewAllBox.xhtml" icon="fa fa-archive" />
-                        <p:menuitem value="Beverage" outcome="/productManagement/viewAllBeverage.xhtml" icon="fa fa-glass" />
+                        <p:column>
+                            <p:submenu style="display: none">
+                                <p:menuitem value="Option" outcome="/productManagement/viewAllOption.xhtml" icon="fa fa-clock-o" />
+                                <p:menuitem value="Box" outcome="/productManagement/viewAllBox.xhtml" icon="fa fa-archive" />
+                                <p:menuitem value="Beverage" outcome="/productManagement/viewAllBeverage.xhtml" icon="fa fa-glass" />
+                            </p:submenu>
+                        </p:column>
                     </p:submenu>
                     <p:submenu label="Sales Management" rendered="#{sessionScope.isLogin == true}">
-                        <p:menuitem value="Promotion" outcome="/salesManagement/viewAllPromotions.xhtml" icon="fa fa-diamond" />
+                        <p:column>
+                            <p:submenu style="display: none">
+                                <p:menuitem value="Promotion" outcome="/salesManagement/viewAllPromotions.xhtml" icon="fa fa-diamond" />
+                            </p:submenu>
+                        </p:column>
                     </p:submenu>
                     <p:submenu label="Other" rendered="#{sessionScope.isLogin == true}"  >
-                        <p:menuitem value="Report Management" outcome="/otherManagement/reportManagement.xhtml" icon="fa fa-area-chart" />
-                        <p:menuitem value="Article Management" outcome="/otherManagement/viewAllArticles.xhtml" icon="fa fa-comments-o" />
+                        <p:column>
+                            <p:submenu style="display: none">
+                                <p:menuitem value="Report Management" outcome="/otherManagement/reportManagement.xhtml" icon="fa fa-area-chart" />
+                                <p:menuitem value="Article Management" outcome="/otherManagement/viewAllArticles.xhtml" icon="fa fa-comments-o" />
+                            </p:submenu>
+                        </p:column>
+
                     </p:submenu>
-                </p:panelMenu>
+                </p:megaMenu>
             </h:form>
         </nav>
             
