@@ -53,7 +53,7 @@ public class CustomerResource {
     @GET
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.TEXT_PLAIN)
-    public Response retrieveMyBevTransactions(@QueryParam("email") String email, 
+    public Response customerLogin(@QueryParam("email") String email, 
                                 @QueryParam("password") String password) {
         
         Customer customer = new Customer();
