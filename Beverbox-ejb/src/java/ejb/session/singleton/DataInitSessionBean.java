@@ -331,18 +331,18 @@ public class DataInitSessionBean {
     }
     
     public void initializeSubscription() {
-        Subscription s = new Subscription(new Date(), new Date());
-        s.setActive(true);
         try {
+            Subscription s = new Subscription(new Date(), addMonths(new Date(), 3));
+            s.setActive(true);
             subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l,"",false);
             
-            s = new Subscription(new Date(),new Date());
+            s = new Subscription(new Date(), addMonths(new Date(), 6));
             s.setActive(true);
             subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 2l,"",false);
             
-            s = new Subscription(new Date(), new Date());
+            s = new Subscription(new Date(), addMonths(new Date(), 12));
             s.setActive(true);
-            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l,"",false);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 6l, 2l,"",false);
             
             em.flush();
         } catch (InvalidPromotionException | CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
@@ -364,5 +364,10 @@ public class DataInitSessionBean {
         } catch (CreateNewArticleException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static Date addMonths(Date date, int numMonths){
+        date.setMonth((date.getMonth() + numMonths));
+        return date;
     }
 }
