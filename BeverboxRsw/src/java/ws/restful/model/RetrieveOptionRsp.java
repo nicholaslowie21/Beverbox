@@ -4,20 +4,20 @@ import entity.OptionEntity;
 
 public class RetrieveOptionRsp {
 
-    private OptionEntity option;
+    private OptionWrapper option;
 
     public RetrieveOptionRsp() {
     }
 
-    public RetrieveOptionRsp(OptionEntity option) {
+    public RetrieveOptionRsp(OptionWrapper option) {
         this.option = option;
     }
     
-    public OptionEntity getOption() {
+    public OptionWrapper getOption() {
         return option;
     }
 
-    public void setOption(OptionEntity option) {
+    public void setOption(OptionWrapper option) {
         this.option = option;
     }
     

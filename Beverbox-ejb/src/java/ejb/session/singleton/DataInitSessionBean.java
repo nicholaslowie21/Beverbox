@@ -289,10 +289,10 @@ public class DataInitSessionBean {
    
     private void initializeOption() {
         try {
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "For those who savor life's high all year round", 108.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "For those who savor life's high all year round", 114.90, "ALCOHOL"));
         } catch (CreateNewOptionException | InputDataValidationException ex) {

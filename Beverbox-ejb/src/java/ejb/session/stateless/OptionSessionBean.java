@@ -119,6 +119,20 @@ public class OptionSessionBean implements OptionSessionBeanLocal {
             throw new OptionNotFoundException("Option ID " + optionId + " does not exist!");
         }               
     }
+    
+    @Override
+    public List<OptionEntity> retrieveOptionByType(String searchString) {
+        Query query = em.createQuery("SELECT o FROM OptionEntity o WHERE o.type LIKE :inSearchString AND o.active LIKE true ORDER BY o.name ASC");
+        query.setParameter("inSearchString", "%" + searchString + "%");
+        List<OptionEntity> options = query.getResultList();
+        
+        for(OptionEntity option:options)
+        {
+            option.getSubscriptions().size();
+        }
+        
+        return options;
+    }
 
     @Override
     public void updateOption (OptionEntity option) throws OptionNotFoundException, InputDataValidationException
