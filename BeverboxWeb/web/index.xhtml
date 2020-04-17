@@ -15,8 +15,8 @@
             <article>
                 <h3>Welcome!</h3>
                 <p>
-                    This is the web-app for BeverBox Staff! 
-                    Please log in to access the app.                  
+                    This is the web-app for BeverBox Staff!
+                    Please log in to access the app. 
                 </p>
             </article>
             <br/>
@@ -27,32 +27,24 @@
         </h:panelGroup>
 
         <h:panelGroup rendered="#{sessionScope.isLogin == true}">
-            <article>
-                <h3>Welcome staff!</h3> 
-                <h4>Here is your current account information: </h4>
-                <h:outputText value="ID    : #{sessionScope.currentAdmin.adminId}" /> <br/>
-                <h:outputText value="Name  : #{sessionScope.currentAdmin.adminName}" /><br/>
-                <h:outputText value="Email : #{sessionScope.currentAdmin.adminEmail}" />
-            </article>
+            <p:panelGrid columns="3" styleClass="ui-noborder">
+                <p:imageSwitch effect="fade" id="fadeEffect">
+                        <p:graphicImage library="image" name="type 1.jpg" height="200" id="image1" />
+                        <p:graphicImage library="image" name="type 2.jpg" height="200" id="image2" />
+                        <p:graphicImage library="image" name="type 3.jpg" height="200" id="image3" />
+                        <p:graphicImage library="image" name="type 4.jpg" height="200" id="image4" />
+                </p:imageSwitch>
+                <p:panelGrid>
+                    <h3>Welcome staff <h:outputText value="#{sessionScope.currentAdmin.adminName}" />!</h3> 
+                    <h4>This BeverBox Staff application is where you can control the things we offer to our customers!</h4>
+                    <h:outputText value="Here is your current account information:" />
+                    <h:outputText value="ID    : #{sessionScope.currentAdmin.adminId}" /><br />
+                    <h:outputText value="Email : #{sessionScope.currentAdmin.adminEmail}" />
+                </p:panelGrid>
+                <p:calendar mode="inline" accesskey="true"></p:calendar>
+            </p:panelGrid>
         </h:panelGroup>
         
     </ui:define>
 
 </ui:composition>
-
-<!--<?xml version='1.0' encoding='UTF-8' ?>
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
-<html xmlns="http://www.w3.org/1999/xhtml"
-      xmlns:h="http://xmlns.jcp.org/jsf/html">
-    <h:head>
-        <title>Facelet Title</title>
-    </h:head>
-    <h:body>
-        Hello from Facelets
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-        <br />
-        <h:link outcome="welcomePrimefaces" value="Primefaces welcome page" />
-    </h:body>
-</html>-->
-

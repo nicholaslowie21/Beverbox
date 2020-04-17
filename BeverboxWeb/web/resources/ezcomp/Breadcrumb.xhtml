@@ -22,11 +22,12 @@
                 <p:menuitem value="View All Admin" url="#{application.contextPath}/adminManagement/viewAllAdmins.xhtml" rendered="#{cc.attrs.pageName == 'viewAllAdmins'}" />
                 
                 
-                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'viewAllBoxes' || cc.attrs.pageName == 'viewAllBeverages' || cc.attrs.pageName == 'option' || cc.attrs.pageName == 'createNewBeverage' || cc.attrs.pageName == 'createNewBox' }"/>
+                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'viewAllBoxes' || cc.attrs.pageName == 'viewAllBeverages' || cc.attrs.pageName == 'option' || cc.attrs.pageName == 'createNewBeverage' || cc.attrs.pageName == 'createNewBox' || cc.attrs.pageName == 'createNewOption' }"/>
                 <p:menuitem value="View All Boxes" url="#{application.contextPath}/productManagement/viewAllBox.xhtml" rendered="#{cc.attrs.pageName == 'viewAllBoxes'}" />
                 <p:menuitem value="View All Beverages" url="#{application.contextPath}/productManagement/viewAllBeverage.xhtml" rendered="#{cc.attrs.pageName == 'viewAllBeverages'}" />
                 <p:menuitem value="Option" url="#{application.contextPath}/productManagement/viewAllOption.xhtml" rendered="#{cc.attrs.pageName == 'option'}" />
 
+                <p:menuitem value="Create New Option" url="#{application.contextPath}/productManagement/createNewOption.xhtml" rendered="#{cc.attrs.pageName == 'createNewOption'}" />
                 <p:menuitem value="Create New Beverage" url="#{application.contextPath}/productManagement/createNewBeverage.xhtml" rendered="#{cc.attrs.pageName == 'createNewBeverage'}" />
                 <p:menuitem value="Create New Box" url="#{application.contextPath}/productManagement/createNewBox.xhtml" rendered="#{cc.attrs.pageName == 'createNewBox'}" />
                 
