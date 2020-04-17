@@ -5,20 +5,20 @@ import java.util.List;
 
 public class RetrieveAllOptionsRsp {
 
-    private List<OptionEntity> options;
+    private List<OptionWrapper> options;
     
     public RetrieveAllOptionsRsp() {
     }
 
-    public RetrieveAllOptionsRsp(List<OptionEntity> options) {
+    public RetrieveAllOptionsRsp(List<OptionWrapper> options) {
         this.options = options;
     }
 
-    public List<OptionEntity> getOptions() {
+    public List<OptionWrapper> getOptions() {
         return options;
     }
 
-    public void setOptions(List<OptionEntity> options) {
+    public void setOptions(List<OptionWrapper> options) {
         this.options = options;
     }
     
