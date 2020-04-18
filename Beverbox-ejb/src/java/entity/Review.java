@@ -8,6 +8,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.Max;
+import javax.validation.constraints.Min;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Positive;
 
 /**
  *
@@ -23,6 +27,13 @@ public class Review implements Serializable {
     @Column(nullable = false)
     private String reviewContent;
     
+    @Column(nullable = false)
+    @NotNull
+    @Positive
+    @Min(1)
+    @Max(5)
+    private Integer reviewRating;
+    
     @ManyToOne
     @JoinColumn(nullable = false)
     private Box box;
@@ -35,9 +46,10 @@ public class Review implements Serializable {
     {
     }
     
-    public Review(String reviewContent) 
+    public Review(String reviewContent, Integer reviewRating) 
     {
         this.reviewContent = reviewContent;
+        this.reviewRating = reviewRating;
     }
 
     public Long getReviewId() {
@@ -95,6 +107,14 @@ public class Review implements Serializable {
 
     public void setReviewContent(String reviewContent) {
         this.reviewContent = reviewContent;
+    }
+
+    public Integer getReviewRating() {
+        return reviewRating;
+    }
+
+    public void setReviewRating(Integer reviewRating) {
+        this.reviewRating = reviewRating;
     }
     
 }

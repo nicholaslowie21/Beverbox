@@ -1,11 +1,13 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -24,22 +26,27 @@ public class Article implements Serializable {
     private String articleContent;
     @Column
     private String articleImg;
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date articleDate;
     
     
     public Article()
     {    
     }
     
-    public Article(String articleTitle, String articleContent) 
+    public Article(String articleTitle, String articleContent, Date articleDate) 
     {
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
+        this.articleDate = articleDate;
     }
     
-    public Article(String articleTitle, String articleContent, String articleImg) 
+    public Article(String articleTitle, String articleContent, Date articleDate, String articleImg) 
     {
         this.articleTitle = articleTitle;
         this.articleContent = articleContent;
+        this.articleDate = articleDate;
         this.articleImg = articleImg;
     }
 
@@ -98,6 +105,14 @@ public class Article implements Serializable {
 
     public void setArticleImg(String articleImg) {
         this.articleImg = articleImg;
+    }
+
+    public Date getArticleDate() {
+        return articleDate;
+    }
+
+    public void setArticleDate(Date articleDate) {
+        this.articleDate = articleDate;
     }
     
 }
