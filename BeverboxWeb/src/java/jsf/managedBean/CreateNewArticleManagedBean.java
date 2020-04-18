@@ -3,8 +3,7 @@ package jsf.managedBean;
 import ejb.session.stateless.ArticleSessionBeanLocal;
 import entity.Article;
 import java.io.IOException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import java.util.Date;
 import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
@@ -27,14 +26,13 @@ public class CreateNewArticleManagedBean {
 
     private String title;
     private String content;
-    private String img;
     
     public CreateNewArticleManagedBean() {
     }
     
     public void createNewArticle(ActionEvent event) throws IOException 
     {
-        Article newArticle = new Article(title, content, img);
+        Article newArticle = new Article(title, content, new Date());
         try 
         {
             articleSessionBeanLocal.createNewArticle(newArticle);
@@ -61,14 +59,6 @@ public class CreateNewArticleManagedBean {
 
     public void setContent(String content) {
         this.content = content;
-    }
-
-    public String getImg() {
-        return img;
-    }
-
-    public void setImg(String img) {
-        this.img = img;
     }
     
 }
