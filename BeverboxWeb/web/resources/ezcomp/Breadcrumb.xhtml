@@ -17,18 +17,26 @@
 
                 <p:menuitem icon="fa fa-home" url="#{application.contextPath}/index.xhtml" style="text-decoration-line: none;" />
 
-                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'box' || cc.attrs.pageName == 'beverage' || cc.attrs.pageName == 'option' }" />
+                <p:menuitem value="Admin Management" rendered="#{cc.attrs.pageName == 'createNewAdmin' || cc.attrs.pageName == 'viewAllAdmins'}" />
+                <p:menuitem value="Create New Admin" url="#{application.contextPath}/adminManagement/createNewAdmin.xhtml" rendered="#{cc.attrs.pageName == 'createNewAdmin'}" />
+                <p:menuitem value="View All Admin" url="#{application.contextPath}/adminManagement/viewAllAdmins.xhtml" rendered="#{cc.attrs.pageName == 'viewAllAdmins'}" />
                 
-                <p:menuitem value="Box" url="#{application.contextPath}/productManagement/viewAllBox.xhtml" rendered="#{cc.attrs.pageName == 'box'}" />
-                <p:menuitem value="Beverage" url="#{application.contextPath}/productManagement/viewAllBeverage.xhtml" rendered="#{cc.attrs.pageName == 'beverage'}" />
+                
+                <p:menuitem value="Product Management" rendered="#{cc.attrs.pageName == 'viewAllBoxes' || cc.attrs.pageName == 'viewAllBeverages' || cc.attrs.pageName == 'option' || cc.attrs.pageName == 'createNewBeverage' || cc.attrs.pageName == 'createNewBox' || cc.attrs.pageName == 'createNewOption' }"/>
+                <p:menuitem value="View All Boxes" url="#{application.contextPath}/productManagement/viewAllBox.xhtml" rendered="#{cc.attrs.pageName == 'viewAllBoxes'}" />
+                <p:menuitem value="View All Beverages" url="#{application.contextPath}/productManagement/viewAllBeverage.xhtml" rendered="#{cc.attrs.pageName == 'viewAllBeverages'}" />
                 <p:menuitem value="Option" url="#{application.contextPath}/productManagement/viewAllOption.xhtml" rendered="#{cc.attrs.pageName == 'option'}" />
 
+                <p:menuitem value="Create New Option" url="#{application.contextPath}/productManagement/createNewOption.xhtml" rendered="#{cc.attrs.pageName == 'createNewOption'}" />
+                <p:menuitem value="Create New Beverage" url="#{application.contextPath}/productManagement/createNewBeverage.xhtml" rendered="#{cc.attrs.pageName == 'createNewBeverage'}" />
+                <p:menuitem value="Create New Box" url="#{application.contextPath}/productManagement/createNewBox.xhtml" rendered="#{cc.attrs.pageName == 'createNewBox'}" />
+                
                 <p:menuitem value="Sales Management" rendered="#{cc.attrs.pageName == 'promo' }" />
-                <p:menuitem value="Option" url="#{application.contextPath}/salesManagement/viewAllPromotions.xhtml" rendered="#{cc.attrs.pageName == 'promo'}" />
+                <p:menuitem value="View All Promotions" url="#{application.contextPath}/salesManagement/viewAllPromotions.xhtml" rendered="#{cc.attrs.pageName == 'promo'}" />
                 
                 <p:menuitem value="Other" rendered="#{cc.attrs.pageName == 'viewAllArticles' || cc.attrs.pageName == 'ReportManagement' }" />
                 <p:menuitem value="View All Articles" url="#{application.contextPath}/otherManagement/viewAllArticles.xhtml" rendered="#{cc.attrs.pageName == 'viewAllArticles'}" />
-                <p:menuitem value="Option" url="#{application.contextPath}/otherManagement/reportManagement.xhtml" rendered="#{cc.attrs.pageName == 'ReportManagement'}" />
+                <p:menuitem value="Report Management" url="#{application.contextPath}/otherManagement/reportManagement.xhtml" rendered="#{cc.attrs.pageName == 'ReportManagement'}" />
                 
             </p:breadCrumb>
         

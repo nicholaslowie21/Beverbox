@@ -144,7 +144,7 @@ public class SubscriptionResource {
         try {
             Long theSubsId = subscriptionSessionBean.createNewSubscription(newSub, optId, custId, promoCode, cashback);
             theNewSub = subscriptionSessionBean.retrieveSubscriptionBySubscriptionId(theSubsId);
-        } catch (SubscriptionNotFoundException| TransactionNotFoundException | CustomerNotFoundException | PromoCodeNotFoundException | OptionNotFoundException ex) {
+        } catch (SubscriptionNotFoundException| TransactionNotFoundException | CustomerNotFoundException | OptionNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp("Something went missing!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
@@ -160,8 +160,8 @@ public class SubscriptionResource {
             ErrorRsp errorRsp = new ErrorRsp("Ooops! Something went wrong!");
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
-        } catch (InvalidPromotionException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+        } catch (InvalidPromotionException | PromoCodeNotFoundException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid Promotion Code enterred");
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }

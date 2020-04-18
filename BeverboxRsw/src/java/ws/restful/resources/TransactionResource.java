@@ -42,6 +42,7 @@ import util.exception.QuantityNotEnoughException;
 import util.exception.TransactionNotFoundException;
 import ws.restful.model.BevTransaction;
 import ws.restful.model.BuyBevReq;
+import ws.restful.model.BuyBevRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.RetrieveBevTransactions;
 import ws.restful.model.RetrieveSubTransactions;
@@ -145,7 +146,7 @@ public class TransactionResource {
         return Response.status(Response.Status.OK).entity(new RetrieveSubTransactions(subTransactions)).build();
     }
     
-    @Path("createBevTransaction")
+    
     @PUT
     @Produces(MediaType.APPLICATION_JSON)
     @Consumes(MediaType.APPLICATION_JSON)
@@ -162,6 +163,7 @@ public class TransactionResource {
             promoCode = buyBevReq.getPromoCode();
             cashback = buyBevReq.isCashback();
             bevId = buyBevReq.getBevId();
+            System.err.println(bevId);
             custId = buyBevReq.getCustId();
             qty = buyBevReq.getQty();
             email = buyBevReq.getEmail();
@@ -233,7 +235,7 @@ public class TransactionResource {
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         }
         
-        return Response.status(Response.Status.OK).entity(new BevTransaction(thisNewTrans)).build();
+        return Response.status(Response.Status.OK).entity(new BuyBevRsp((new BevTransaction(thisNewTrans)).getTransId())).build();
     }
 
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {

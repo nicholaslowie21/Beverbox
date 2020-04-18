@@ -35,6 +35,12 @@
                     </p:column>
 
                     <p:column headerText="Duration (months)" sortBy="#{option.duration}" filterBy="#{option.duration}" filterMatchMode="contains" style="text-align: center;">
+                        <f:facet name="filter">
+                            <p:selectOneMenu id="selDuration" onchange="PF('dataTableAllOptions').filter()">
+                                <f:selectItem itemValue="#{null}" itemLabel="[Select One]" noSelectionOption="true" />
+                                <f:selectItems value="#{viewOptionsManagedBean.availableDurations}" var="availableDurations" itemValue="#{availableDurations}" itemLabel="#{availableDurations}" />
+                            </p:selectOneMenu>
+                        </f:facet>
                         <h:outputText value="#{option.duration}" />
                     </p:column>                     
                     
@@ -62,7 +68,7 @@
                         <h:outputText value="#{option.description}" />
                     </p:column>
 
-                    <p:column headerText="Action" >
+                    <p:column headerText="Action" style="text-align: center;">
                         <p:commandButton actionListener="#{viewOptionsManagedBean.doUpdateOption}" update="formUpdateOption" oncomplete="PF('dialogUpdateOption').show()" icon="ui-icon-pencil" title="Update">
                             <f:attribute name="optionEntityToUpdate" value="#{option}" />
                         </p:commandButton>

@@ -163,6 +163,7 @@ public class DataInitSessionBean {
     
     public void initializeAdmin() {
         try {
+            adminSessionBeanLocal.createNewAdmin(new Admin("manager", "manager@gmail.com", "password"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Alice", "alice@gmail.com", "admin1"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Ben", "ben@gmail.com", "admin2"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Charlie", "charlie@gmail.com", "admin3"));
@@ -288,10 +289,10 @@ public class DataInitSessionBean {
    
     private void initializeOption() {
         try {
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "For those who savor life's high all year round", 108.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "For those who savor life's high all year round", 114.90, "ALCOHOL"));
         } catch (CreateNewOptionException | InputDataValidationException ex) {
@@ -330,18 +331,18 @@ public class DataInitSessionBean {
     }
     
     public void initializeSubscription() {
-        Subscription s = new Subscription(new Date(), new Date());
-        s.setActive(true);
         try {
+            Subscription s = new Subscription(new Date(), addMonths(new Date(), 3));
+            s.setActive(true);
             subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l,"",false);
             
-            s = new Subscription(new Date(),new Date());
+            s = new Subscription(new Date(), addMonths(new Date(), 6));
             s.setActive(true);
             subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 2l,"",false);
             
-            s = new Subscription(new Date(), new Date());
+            s = new Subscription(new Date(), addMonths(new Date(), 12));
             s.setActive(true);
-            subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 2l,"",false);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 6l, 2l,"",false);
             
             em.flush();
         } catch (InvalidPromotionException | CreateNewSubscriptionException | OptionNotFoundException | CustomerNotFoundException | 
@@ -363,5 +364,10 @@ public class DataInitSessionBean {
         } catch (CreateNewArticleException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+    }
+    
+    public static Date addMonths(Date date, int numMonths){
+        date.setMonth((date.getMonth() + numMonths));
+        return date;
     }
 }
