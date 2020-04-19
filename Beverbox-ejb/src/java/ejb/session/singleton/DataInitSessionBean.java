@@ -270,16 +270,16 @@ public class DataInitSessionBean {
         }
     }
     public void initializeReview(){
-        Review r = new Review("This box is amazing and it changed my life!", 5);
+        Review r = new Review("This box is amazing and it changed my life!", 5, new Date(120,0,10,10,0,0));
         try {
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting", 1);
+            r = new Review("This box is not interesting", 1, new Date(120,0,18,12,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
-            r = new Review("This box is interesting", 3);
+            r = new Review("This box is interesting", 3, new Date(120,1,18,14,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting", 1);
+            r = new Review("This box is not interesting", 1, new Date(120,1,31,20,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is fantastic and it is life!", 5);
+            r = new Review("This box is fantastic and it is life!", 5, new Date(120,2,23,9,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
         } catch (CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);

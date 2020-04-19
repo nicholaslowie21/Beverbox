@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -8,6 +9,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
 import javax.validation.constraints.NotNull;
@@ -26,13 +28,15 @@ public class Review implements Serializable {
     private Long reviewId;
     @Column(nullable = false)
     private String reviewContent;
-    
     @Column(nullable = false)
     @NotNull
     @Positive
     @Min(1)
     @Max(5)
     private Integer reviewRating;
+    @Column(nullable = false)
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date reviewDate;
     
     @ManyToOne
     @JoinColumn(nullable = false)
@@ -46,10 +50,11 @@ public class Review implements Serializable {
     {
     }
     
-    public Review(String reviewContent, Integer reviewRating) 
+    public Review(String reviewContent, Integer reviewRating, Date reviewDate) 
     {
         this.reviewContent = reviewContent;
         this.reviewRating = reviewRating;
+        this.reviewDate = reviewDate;
     }
 
     public Long getReviewId() {
@@ -115,6 +120,14 @@ public class Review implements Serializable {
 
     public void setReviewRating(Integer reviewRating) {
         this.reviewRating = reviewRating;
+    }
+
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
     }
     
 }
