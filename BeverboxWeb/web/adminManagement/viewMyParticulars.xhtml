@@ -1,0 +1,147 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        <ez:Breadcrumb pageName="viewMyParticulars" />
+        
+        <div>
+            
+            <h:form id="myParticulars">
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
+                <h3>View My Particulars</h3>
+                
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="id" value="Admin ID: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="id" value="#{sessionScope.currentAdmin.adminId}" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="id" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="name" value="Name: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="name" value="#{sessionScope.currentAdmin.adminName}" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="name" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="email" value="#{sessionScope.currentAdmin.adminName}" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="email" />
+                    </p:column>
+                </p:row>
+                <p:row>
+                    <p:column>
+                        <p:outputLabel for="password" value="Password: " style="font-weight: bold;" />
+                    </p:column>
+                    <p:column>
+                        <h:outputText id="password" value="#{sessionScope.currentAdmin.adminPassword}" />
+                    </p:column>
+                    <p:column>
+                        <p:message for="password" />
+                    </p:column>
+                </p:row>      
+
+                <p:row>
+                    <p:column colspan="3">
+                        <p:commandButton value="Update My Particulars" actionListener="#{updateParticularsManagedBean.doUpdateParticulars}" update="formUpdateParticulars" oncomplete="PF('dialogUpdateParticulars').show()" >
+                            <f:attribute name="adminToUpdate" value="#{sessionScope.currentAdmin}" />
+                        </p:commandButton>
+                    </p:column>
+                </p:row>
+
+            </h:form>
+            
+            <h:form id="formUpdateParticulars">
+
+                <p:dialog id="dialogUpdateParticulars" widgetVar="dialogUpdateParticulars" header="Update My Particulars" closable="true">
+
+                    <p:messages id="messagesUpdateParticulars" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin ID: " />
+                            </p:column>
+                            <p:column>
+                                <h:outputText value="#{updateParticularsManagedBean.adminToUpdate.adminId}" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Name: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="name" value="#{updateParticularsManagedBean.adminToUpdate.adminName}" required="true" requiredMessage="Name is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Email: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="email" value="#{updateParticularsManagedBean.adminToUpdate.adminEmail}" required="true" requiredMessage="Email is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column>
+                                <h:outputLabel value="Admin Password: " />
+                            </p:column>
+                            <p:column>
+                                <p:inputText id="password" value="#{updateParticularsManagedBean.adminToUpdate.adminPassword}" required="true" requiredMessage="Password is required" />
+                            </p:column>
+                            <p:column>
+                                &nbsp;
+                            </p:column>
+                        </p:row>
+
+                        <p:row>
+                            <p:column colspan="3">
+                                <p:commandButton value="Update" update="@form myParticulars" actionListener="#{updateParticularsManagedBean.updateParticulars}" oncomplete="PF('dialogUpdateParticulars').show();" />
+                            </p:column>
+                        </p:row>
+
+                    </p:panelGrid>
+
+                </p:dialog>
+
+            </h:form>
+            
+        </div>
+        
+    </ui:define>
+</ui:composition>

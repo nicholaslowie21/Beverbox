@@ -133,6 +133,8 @@ public class BeverageResource {
                     transaction.setCustomer(null);
                     
                 }
+                
+                be.getTransactions().clear();
             }
 
             
