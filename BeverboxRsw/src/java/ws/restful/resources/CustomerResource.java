@@ -28,6 +28,7 @@ import util.exception.CustomerNotFoundException;
 import util.exception.InvalidLoginCredentialException;
 import ws.restful.model.CustomerLoginRsp;
 import ws.restful.model.ErrorRsp;
+import ws.restful.model.UpdateCustomerRsp;
 
 /**
  * REST Web Service
@@ -71,6 +72,30 @@ public class CustomerResource {
            customer.getTransactions().clear();
         
         return Response.status(Response.Status.OK).entity(new CustomerLoginRsp(customer)).build();
+    }
+    
+    @Path("updateCustomer")
+    @GET
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.TEXT_PLAIN)
+    public Response updateCustomer(@QueryParam("email") String email, 
+                                @QueryParam("password") String password) {
+        
+        Customer customer = new Customer();
+        
+        try {
+            customer = customerSessionBean.customerLogin(email, password);
+        } catch (InvalidLoginCredentialException ex) {
+            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            
+            return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+        }
+           
+           customer.getReviews().clear();
+           customer.getSubscriptions().clear();
+           customer.getTransactions().clear();
+        
+        return Response.status(Response.Status.OK).entity(new UpdateCustomerRsp(customer)).build();
     }
 
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
