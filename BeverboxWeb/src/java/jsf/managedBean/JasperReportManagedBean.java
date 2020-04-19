@@ -41,7 +41,7 @@ public class JasperReportManagedBean {
             
         try 
         {
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/TransactionReport.jasper");
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/Transasction.jasper");
             OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
         
             JasperRunManager.runReportToPdfStream(reportStream, outputStream, new HashMap<>(), beverboxDataSource.getConnection());
@@ -57,7 +57,7 @@ public class JasperReportManagedBean {
             
         try 
         {
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/Beverbox_subscription.jasper");
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/Subscription.jasper");
             OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
         
             JasperRunManager.runReportToPdfStream(reportStream, outputStream, new HashMap<>(), beverboxDataSource.getConnection());
@@ -74,7 +74,7 @@ public class JasperReportManagedBean {
             
         try 
         {
-            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/CustomerReport.jasper");
+            InputStream reportStream = FacesContext.getCurrentInstance().getExternalContext().getResourceAsStream("/jasperreports/Customer.jasper");
             OutputStream outputStream = FacesContext.getCurrentInstance().getExternalContext().getResponseOutputStream();
         
             JasperRunManager.runReportToPdfStream(reportStream, outputStream, new HashMap<>(), beverboxDataSource.getConnection());
