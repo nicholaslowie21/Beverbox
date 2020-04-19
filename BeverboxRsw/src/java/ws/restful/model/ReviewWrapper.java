@@ -1,11 +1,14 @@
 package ws.restful.model;
 
 import entity.Review;
+import java.util.Date;
 
 public class ReviewWrapper {
 
     private Long reviewId;
     private String reviewContent;
+    private Integer reviewRating;
+    private Date reviewDate;
     private Long boxId;
     private String boxName;
     private Long customerId;
@@ -17,6 +20,8 @@ public class ReviewWrapper {
     {
         this.reviewId = r.getReviewId();
         this.reviewContent = r.getReviewContent();
+        this.reviewRating = r.getReviewRating();
+        this.reviewDate = r.getReviewDate();
         this.boxId = r.getBox().getBoxId();
         this.boxName = r.getBox().getBoxName();
         this.customerId = r.getCustomer().getCustomerId();
@@ -79,6 +84,22 @@ public class ReviewWrapper {
 
     public void setCustomerEmail(String customerEmail) {
         this.customerEmail = customerEmail;
+    }
+
+    public Integer getReviewRating() {
+        return reviewRating;
+    }
+
+    public void setReviewRating(Integer reviewRating) {
+        this.reviewRating = reviewRating;
+    }
+
+    public Date getReviewDate() {
+        return reviewDate;
+    }
+
+    public void setReviewDate(Date reviewDate) {
+        this.reviewDate = reviewDate;
     }
 
 }

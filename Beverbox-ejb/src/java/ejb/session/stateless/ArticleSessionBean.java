@@ -2,8 +2,6 @@ package ejb.session.stateless;
 
 import entity.Article;
 import java.util.List;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.ejb.Stateless;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -62,6 +60,7 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
             Article articleToUpdate = retrieveArticleByArticleId(article.getArticleId());
             articleToUpdate.setArticleTitle(article.getArticleTitle());
             articleToUpdate.setArticleContent(article.getArticleContent());
+            articleToUpdate.setArticleDate(article.getArticleDate());
             articleToUpdate.setArticleImg(article.getArticleImg());
             
         }

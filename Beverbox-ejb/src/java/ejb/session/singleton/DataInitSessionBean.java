@@ -270,16 +270,16 @@ public class DataInitSessionBean {
         }
     }
     public void initializeReview(){
-        Review r = new Review("This box is amazing and it changed my life!");
+        Review r = new Review("This box is amazing and it changed my life!", 5, new Date(120,0,10,10,0,0));
         try {
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting");
+            r = new Review("This box is not interesting", 1, new Date(120,0,18,12,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
-            r = new Review("This box is interesting");
+            r = new Review("This box is interesting", 3, new Date(120,1,18,14,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting");
+            r = new Review("This box is not interesting", 1, new Date(120,1,31,20,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is fantastic and it is life!");
+            r = new Review("This box is fantastic and it is life!", 5, new Date(120,2,23,9,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
         } catch (CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -289,10 +289,10 @@ public class DataInitSessionBean {
    
     private void initializeOption() {
         try {
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [3 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
-            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [6 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, false, "Regular Option suitable as a starter pack", 16.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [03 months]", 3, true, "Regular Option suitable as a starter pack", 22.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, false, "Healthy and exotic flavors to satisfy your cravings", 48.90, "HEALTHY"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "For those who savor life's high all year round", 108.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "For those who savor life's high all year round", 114.90, "ALCOHOL"));
         } catch (CreateNewOptionException | InputDataValidationException ex) {
@@ -358,9 +358,9 @@ public class DataInitSessionBean {
     
     public void initializeArticle() {
         try {
-            articleSessionBeanLocal.createNewArticle(new Article("Title 1","Article 1"));
-            articleSessionBeanLocal.createNewArticle(new Article("Title 2","Article 2"));
-            articleSessionBeanLocal.createNewArticle(new Article("Title 3","Article 3"));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 1","Article 1", new Date(120,03,17,10,0,0)));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 2","Article 2", new Date(120,03,17,11,0,0)));
+            articleSessionBeanLocal.createNewArticle(new Article("Title 3","Article 3", new Date(120,03,17,12,0,0)));
         } catch (CreateNewArticleException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }

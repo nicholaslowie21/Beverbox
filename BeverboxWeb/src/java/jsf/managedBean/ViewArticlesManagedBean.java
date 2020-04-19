@@ -4,6 +4,7 @@ import ejb.session.stateless.ArticleSessionBeanLocal;
 import entity.Article;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -52,6 +53,7 @@ public class ViewArticlesManagedBean implements Serializable {
     {
         try 
         {
+            articleToUpdate.setArticleDate(new Date());
             articleSessionBeanLocal.updateArticle(articleToUpdate);
         } 
         catch (ArticleNotFoundException ex) 

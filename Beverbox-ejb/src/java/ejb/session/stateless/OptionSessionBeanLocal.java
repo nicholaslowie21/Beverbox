@@ -34,4 +34,6 @@ public interface OptionSessionBeanLocal {
 
     public void updateOption (OptionEntity option) throws OptionNotFoundException, InputDataValidationException;
 
+    public List<OptionEntity> retrieveOptionByType(String searchString);
+
 }
