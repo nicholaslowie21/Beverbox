@@ -9,15 +9,15 @@
     
     <ui:define name="content">
         <ez:Breadcrumb pageName="viewMyParticulars" />
+        <h3>View My Particulars</h3>
         
+        <p:graphicImage library="image" name="profilepic.png" height="120" alt="Profile Picture" />
         <div>
-            
             <h:form id="myParticulars">
                 <p:growl>
                     <p:autoUpdate />
                 </p:growl>
-                <h3>View My Particulars</h3>
-                
+
                 <p:row>
                     <p:column>
                         <p:outputLabel for="id" value="Admin ID: " style="font-weight: bold;" />
