@@ -65,9 +65,27 @@ public class BeverageResource {
         try{
             Customer c = customerSessionBean.customerLogin(email, password);
             List<Beverage> beverages = beverageSessionBean.retrieveAllActive();
-            for(Beverage b: beverages){
-                b.getBoxes().clear();
-                b.getTransactions().clear();
+             for(Beverage be:beverages){
+                for(Box box:be.getBoxes()) {
+                    box.getBeverages().clear();
+                    box.getReviews().clear();
+                    for(Review r: box.getReviews()) {
+                        r.setBox(null);
+                        r.getCustomer().getReviews().clear();
+                        r.getCustomer().getSubscriptions().clear();
+                        r.getCustomer().getTransactions().clear();
+                        r.setCustomer(null);
+                    }
+                    be.getTransactions().clear();
+                   
+            }
+                for(Transaction transaction: be.getTransactions()) {
+                    transaction.setBeverage(null);
+                    transaction.setCustomer(null);
+                    
+                }
+                
+                be.getTransactions().clear();
             }
             return Response.status(Response.Status.OK).entity(new RetrieveAllBeveragesRsp(beverages)).build();
         }catch(Exception ex){
