@@ -19,6 +19,7 @@ import javax.ws.rs.core.UriInfo;
 import javax.ws.rs.Produces;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.PUT;
 import javax.ws.rs.QueryParam;
@@ -29,6 +30,7 @@ import util.exception.InvalidLoginCredentialException;
 import ws.restful.model.CustomerLoginRsp;
 import ws.restful.model.ErrorRsp;
 import ws.restful.model.UpdateCustomerRsp;
+import ws.restful.model.UpdateProfileReq;
 
 /**
  * REST Web Service
@@ -96,6 +98,33 @@ public class CustomerResource {
            customer.getTransactions().clear();
         
         return Response.status(Response.Status.OK).entity(new UpdateCustomerRsp(customer)).build();
+    }
+    
+    //@Path("updateProfile")
+    @POST
+    @Produces(MediaType.APPLICATION_JSON)
+    @Consumes(MediaType.APPLICATION_JSON)
+    public Response updateProfile(UpdateProfileReq updateProfileReq) {
+        
+        if (updateProfileReq != null) {
+            try
+            {
+                customerSessionBean.updateCustomer(updateProfileReq.getCustomer());
+                return Response.status(Response.Status.OK).build();
+            }
+            catch(Exception ex)
+            {
+                ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+
+                return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
+            }
+        }
+        else
+        {
+            ErrorRsp errorRsp = new ErrorRsp("Invalid update profile request");
+            
+            return Response.status(Response.Status.BAD_REQUEST).entity(errorRsp).build();
+        }
     }
 
     private CustomerSessionBeanLocal lookupCustomerSessionBeanLocal() {
