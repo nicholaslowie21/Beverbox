@@ -99,6 +99,7 @@ public class DataInitSessionBean {
 
     private List<Beverage> beverages1;
     private List<Beverage> beverages2;
+    private List<Beverage> beverages3;
 
     public DataInitSessionBean() {
     }
@@ -197,34 +198,57 @@ public class DataInitSessionBean {
         try {
             beverages1 = new ArrayList();
             beverages2 = new ArrayList();
-            Long bevId1 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Exotic Bananas", "Banana Drink", "Mexico", "Non-Alcoholic", 10.00, 10, false, 5));
+            beverages3 = new ArrayList();
+            Long bevId1 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Irn Bru", "Orange Drink", "Scotland", "Non-Alcoholic", 10.00, 10, false, 5));
             Beverage bev1 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId1);
-            Long bevId2 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Crazy Cranberry", "Cranberry Drink", "Bolivia", "Non-Alcoholic", 8.00, 10, false, 5));
+            Long bevId2 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Bouvrage", "Cranberry Drink", "Brechin", "Non-Alcoholic", 8.00, 10, false, 5));
             Beverage bev2 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId2);
-            Long bevId3 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Vodka Raspberry", "Vodka and Raspberry Drink", "Russia", "Alcoholic", 12.00, 10, false, 5));
+            Long bevId3 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Baekseju", "Glutinous Rice Drink", "South Korea", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev3 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId3);
-            Long bevId4 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Hawaiian Madness", "Pineapple and Cherry Drink", "Hawaii", "Alcoholic", 12.00, 10, false, 5));
+            Long bevId4 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Insamju", "Medicinal Wine", "South Korea", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev4 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId4);
-            Long bevId5 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Watermelon Tea", "Watermelon and Tea Drink", "Thailand", "Non-Alcoholic", 6.00, 10, false, 5));
-            Beverage bev5 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId5);
-            Long bevId6 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Soju Madness", "Soju Mix Drink", "Korea", "Alcoholic", 12.00, 10, false, 5));
+            Long bevId6 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Hite", "Rice Lager beer", "South Korea", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev6 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId6);
-            Long bevId7 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Sake Swish", "Sake Drink", "Japan", "Alcoholic", 12.00, 10, false, 5));
+            Long bevId7 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Taedonggang", "Brown ale", "North Korea", "Alcoholic", 12.00, 10, false, 5));
             Beverage bev7 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId7);
-            Long bevId8 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Durian Teh Bing", "Durian Drink", "Thailand", "Non-Alcoholic", 8.00, 10, false, 5));
+            Long bevId5 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Vimto", "Watermelon Tonic Drink", "London", "Non-Alcoholic", 6.00, 10, false, 5));
+            Beverage bev5 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId5);
+            Long bevId8 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Evowca Cola", "Cola-flavoured Drink", "Wales", "Non-Alcoholic", 8.00, 10, false, 5));
             Beverage bev8 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId8);
-            Long bevId9 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10, false, 5));
+            Long bevId9 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Munbaeju", "Pear Scented Alcohol", "South Korea", "Alcoholic", 15.00, 10, false, 5));
             Beverage bev9 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId9);
-            Long bevId10 =beverageSessionBeanLocal.createNewBeverage(new Beverage("American Lazlo", "Vegetable Drink", "America", "Non-Alcoholic", 7.00, 10, false, 5));
+            Long bevId10 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Barr", "Lemonade", "Scotland", "Non-Alcoholic", 7.00, 10, false, 5));
             Beverage bev10 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId10);
-            Long bevId11 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Asian madness", "Mixed Fruit Drink", "Myanmar", "Non-Alcoholic", 7.00, 10, false, 5));
+            Long bevId11 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Curry Leaf Tea", "Tea Drink", "London", "Non-Alcoholic", 7.00, 10, false, 5));
             Beverage bev11 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId11);
-            Long bevId12 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Thai Terrific", "Baileys Milk tea Drink", "Thailand", "Alcoholic", 7.00, 10, false, 5));
+            Long bevId12 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Beopju", "Clear Rice Wine", "South Korea", "Alcoholic", 7.00, 10, false, 5));
             Beverage bev12 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId12);
             Long bevId13 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Bombastic Bombay", "Bombay Chai tea Latte", "India", "Non-Alcoholic", 10.00, 10, true, 5));
             Beverage bev13 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId13);
-            Long bevId14 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Sizzling Scotland", "Fizzy Drink", "England", "Alcoholic", 10.00, 10, true, 5));
+            Long bevId14 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Sizzling Scotland", "Fizzy Drink", "England", "Alcoholic", 10.00, 10, false, 5));
             Beverage bev14 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId14);
+            Long bevId15 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10, false, 5));
+            Beverage bev15 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId15);
+            Long bevId16 =beverageSessionBeanLocal.createNewBeverage(new Beverage("PomPom", "Pomegranate Juice", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
+            Beverage bev16 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId16);
+            Long bevId17 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Thai Terrific", "Baileys Milk tea Drink", "Thailand", "Alcoholic", 7.00, 10, false, 5));
+            Beverage bev17 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId17);
+            Long bevId18 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Chai Yen", "Thai Milk Tea Drink", "Thailand", "Non-Alcoholic", 7.00, 10, false, 5));
+            Beverage bev18 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId18);
+            Long bevId19 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10, false, 5));
+            Beverage bev19 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId19);
+            Long bevId20 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Est Cola", "Cola Drink", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
+            Beverage bev20 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId20);
+            Long bevId21 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Soju Madness", "Soju Mix Drink", "South Korea", "Alcoholic", 12.00, 10, false, 5));
+            Beverage bev21 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId21);
+            Long bevId22 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Green Spot", "Non-carbonated Orange Soft Drink", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
+            Beverage bev22 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId22);
+            Long bevId23 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Sake Swish", "Sake Drink", "Japan", "Alcoholic", 12.00, 10, false, 5));
+            Beverage bev23 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId23);
+            Long bevId24 =beverageSessionBeanLocal.createNewBeverage(new Beverage("M-150", "Energy Drink", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
+            Beverage bev24 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId24);
+            Long bevId25 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Manao", "Lime juice soda Drink", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
+            Beverage bev25 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId25);
             beverages1.add(bev1);
             beverages1.add(bev2);
             beverages1.add(bev5);
@@ -239,6 +263,13 @@ public class DataInitSessionBean {
             beverages2.add(bev9);
             beverages2.add(bev12);
             
+            beverages3.add(bev16);
+            beverages3.add(bev18);
+            beverages3.add(bev20);
+            beverages3.add(bev22);
+            beverages3.add(bev24);
+            beverages3.add(bev25);
+            
             
         } catch (CreateNewBeverageException | InputDataValidationException | BeverageNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -248,22 +279,24 @@ public class DataInitSessionBean {
     }
     public void initializeBox() {
         try {
-            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic Europe", "England", "Regular"), beverages1);
+            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic England", "England", "Regular"), beverages1);
             Box box1 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId1);
             
             for(Beverage b: beverages1) {
                 b.getBoxes().add(box1);
             }
             
-            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Amazing Asia", "Asia", "Alcohol"), beverages2);
+            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Klassic Korea", "Korea", "Alcohol"), beverages2);
             Box box2 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId2);
             
             for(Beverage b: beverages2) {
                 b.getBoxes().add(box2);
             }
-            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"), beverages1);
+            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"), beverages3);
             Box box3 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId3);
-            
+            for(Beverage b: beverages3) {
+                b.getBoxes().add(box3);
+            }
             
         } catch (CreateNewBoxException | InputDataValidationException | BoxNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
