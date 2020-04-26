@@ -44,9 +44,6 @@ public class OptionResource {
             List<OptionWrapper> optionWrapper = new ArrayList<>();
             
             for(OptionEntity option: options) {
-//                for(Subscription subscription: option.getSubscriptions()) {
-//                    subscription.setOption(null);
-//                }
                 
                 option.getSubscriptions().clear();
                 optionWrapper.add(new OptionWrapper(option));
@@ -103,19 +100,11 @@ public class OptionResource {
                         uniqueOptions.get(currUniqueIndex).setSharingOptionId(options.get(i).getOptionId());
                         System.out.println("I am in else" + uniqueOptions.get(currUniqueIndex).getName() + " and sharing price " + uniqueOptions.get(currUniqueIndex).getPriceSharing());
                     }
-            };
-            
-//                for (OptionEntity option: options) {
-//                    option.getSubscriptions().clear();
-//                }
+                };
             }
             
             return Response.status(Response.Status.OK).entity(new RetrieveAllOptionsRsp(uniqueOptions)).build();
-//        } catch (Exception ex) {
-//            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
-//            
-//            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-//        }
+
     }
     
     private OptionSessionBeanLocal lookupOptionSessionBeanLocal() {

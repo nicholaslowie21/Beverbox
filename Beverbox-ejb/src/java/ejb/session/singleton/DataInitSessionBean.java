@@ -328,6 +328,9 @@ public class DataInitSessionBean {
             optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "For those who savor life's high all year round", 108.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "For those who savor life's high all year round", 114.90, "ALCOHOL"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [06 months]", 6, false, "A semester-long joyride", 38.90, "REGULAR"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [09 months]", 9, false, "To give you that baby-like vitality", 72.90, "REGULAR"));
+            
         } catch (CreateNewOptionException | InputDataValidationException ex) {
             ex.printStackTrace();
         }
@@ -365,7 +368,11 @@ public class DataInitSessionBean {
     
     public void initializeSubscription() {
         try {
-            Subscription s = new Subscription(new Date(), addMonths(new Date(), 3));
+            Subscription s = new Subscription(addMonths(new Date(), -6), new Date());
+            s.setActive(true);
+            subscriptionSessionBeanLocal.createNewSubscription(s, 3l, 1l,"",false);      
+            
+            s = new Subscription(new Date(), addMonths(new Date(), 3));
             s.setActive(true);
             subscriptionSessionBeanLocal.createNewSubscription(s, 1l, 1l,"",false);
             
