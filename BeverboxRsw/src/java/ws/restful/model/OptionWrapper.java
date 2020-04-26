@@ -11,6 +11,7 @@ public class OptionWrapper {
     private Boolean sharing;
     private String description;
     private Double price;
+    private Boolean active;
     private String type;
     private List<Subscription> subscriptions;
     private Double priceSharing;
@@ -23,6 +24,7 @@ public class OptionWrapper {
         this.sharing = option.getSharing();
         this.description = option.getDescription();
         this.price = option.getPrice();
+        this.active = option.getActive();
         this.type = option.getType();
         this.priceSharing = 0.00;
         this.sharingOptionId = 0l;
