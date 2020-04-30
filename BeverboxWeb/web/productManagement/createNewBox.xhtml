@@ -69,6 +69,18 @@
                                 <p:message for="beverages" />
                             </p:column>
                         </p:row>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Picture: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{fileUploadManagedBean.file}" fileUploadListener="#{fileUploadManagedBean.upload}"/>
+                                    <br />
+                                </h:form>
+                                
+                            </p:column>
+                        </p:row>
                 
                         <p:row>
                             <p:column colspan="3">
