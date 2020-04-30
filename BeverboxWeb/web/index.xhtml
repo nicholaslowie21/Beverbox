@@ -35,11 +35,12 @@
                         <p:graphicImage library="image" name="type 4.jpg" height="200" id="image4" />
                 </p:imageSwitch>
                 <p:panelGrid>
-                    <h3>Welcome staff <h:outputText value="#{sessionScope.currentAdmin.adminName}" />!</h3> 
-                    <h4>This BeverBox Staff application is where you can control the things we offer to our customers!</h4>
-                    <h:outputText value="Here is your current account information:" />
-                    <h:outputText value="ID    : #{sessionScope.currentAdmin.adminId}" /><br />
-                    <h:outputText value="Email : #{sessionScope.currentAdmin.adminEmail}" />
+                    <h1 style="margin:0;">Beverbox</h1>
+                    <h2 style="margin:0;">Beverages from around the world, now at your doorstep</h2>
+                    <h4>Welcome staff <h:outputText value="#{sessionScope.currentAdmin.adminName}" />! This BeverBox Staff application is where you can control the things we offer to our customers!</h4>
+<!--                     <h:outputText value="Here is your current account information:" />
+                   <h:outputText value="ID    : #{sessionScope.currentAdmin.adminId}" /><br />
+                    <h:outputText value="Email : #{sessionScope.currentAdmin.adminEmail}" />-->
                 </p:panelGrid>
                 <p:calendar mode="inline" accesskey="true"></p:calendar>
             </p:panelGrid>

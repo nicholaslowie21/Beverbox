@@ -7,6 +7,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.Temporal;
 
 /**
@@ -22,6 +23,7 @@ public class Article implements Serializable {
     private Long articleId;
     @Column(nullable = false)
     private String articleTitle;
+    @Lob
     @Column(nullable = false)
     private String articleContent;
     @Column

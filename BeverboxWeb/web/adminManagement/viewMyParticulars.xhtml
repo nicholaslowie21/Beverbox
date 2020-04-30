@@ -9,15 +9,15 @@
     
     <ui:define name="content">
         <ez:Breadcrumb pageName="viewMyParticulars" />
+        <h3>View My Particulars</h3>
         
+        <p:graphicImage library="image" name="profilepic.png" height="120" alt="Profile Picture" />
         <div>
-            
             <h:form id="myParticulars">
                 <p:growl>
                     <p:autoUpdate />
                 </p:growl>
-                <h3>View My Particulars</h3>
-                
+
                 <p:row>
                     <p:column>
                         <p:outputLabel for="id" value="Admin ID: " style="font-weight: bold;" />
@@ -45,7 +45,7 @@
                         <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
                     </p:column>
                     <p:column>
-                        <h:outputText id="email" value="#{sessionScope.currentAdmin.adminName}" />
+                        <h:outputText id="email" value="#{sessionScope.currentAdmin.adminEmail}" />
                     </p:column>
                     <p:column>
                         <p:message for="email" />

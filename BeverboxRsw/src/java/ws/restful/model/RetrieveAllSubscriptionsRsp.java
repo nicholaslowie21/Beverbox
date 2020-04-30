@@ -1,23 +1,22 @@
 package ws.restful.model;
 
-import entity.Subscription;
 import java.util.List;
 
 public class RetrieveAllSubscriptionsRsp {
-    private List<Subscription> subscriptions;
+    private List<SubscriptionWrapper> subscriptions;
 
     public RetrieveAllSubscriptionsRsp() {
     }
 
-    public RetrieveAllSubscriptionsRsp(List<Subscription> subscriptions) {
+    public RetrieveAllSubscriptionsRsp(List<SubscriptionWrapper> subscriptions) {
         this.subscriptions = subscriptions;
     }
 
-    public List<Subscription> getSubscriptions() {
+    public List<SubscriptionWrapper> getSubscriptions() {
         return subscriptions;
     }
 
-    public void setSubscriptions(List<Subscription> subscriptions) {
+    public void setSubscriptions(List<SubscriptionWrapper> subscriptions) {
         this.subscriptions = subscriptions;
     }
     

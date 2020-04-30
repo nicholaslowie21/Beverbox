@@ -6,6 +6,7 @@ import ejb.session.stateless.SubscriptionSessionBeanLocal;
 import entity.Customer;
 import entity.OptionEntity;
 import entity.Subscription;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.logging.Level;
@@ -37,6 +38,7 @@ import ws.restful.model.ErrorRsp;
 import ws.restful.model.RenewSubReq;
 import ws.restful.model.RetrieveAllSubscriptionsRsp;
 import ws.restful.model.SubscriptionRsp;
+import ws.restful.model.SubscriptionWrapper;
 
 @Path("Subscription")
 public class SubscriptionResource {
@@ -58,15 +60,31 @@ public class SubscriptionResource {
         try {
             Customer c = customerSessionBean.customerLogin(email, password);
             List<Subscription> subscriptions = subscriptionSessionBean.retrieveAllActiveSubscriptionsByCustomerId(c.getCustomerId());
-//            List<Subscription> subscriptions = subscriptionSessionBean.retrieveAllSubscriptions();
+            List<SubscriptionWrapper> subscriptionsWrapper = new ArrayList<>();
+            System.out.println("I am before for loop");
+//            SubscriptionWrapper testWrapper = new SubscriptionWrapper(subscriptions.get(0));
+//            System.out.println("after creating subscription wrapper");
+//            subscriptionsWrapper.add(testWrapper);
+//            System.out.println("after adding one test Wrapper to arraylist");
             
-            for (Subscription subscription: subscriptions) {
-                subscription.setCustomer(null);
-                subscription.setTransaction(null);
-                subscription.setOption(null);
+            for (Subscription subs: subscriptions) {
+                subscriptionsWrapper.add(new SubscriptionWrapper(subs));
             }
             
-            return Response.status(Response.Status.OK).entity(new RetrieveAllSubscriptionsRsp(subscriptions)).build();
+//            for (Subscription subscription: subscriptions) {
+//                System.out.println("I am before setting to null??");
+//                subscription.setCustomer(null);
+//                System.out.println("I am before setting transaction to null??");
+//                subscription.setTransaction(null);
+//                System.out.println("I am before setting option to null??");
+//                subscription.setOption(null);
+//                System.out.println("I am after setting option to null??");
+//                
+//                subscriptionsWrapper.add(new SubscriptionWrapper(subscription));
+//                System.out.println("I am at each subscription aft retrieval from database");
+//            }
+            
+            return Response.status(Response.Status.OK).entity(new RetrieveAllSubscriptionsRsp(subscriptionsWrapper)).build();
         } catch (InvalidLoginCredentialException | CustomerNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
             
@@ -77,6 +95,7 @@ public class SubscriptionResource {
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         } catch (Exception ex) {
             ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            System.out.println("There is an exception error" + ex.getMessage());
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }

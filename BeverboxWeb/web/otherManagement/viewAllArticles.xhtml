@@ -21,13 +21,13 @@
                 
                 <h:panelGroup id="listOfArticles">
                     <ui:repeat value="#{viewArticlesManagedBean.articles}" var="article">
-                        <p:panel header="#{article.articleTitle}">
-                            <h:outputText value="Last updated: " />
-                            <h:outputText value="#{article.articleDate}" >
-                                <f:convertDateTime pattern="EEEEEEEE, MMM dd yyyy HH:mm" />
+                        <p:panel header="#{article.articleTitle}" style="font-size:15px;">
+                            <h:outputText value="Last updated: " style="background-color: gold; font-family: monospace; font-size:13px;" />
+                            <h:outputText value="#{article.articleDate}" style="background-color: gold; font-family: monospace; font-size:13px;" >
+                                <f:convertDateTime pattern="MMM dd yyyy, HH:mm" />
                             </h:outputText>
                             <br />
-                            <h:outputText value="#{article.articleContent}" escape="false" />
+                            <h:outputText value="#{article.articleContent}" escape="false" style="font-size: 14px;" />
                             
                             <f:facet name="actions">
                                 <p:commandButton actionListener="#{viewArticlesManagedBean.doUpdateArticle}" update="formUpdateArticle" oncomplete="PF('dialogUpdateArticle').show()" icon="ui-icon-pencil" title="Update">
