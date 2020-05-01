@@ -86,6 +86,12 @@ public class PromotionSessionBean implements PromotionSessionBeanLocal {
         Promotion temp;
         try{
             temp = (Promotion) query.getSingleResult();
+            if(temp!=null) {
+                if(!temp.isActive()){
+                    throw new PromoCodeNotFoundException("Promo Code is invalid!");
+                }
+                    
+            }
         }catch(NoResultException ex){
             throw new PromoCodeNotFoundException("No such promo code found!");
         }
