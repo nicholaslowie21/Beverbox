@@ -7,6 +7,7 @@ package jsf.managedBean;
 
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import entity.Beverage;
+import java.io.IOException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +19,7 @@ import javax.inject.Named;
 import javax.enterprise.context.RequestScoped;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.event.ActionEvent;
 import util.exception.BeverageNotFoundException;
 import util.exception.CreateNewBeverageException;
@@ -61,13 +63,20 @@ public class CreateNewBeverageManagedBean {
             Beverage beverage = beverageSessionBeanLocal.retrieveBeverageByBeverageId(beverageId);
             beverages.add(beverage);
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Beverage created successfully (Beverage ID: " + beverageId + ")", null));
+            FacesContext facesContext = FacesContext.getCurrentInstance();
+            Flash flash = facesContext.getExternalContext().getFlash();
+            flash.setKeepMessages(true);
+            facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Beverage created successfully (Beverage ID: " + beverageId + ")", null));
+            FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllBeverage.xhtml");
+            
         }
         catch(InputDataValidationException ex)
         {
             FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "An error has occurred while creating the new beverage: " + ex.getMessage(), null));
         } catch (BeverageNotFoundException | CreateNewBeverageException ex) {
             Logger.getLogger(BoxManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(CreateNewBeverageManagedBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
     

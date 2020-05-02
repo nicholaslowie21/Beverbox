@@ -76,6 +76,7 @@ public class ViewOptionsManagedBean implements Serializable {
         try {
             if (allowChange) {
                 optionSessionBeanLocal.updateOption(selectedOptionEntityToUpdate);
+                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "Option updated successfully", null));
             } else {
                 FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Update option not possible as there are subscriptions attached to the option", null));
             }
