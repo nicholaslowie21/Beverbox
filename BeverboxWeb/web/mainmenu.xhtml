@@ -49,9 +49,10 @@
                     </p:submenu>
                     <p:submenu label="Other" rendered="#{sessionScope.isLogin == true}"  >
                         <p:column>
-                            <p:submenu style="display: none">
+                            <p:submenu style="display: none; ">
                                 <p:menuitem value="Report Management" outcome="/otherManagement/reportManagement.xhtml" icon="fa fa-area-chart" />
                                 <p:menuitem value="Article Management" outcome="/otherManagement/viewAllArticles.xhtml" icon="fa fa-comments-o" />
+                                <p:menuitem value="Feedback" outcome="/otherManagement/viewAllFeedback.xhtml" icon="fa fa-thumbs-o-up" />
                             </p:submenu>
                         </p:column>
 

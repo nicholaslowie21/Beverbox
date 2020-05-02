@@ -14,7 +14,7 @@
             <h:form>
 
                         <p:linkButton outcome="createNewBeverage.xhtml" value="Create New Beverage" style="margin-right:20px;" icon="fa fa-plus" />                                       
-                 
+                        <p:commandButton oncomplete="PF('dialogUploadBevPicture').show()" value="Upload Picture" icon="fa fa-plus" style="margin-right:20px;" />
             </h:form>
             <br></br>
             <h:form id="formAllBeverages">
@@ -245,6 +245,32 @@
                     </p:panelGrid>
 
                 </p:dialog>
+            </h:form>
+            
+            <h:form id="formUploadBevPicture">
+
+                <p:dialog id="dialogUploadBevPicture" widgetVar="dialogUploadBevPicture" header="Upload Beverage Picture" closable="true">
+
+                    <p:messages id="uploadBevPic" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Picture: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{fileUploadManagedBean.file}" fileUploadListener="#{fileUploadManagedBean.upload}"/>
+                                    <br />
+                                </h:form>
+                                
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </p:dialog>
+
             </h:form>
         </div>
         

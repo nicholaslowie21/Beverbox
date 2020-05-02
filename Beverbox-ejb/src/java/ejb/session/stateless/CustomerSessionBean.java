@@ -99,6 +99,7 @@ public class CustomerSessionBean implements CustomerSessionBeanLocal {
             customerToUpdate.setAccumulatedCashback(customer.getAccumulatedCashback());
             customerToUpdate.setCustomerCCNum(customer.getCustomerCCNum());
             customerToUpdate.setCustomerCVV(customer.getCustomerCVV());
+            customerToUpdate.setAddress(customer.getAddress());
         }
         else
         {

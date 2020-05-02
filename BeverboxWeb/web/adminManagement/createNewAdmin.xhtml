@@ -24,10 +24,8 @@
                             <p:column>
                                 <p:inputText id="name" value="#{createNewAdminManagedBean.newAdmin.adminName}" placeholder="E.g. John Doe" required="true" requiredMessage="Admin Name is required!" />
                             </p:column>
-                            <p:column>
-                                <p:message for="name" />
-                            </p:column>
                         </p:row>
+                        <br/>
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="email" value="Email: " style="font-weight: bold;" />
@@ -35,22 +33,26 @@
                             <p:column>
                                 <p:inputText id="email" value="#{createNewAdminManagedBean.newAdmin.adminEmail}" placeholder="xxx@gmail.com" required="true" requiredMessage="Email is required!" />
                             </p:column>
-                            <p:column>
-                                <p:message for="email" />
-                            </p:column>
                         </p:row>
+                        <br/>
                         <p:row>
                             <p:column>
                                 <p:outputLabel for="adminPassword" value="Password: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:inputText id="adminPassword" value="#{createNewAdminManagedBean.newAdmin.adminPassword}" required="true" requiredMessage="Password is required!" />
+                                <p:inputText type="password" id="adminPassword" value="#{createNewAdminManagedBean.newAdmin.adminPassword}" required="true" requiredMessage="Password is required!" />
+                            </p:column>
+                        </p:row>
+                        <br/>
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel for="confirmPassword" value="Confirm Password: " style="font-weight: bold;" />
                             </p:column>
                             <p:column>
-                                <p:message for="adminPassword" />
+                                <p:inputText type="password" id="confirmPassword" value="#{createNewAdminManagedBean.confirmPassword}" required="true" requiredMessage="Confirm Password is required!" />
                             </p:column>
                         </p:row>      
-                        
+                        <br/>
                         <p:row>
                             <p:column colspan="3">
                                 <p:commandButton type="reset" value="Clear" />&nbsp;

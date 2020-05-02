@@ -34,10 +34,11 @@
                 <p:menuitem value="Sales Management" rendered="#{cc.attrs.pageName == 'promo' }" />
                 <p:menuitem value="View All Promotions" url="#{application.contextPath}/salesManagement/viewAllPromotions.xhtml" rendered="#{cc.attrs.pageName == 'promo'}" />
                 
-                <p:menuitem value="Other" rendered="#{cc.attrs.pageName == 'viewAllArticles' || cc.attrs.pageName == 'ReportManagement' }" />
+                <p:menuitem value="Other" rendered="#{cc.attrs.pageName == 'viewAllArticles' || cc.attrs.pageName == 'ReportManagement' || cc.attrs.pageName == 'viewAllFeedback'}" />
                 <p:menuitem value="View All Articles" url="#{application.contextPath}/otherManagement/viewAllArticles.xhtml" rendered="#{cc.attrs.pageName == 'viewAllArticles'}" />
                 <p:menuitem value="Report Management" url="#{application.contextPath}/otherManagement/reportManagement.xhtml" rendered="#{cc.attrs.pageName == 'ReportManagement'}" />
-                
+                <p:menuitem value="Create New Article" url="#{application.contextPath}/otherManagement/createNewArticle.xhtml" rendered="#{cc.attrs.pageName == 'createNewArticle'}" />
+                <p:menuitem value="View All Feedback" url="#{application.contextPath}/otherManagement/viewAllFeedback.xhtml" rendered="#{cc.attrs.pageName == 'viewAllFeedback'}" />
             </p:breadCrumb>
         
         </h:form>

@@ -174,11 +174,11 @@ public class DataInitSessionBean {
     }
     
     public void initializePromo(){
-        Promotion promo = new Promotion("promoName 1", "NEW MEMBER", 10, "promoCode 1");
+        Promotion promo = new Promotion("WelcomePromo", "NEW MEMBER", 10, "HiBevey");
         em.persist(promo);
         em.flush();
         
-        promo = new Promotion("promoName 2", "GENERAL", 10, "promoCode 2");
+        promo = new Promotion("Chinese New Year", "GENERAL", 10, "CNY2020");
         em.persist(promo);
         em.flush();
     }
