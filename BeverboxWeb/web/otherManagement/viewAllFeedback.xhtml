@@ -1,0 +1,42 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"
+                template="/template/defaultTemplate.xhtml"
+                xmlns:ez="http://xmlns.jcp.org/jsf/composite/ezcomp"
+                xmlns:p="http://primefaces.org/ui">
+    
+    <ui:define name="content">
+        <ez:Breadcrumb pageName="viewAllFeedback" />        
+        <h3>View All Feedback</h3>
+
+        <h:form id="formFeedback">
+            <p:messages id="messages" redisplay="false" closable="true" />
+                
+                <h:panelGroup id="listOfFeedback">
+                    <ui:repeat value="#{viewAllFeedbackManagedBean.feedbacks}" var="feedback">
+                        <p:panel header="#{feedback.feedbackTitle}" style="font-size:15px;">
+
+                            <h:outputText value="Name: #{feedback.name}" style="background-color: gold; font-family: monospace; font-size:13px;" />&nbsp;
+                            <h:outputText value="Email: #{feedback.email}" style="background-color: gold; font-family: monospace; font-size:13px;" /><br></br>
+                            <h:outputText value="#{feedback.feedbackText}" style="font-family: monospace; font-size:13px;" />
+                            
+                            <f:facet name="actions">
+                                <p:commandButton actionListener="#{viewAllFeedbackManagedBean.deleteFeedback}" action="viewAllFeedback" update="formFeedback:listOfFeedback formFeedback:messages" icon="ui-icon-trash" title="Delete">
+                                    <f:attribute name="feedbackToDelete" value="#{feedback}" />
+                                    <p:confirm header="Confirmation" message="Are you sure you want to delete #{feedback.feedbackTitle} ?" icon="ui-icon-alert" />
+                                </p:commandButton>
+
+                            </f:facet>
+                            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+                                <p:commandButton value="Yes" type="button" oncomplete="PF('viewAllFeedback').reload()" styleClass="ui-confirmdialog-yes" icon="ui-icon-check" />
+                                <p:commandButton value="No" type="button" styleClass="ui-confirmdialog-no" icon="ui-icon-close" />
+                            </p:confirmDialog>
+                        </p:panel>
+                    </ui:repeat>
+                </h:panelGroup>
+        </h:form>
+        
+    </ui:define>
+</ui:composition>
