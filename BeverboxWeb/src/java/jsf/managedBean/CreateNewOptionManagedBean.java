@@ -2,13 +2,17 @@ package jsf.managedBean;
 
 import ejb.session.stateless.OptionSessionBeanLocal;
 import entity.OptionEntity;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.annotation.PostConstruct;
 import javax.ejb.EJB;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.event.ActionEvent;
 import javax.inject.Named;
 import javax.faces.view.ViewScoped;
@@ -71,7 +75,15 @@ public class CreateNewOptionManagedBean implements Serializable {
             
             if (!option2Exist) {
                 Long option2Id = optionSessionBeanLocal.createNewOption(new OptionEntity(name, duration, false, description, price, type));
-                FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New option created successfully (Product ID: " + option2Id + ")", null));
+                FacesContext facesContext = FacesContext.getCurrentInstance();
+                Flash flash = facesContext.getExternalContext().getFlash();
+                flash.setKeepMessages(true);
+                facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New option created successfully (Option ID: " + option2Id + ")", null));
+                try {
+                    FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllOption.xhtml");
+                } catch (IOException ex) {
+                    Logger.getLogger(CreateNewOptionManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
             } else {
                 throw new CreateNewOptionException("Option without sharing already exists");
             }

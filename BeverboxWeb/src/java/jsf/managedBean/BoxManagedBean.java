@@ -20,6 +20,7 @@ import javax.ejb.EJB;
 import javax.inject.Named;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.context.Flash;
 import javax.faces.event.ActionEvent;
 import javax.faces.view.ViewScoped;
 import javax.inject.Inject;
@@ -123,7 +124,15 @@ public class BoxManagedBean implements Serializable {
             }
             boxes.add(newBox);
             
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));
+           FacesContext facesContext = FacesContext.getCurrentInstance();
+           Flash flash = facesContext.getExternalContext().getFlash();
+           flash.setKeepMessages(true);
+           facesContext.addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, "New Box created successfully (Box ID: " + boxId + ")", null));               
+           try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect("viewAllBox.xhtml");
+           } catch (IOException ex) {
+                Logger.getLogger(CreateNewOptionManagedBean.class.getName()).log(Level.SEVERE, null, ex);
+           }
         }
         catch(InputDataValidationException ex)
         {
