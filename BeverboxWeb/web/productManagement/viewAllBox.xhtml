@@ -15,7 +15,7 @@
             <h:form>
 
                         <p:linkButton outcome="createNewBox.xhtml" value="Create New Box" style="margin-right:20px;" icon="fa fa-plus" />                                       
-                 
+                        <p:commandButton oncomplete="PF('dialogUploadBoxPicture').show()" value="Upload Picture" icon="fa fa-plus" style="margin-right:20px;" />
             </h:form>
             <br></br>
             <h:form id="formAllBoxes">
@@ -166,6 +166,32 @@
                     </p:panelGrid>
 
                 </p:dialog>
+            </h:form>
+            
+            <h:form id="formUploadBoxPicture">
+
+                <p:dialog id="dialogUploadBoxPicture" widgetVar="dialogUploadBoxPicture" header="Upload Box Picture" closable="true">
+
+                    <p:messages id="uploadBoxPic" redisplay="false" />
+
+                    <p:panelGrid>
+
+                        <p:row>
+                            <p:column>
+                                <p:outputLabel value="Picture: " style="font-weight: bold;" />
+                            </p:column>
+                            <p:column>
+                                <h:form enctype="multipart/form-data">        
+                                    <p:fileUpload value="#{fileUploadManagedBean.file}" fileUploadListener="#{fileUploadManagedBean.upload}"/>
+                                    <br />
+                                </h:form>
+                                
+                            </p:column>
+                        </p:row>
+                    </p:panelGrid>
+
+                </p:dialog>
+
             </h:form>
         </div>
         
