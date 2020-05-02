@@ -13,6 +13,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.Lob;
 import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
@@ -37,6 +38,7 @@ public class Box implements Serializable {
     private String boxOrigin;
     @Column(nullable = true, length = 32)
     @Size(max = 1000)
+    @Lob
     private String boxDesc;
     @Column(nullable = false)
     private Boolean active = true;

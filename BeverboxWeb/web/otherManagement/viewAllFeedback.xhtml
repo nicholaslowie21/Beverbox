@@ -18,6 +18,7 @@
                     <ui:repeat value="#{viewAllFeedbackManagedBean.feedbacks}" var="feedback">
                         <p:panel header="#{feedback.feedbackTitle}" style="font-size:15px;">
 
+                            <h:outputText value="Date: #{feedback.feedbackDate}" style="background-color: gold; font-family: monospace; font-size:13px;" /><br/>
                             <h:outputText value="Name: #{feedback.name}" style="background-color: gold; font-family: monospace; font-size:13px;" />&nbsp;
                             <h:outputText value="Email: #{feedback.email}" style="background-color: gold; font-family: monospace; font-size:13px;" /><br></br>
                             <h:outputText value="#{feedback.feedbackText}" style="font-family: monospace; font-size:13px;" />
