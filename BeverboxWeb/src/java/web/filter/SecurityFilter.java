@@ -64,7 +64,7 @@ public class SecurityFilter implements Filter {
                         || requestServletPath.equals("/adminManagement/viewAllAdmins.xhtml")){
                         
                     Admin currentAdmin = (Admin)httpSession.getAttribute("currentAdmin");
-                    if(!currentAdmin.getAdminName().equals("manager")){
+                    if(!currentAdmin.getAdminName().equals("Manager")){
                         httpServletResponse.sendRedirect(CONTEXT_ROOT + "/accessRightError.xhtml");
                     }
                 }
