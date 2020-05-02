@@ -6,11 +6,14 @@
 package entity;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
+import javax.persistence.Temporal;
 
 /**
  *
@@ -30,7 +33,10 @@ public class Feedback implements Serializable {
     @Column(nullable = false)
     private String feedbackTitle;
     @Column(nullable=false)
+    @Lob
     private String feedbackText;
+    @Temporal(javax.persistence.TemporalType.TIMESTAMP)
+    private Date feedbackDate;
 
     public Feedback() {
     }
@@ -40,6 +46,7 @@ public class Feedback implements Serializable {
         this.email = email;
         this.feedbackTitle = feedbackTitle;
         this.feedbackText = feedbackText;
+        this.feedbackDate = new Date();
     }
 
     public String getFeedbackTitle() {
@@ -106,6 +113,14 @@ public class Feedback implements Serializable {
     @Override
     public String toString() {
         return "entity.Feedback[ id=" + feedbackId + " ]";
+    }
+
+    public Date getFeedbackDate() {
+        return feedbackDate;
+    }
+
+    public void setFeedbackDate(Date feedbackDate) {
+        this.feedbackDate = feedbackDate;
     }
     
 }

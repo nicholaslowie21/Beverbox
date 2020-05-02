@@ -5,6 +5,7 @@ import ejb.session.stateless.ArticleSessionBeanLocal;
 import ejb.session.stateless.BeverageSessionBeanLocal;
 import ejb.session.stateless.BoxSessionBeanLocal;
 import ejb.session.stateless.CustomerSessionBeanLocal;
+import ejb.session.stateless.FeedbackSessionBeanLocal;
 import ejb.session.stateless.PromotionSessionBeanLocal;
 import ejb.session.stateless.ReviewSessionBeanLocal;
 import entity.Beverage;
@@ -17,6 +18,7 @@ import ejb.session.stateless.TransactionSessionBean;
 import ejb.session.stateless.TransactionSessionBeanLocal;
 import entity.Admin;
 import entity.Article;
+import entity.Feedback;
 import entity.OptionEntity;
 import entity.Promotion;
 import entity.Review;
@@ -41,6 +43,7 @@ import util.exception.CreateNewArticleException;
 import util.exception.CreateNewBeverageException;
 import util.exception.CreateNewBoxException;
 import util.exception.CreateNewCustomerException;
+import util.exception.CreateNewFeedbackException;
 import util.exception.CreateNewReviewException;
 import util.exception.CustomerNotFoundException;
 import util.exception.CreateNewOptionException;
@@ -61,6 +64,9 @@ import util.exception.UnknownPersistenceException;
 @LocalBean
 @Startup
 public class DataInitSessionBean {
+
+    @EJB
+    private FeedbackSessionBeanLocal feedbackSessionBeanLocal;
 
     @EJB(name = "AdminSessionBeanLocal")
     private AdminSessionBeanLocal adminSessionBeanLocal;
@@ -117,6 +123,7 @@ public class DataInitSessionBean {
         List<Article> articles = articleSessionBeanLocal.retrieveAllArticles();
         List<Transaction> transactions = transactionSessionBeanLocal.retrieveAllTransaction();
         List<Subscription> subscriptions = subscriptionSessionBeanLocal.retrieveAllSubscriptions();
+        List<Feedback> feedbacks = feedbackSessionBeanLocal.retrieveAllFeedback();
         
         if (admins.isEmpty()) {
             initializeAdmin();
@@ -159,12 +166,16 @@ public class DataInitSessionBean {
             initializeTransaction();
        
         }
+        
+        if(feedbacks.isEmpty()) {
+            initializeFeedback();
+        }
         em.flush();
     }
     
     public void initializeAdmin() {
         try {
-            adminSessionBeanLocal.createNewAdmin(new Admin("manager", "manager@gmail.com", "password"));
+            adminSessionBeanLocal.createNewAdmin(new Admin("Manager", "manager@gmail.com", "password"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Alice", "alice@gmail.com", "admin1"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Ben", "ben@gmail.com", "admin2"));
             adminSessionBeanLocal.createNewAdmin(new Admin("Charlie", "charlie@gmail.com", "admin3"));
@@ -174,11 +185,15 @@ public class DataInitSessionBean {
     }
     
     public void initializePromo(){
-        Promotion promo = new Promotion("WelcomePromo", "NEW MEMBER", 10, "HiBevey");
+        Promotion promo = new Promotion("Welcome Promotion", "NEW MEMBER", 10, "HIBevey");
         em.persist(promo);
         em.flush();
         
         promo = new Promotion("Chinese New Year", "GENERAL", 10, "CNY2020");
+        em.persist(promo);
+        em.flush();
+        
+        promo = new Promotion("Healthy Box Buffs", "GENERAL", 15, "HEALTH15");
         em.persist(promo);
         em.flush();
     }
@@ -186,7 +201,7 @@ public class DataInitSessionBean {
     public void initializeCust() {
         
         try {
-            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "abc road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "Password"));
             customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123, "def road"));
             customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133, "ghhi road"));
         } catch (CreateNewCustomerException ex) {
@@ -270,7 +285,6 @@ public class DataInitSessionBean {
             beverages3.add(bev24);
             beverages3.add(bev25);
             
-            
         } catch (CreateNewBeverageException | InputDataValidationException | BeverageNotFoundException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -279,20 +293,20 @@ public class DataInitSessionBean {
     }
     public void initializeBox() {
         try {
-            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic England", "England", "Regular"), beverages1);
+            Long boxId1 = boxSessionBeanLocal.createNewBox(new Box("Exotic England", "England", "January 2020 REGULAR box to make you feel like bundling up in winter"), beverages1);
             Box box1 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId1);
             
             for(Beverage b: beverages1) {
                 b.getBoxes().add(box1);
             }
             
-            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Klassic Korea", "Korea", "Alcohol"), beverages2);
+            Long boxId2 = boxSessionBeanLocal.createNewBox(new Box("Klassic Korea", "Korea", "Say annyeonghaseyo to our February 2020 ALCOHOL box"), beverages2);
             Box box2 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId2);
             
             for(Beverage b: beverages2) {
                 b.getBoxes().add(box2);
             }
-            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "Regular"), beverages3);
+            Long boxId3 = boxSessionBeanLocal.createNewBox(new Box("Terrific Thailand", "Thailand", "March 2020 REGULAR box for those who miss Thailand's abundant night markets"), beverages3);
             Box box3 = boxSessionBeanLocal.retrieveBoxByBoxId(boxId3);
             for(Beverage b: beverages3) {
                 b.getBoxes().add(box3);
@@ -303,17 +317,19 @@ public class DataInitSessionBean {
         }
     }
     public void initializeReview(){
-        Review r = new Review("This box is amazing and it changed my life!", 5, new Date(120,0,10,10,0,0));
+        Review r = new Review("This box is amazing and it changed my life!", 5, new Date(120,1,10,10,0,0));
         try {
             reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting", 1, new Date(120,0,18,12,0,0));
+            r = new Review("This box does not remind me of England", 1, new Date(120,1,18,12,0,0));
             reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
-            r = new Review("This box is interesting", 3, new Date(120,1,18,14,0,0));
-            reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is not interesting", 1, new Date(120,1,31,20,0,0));
-            reviewSessionBeanLocal.createNewReview(r, 1L, 1L);
-            r = new Review("This box is fantastic and it is life!", 5, new Date(120,2,23,9,0,0));
-            reviewSessionBeanLocal.createNewReview(r, 1L, 2L);
+            r = new Review("This box is interesting", 3, new Date(120,2,18,14,0,0));
+            reviewSessionBeanLocal.createNewReview(r, 2L, 2L);
+            r = new Review("This box is not interesting", 1, new Date(120,2,31,20,0,0));
+            reviewSessionBeanLocal.createNewReview(r, 2L, 3L);
+            r = new Review("This box has so many interesting flavors from Thailand, a crowd favorite for sure!", 5, new Date(120,3,23,9,0,0));
+            reviewSessionBeanLocal.createNewReview(r, 3L, 2L);
+            r = new Review("I love how you guys curated this box!", 5, new Date(120,3,23,10,0,0));
+            reviewSessionBeanLocal.createNewReview(r, 2L, 1L);
         } catch (CustomerNotFoundException | BoxNotFoundException | CreateNewReviewException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -328,6 +344,8 @@ public class DataInitSessionBean {
             optionSessionBeanLocal.createNewOption(new OptionEntity("Happy Healthy [06 months]", 6, true, "Healthy and exotic flavors to satisfy your cravings", 54.90, "HEALTHY"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, false, "For those who savor life's high all year round", 108.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [12 months]", 12, true, "For those who savor life's high all year round", 114.90, "ALCOHOL"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [09 months]", 9, false, "Say aloha to our popular alcohol box", 88.90, "ALCOHOL"));
+            optionSessionBeanLocal.createNewOption(new OptionEntity("Aloha Alcohol [09 months]", 9, true, "Say aloha to our popular alcohol box", 94.90, "ALCOHOL"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [06 months]", 6, false, "A semester-long joyride", 38.90, "REGULAR"));
             optionSessionBeanLocal.createNewOption(new OptionEntity("Really Regular [09 months]", 9, false, "To give you that baby-like vitality", 72.90, "REGULAR"));
             
@@ -340,21 +358,20 @@ public class DataInitSessionBean {
     
     public void initializeTransaction() {
         try {
-            
-            Transaction t = new Transaction("1234", 10.0, 123, new Date());
+            Transaction t = new Transaction("1234 5678 9101 1234", 10.0, 123, new Date());
             t.setBeverage(em.find(Beverage.class,1l));
             t.setBevNumber(1);
             Customer c = em.find(Customer.class,1l);
             t.setCustomer(c);
-            transactionSessionBeanLocal.createNewTransaction(t);
+            transactionSessionBeanLocal.createNewTransaction(t);  
             
-            t = new Transaction("1234",15.0,321,new Date());
+            t = new Transaction("1234 5678 9101 1234",15.0,321,new Date());
             t.setBeverage(em.find(Beverage.class,2l));
             t.setBevNumber(2);
             t.setCustomer(c);
             transactionSessionBeanLocal.createNewTransaction(t);
             
-            t = new Transaction("1234",15.0,321,new Date());
+            t = new Transaction("1235 5679 9131 1213",15.0,321,new Date());
             c = em.find(Customer.class,2l);
             t.setBeverage(em.find(Beverage.class,2l));
             t.setBevNumber(2);
@@ -407,6 +424,17 @@ public class DataInitSessionBean {
             article = "<h3>Chai Tea</h3><p>In many parts of the world, “<em>chai</em>” is simply the word for tea. However, in the Western world, the word chai has become synonymous with a type of fragrant, spicy Indian tea more accurately referred to as masala chai. What’s more, this beverage may have benefits for heart health, digestion, controlling blood sugar levels and more. This article explains what you need to know about chai tea and its potential benefits.</p><p>Chai tea is a sweet and spicy tea renowned for its fragrant aroma. Depending on where you come from, you may recognize it as masala chai. However, for the purpose of clarity, this article will use the term “chai tea” throughout. Chai tea is made from a combination of black tea, gingerand other spices. The most popular spices include cardamom, cinnamon, fennel, black pepper and cloves, although star anise, coriander seeds and peppercorns are other well-liked options. Unlike regular tea, which is brewed with water, chai tea is traditionally brewed using both warm water and warm milk. It also tends to be sweetened to varying degrees. Benefits of Chai tea include:</p><ol><li>It May Help Improve Heart Health</li><li>Chai Tea May Reduce Blood Sugar Levels</li><li>It May Reduce Nausea and Improve Digestion</li><li>It May Help You Lose Weight</li></ol><p>Chai tea is a fragrant, spicy tea that may help boost heart health, reduce blood sugar levels, aid digestion and help with weight loss.</p>";
             articleSessionBeanLocal.createNewArticle(new Article("What is Chai Tea and Its Benefits?", article, new Date(120,03,17,12,0,0)));
         } catch (CreateNewArticleException ex) {
+            Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+    
+    public void initializeFeedback() {
+        try {
+            feedbackSessionBeanLocal.createNewFeedback(new Feedback("Jane Tan", "def@gmail.com", "Changing Address", "Hello! I have been subscribing to Beverbox Healthy Boxes for 5 months now and I love it! However, I have just moved to a new address, how can I update this so that the box will be sent to the correct place? Thank you."));
+            feedbackSessionBeanLocal.createNewFeedback(new Feedback("Tan Wee Yew", "twy@u.nus.edu", "Wrong Box Delivery", "Hello, I have received the new box today in my house. However, I just noticed that this is a Regular box, while I have subscribed to a 6-month Alcohol Box. Do let me know! Thank you!"));
+            feedbackSessionBeanLocal.createNewFeedback(new Feedback("Jenny Lewis", "jennylewis@gmail.com", "Beverbox is Fantastic", "The beverages are so unique and cool that my heart poofs every time I wait for my beverage box. Good job!"));
+            feedbackSessionBeanLocal.createNewFeedback(new Feedback("Nick Lowie", "nicklowie@gmail.com", "Query regarding a potential collaboration", "Dear Sir/Mdm, my name is Nick, and my company, BrownCocoa is interested in collaborating with you regarding featuring our drinks in one of your box. Our premium beans are planted in South Africa, and we are expanding our reach to South East Asia. Thus, we think this will be a great collaboration. I look forward to your reply! Regards, Nick"));
+        } catch (CreateNewFeedbackException ex){
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
