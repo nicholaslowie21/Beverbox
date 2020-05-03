@@ -197,9 +197,9 @@ public class DataInitSessionBean {
     public void initializeCust() {
         
         try {
-            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "Cambia Road"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123, "Potato Drive"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133, "Zimly road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "bob@gmail.com", "password", "1234 5678 9101 1213", 113, "Cambia Road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "jane@gmail.com", "password", "1235 5679 9131 1213", 123, "Potato Drive"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "potato@gmail.com", "password", "1231 5678 1101 1223", 133, "Zimly road"));
         } catch (CreateNewCustomerException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
