@@ -39,6 +39,7 @@ public class Beverage implements Serializable {
     @Column(length = 64)
     @Size(max = 64)
     private String country;
+    @Column(nullable = false)
     private String type;
     @Column(nullable = false)
     private Boolean active;

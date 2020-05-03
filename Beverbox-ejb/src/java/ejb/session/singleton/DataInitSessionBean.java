@@ -192,18 +192,14 @@ public class DataInitSessionBean {
         promo = new Promotion("Chinese New Year", "GENERAL", 10, "CNY2020");
         em.persist(promo);
         em.flush();
-        
-        promo = new Promotion("Healthy Box Buffs", "GENERAL", 15, "HEALTH15");
-        em.persist(promo);
-        em.flush();
     }
     
     public void initializeCust() {
         
         try {
-            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "abc@gmail.com", "password", "1234 5678 9101 1213", 113, "Password"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "def@gmail.com", "password", "1235 5679 9131 1213", 123, "def road"));
-            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "ghi@gmail.com", "password", "1231 5678 1101 1223", 133, "ghhi road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Bob Tan", "bob@gmail.com", "password", "1234 5678 9101 1213", 113, "Cambia Road"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Jane Tan", "jane@gmail.com", "password", "1235 5679 9131 1213", 123, "Potato Drive"));
+            customerSessionBeanLocal.createNewCustomer(new Customer("Po Tato", "potato@gmail.com", "password", "1231 5678 1101 1223", 133, "Zimly road"));
         } catch (CreateNewCustomerException ex) {
             Logger.getLogger(DataInitSessionBean.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -242,7 +238,7 @@ public class DataInitSessionBean {
             Beverage bev13 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId13);
             Long bevId14 = beverageSessionBeanLocal.createNewBeverage(new Beverage("Sizzling Scotland", "Fizzy Drink", "England", "Alcoholic", 10.00, 10, false, 5));
             Beverage bev14 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId14);
-            Long bevId15 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Potato Mix", "Potato Drink", "Zambia", "Alcoholic", 15.00, 10, false, 5));
+            Long bevId15 =beverageSessionBeanLocal.createNewBeverage(new Beverage("Rice Wine", "Rice-like Drink", "Cambodia", "Alcoholic", 15.00, 10, false, 5));
             Beverage bev15 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId15);
             Long bevId16 =beverageSessionBeanLocal.createNewBeverage(new Beverage("PomPom", "Pomegranate Juice", "Thailand", "Non-Alcoholic", 15.00, 10, false, 5));
             Beverage bev16 = beverageSessionBeanLocal.retrieveBeverageByBeverageId(bevId16);

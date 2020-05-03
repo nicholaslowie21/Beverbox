@@ -29,7 +29,7 @@ public class TimerSessionBean {
     
     
     
-//    @Schedule(dayOfWeek = "Mon-Sun", month = "*", hour = "1", dayOfMonth = "*", year = "*", minute = "0", second = "0")
+    @Schedule(dayOfWeek = "Mon-Sun", month = "*", hour = "1", dayOfMonth = "*", year = "*", minute = "0", second = "0")
     public void disableOldSubscription(){
         
         Query query = em.createQuery("SELECT s FROM Subscription s WHERE s.active = true");
