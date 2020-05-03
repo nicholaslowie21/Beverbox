@@ -29,13 +29,9 @@ public class Subscription implements Serializable {
     @Column(nullable = false)
     @NotNull
     private Date endDate;
-//    @Column(nullable = false)
-//    @NotNull
-//    private Integer monthDuration;
     @NotNull
     private Boolean active = true;
     
-    // Unsure whether the relationship should be optional or not
     @ManyToOne
     @JoinColumn
     private OptionEntity option;
