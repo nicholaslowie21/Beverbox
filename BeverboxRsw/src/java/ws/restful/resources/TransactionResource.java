@@ -199,10 +199,10 @@ public class TransactionResource {
             ErrorRsp errorRsp = new ErrorRsp("This promo code is not found!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        } catch (QuantityNotEnoughException ex) {
-            ErrorRsp errorRsp = new ErrorRsp("This quantity requested is too many!");
+        } catch (BevTransactionLimitException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("Beverage Transaction Limit has been reached(Max 1 transaction per week)");
             
-            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
+            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
         } catch (BeverageNotFoundException ex) {
             ErrorRsp errorRsp = new ErrorRsp("Beverage not found!");
             
@@ -211,16 +211,16 @@ public class TransactionResource {
             ErrorRsp errorRsp = new ErrorRsp("This customer is not found!");
             
             return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
-        } catch (BevTransactionLimitException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+        } catch (QuantityNotEnoughException ex) {
+            ErrorRsp errorRsp = new ErrorRsp("The quantity requested is too many!");
             
-            return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
+            return Response.status(Response.Status.NOT_FOUND).entity(errorRsp).build();
         } catch (QuantityLimitException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            ErrorRsp errorRsp = new ErrorRsp("Beverage purchase limit exceeded!");
             
             return Response.status(Response.Status.NOT_ACCEPTABLE).entity(errorRsp).build();
         } catch (InvalidPromotionException ex) {
-            ErrorRsp errorRsp = new ErrorRsp(ex.getMessage());
+            ErrorRsp errorRsp = new ErrorRsp("Invalid Promo Code entered!");
             
             return Response.status(Response.Status.INTERNAL_SERVER_ERROR).entity(errorRsp).build();
         }
