@@ -26,8 +26,6 @@ public class Article implements Serializable {
     @Lob
     @Column(nullable = false)
     private String articleContent;
-    @Column
-    private String articleImg;
     @Column(nullable = false)
     @Temporal(javax.persistence.TemporalType.TIMESTAMP)
     private Date articleDate;
@@ -44,13 +42,6 @@ public class Article implements Serializable {
         this.articleDate = articleDate;
     }
     
-    public Article(String articleTitle, String articleContent, Date articleDate, String articleImg) 
-    {
-        this.articleTitle = articleTitle;
-        this.articleContent = articleContent;
-        this.articleDate = articleDate;
-        this.articleImg = articleImg;
-    }
 
     public Long getArticleId() {
         return articleId;
@@ -99,14 +90,6 @@ public class Article implements Serializable {
 
     public void setArticleContent(String articleContent) {
         this.articleContent = articleContent;
-    }
-
-    public String getArticleImg() {
-        return articleImg;
-    }
-
-    public void setArticleImg(String articleImg) {
-        this.articleImg = articleImg;
     }
 
     public Date getArticleDate() {

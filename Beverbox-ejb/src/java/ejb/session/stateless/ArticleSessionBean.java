@@ -61,7 +61,6 @@ public class ArticleSessionBean implements ArticleSessionBeanLocal {
             articleToUpdate.setArticleTitle(article.getArticleTitle());
             articleToUpdate.setArticleContent(article.getArticleContent());
             articleToUpdate.setArticleDate(article.getArticleDate());
-            articleToUpdate.setArticleImg(article.getArticleImg());
             
         }
         else 
