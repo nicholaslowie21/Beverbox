@@ -12,6 +12,9 @@
         <div>
             <h3>Create New Option</h3>
             <h:form id="createNewOption">
+                <p:growl>
+                    <p:autoUpdate />
+                </p:growl>
                 <p:messages id="messagesCreateNewProduct" redisplay="false" />
                     <p:panelGrid>
                         <p:row>
@@ -102,9 +105,7 @@
                             </p:column>
                         </p:row>
 
-                        <p:growl>
-                            <p:autoUpdate />
-                        </p:growl>
+                        
                     </p:panelGrid>
             </h:form>
         </div>
