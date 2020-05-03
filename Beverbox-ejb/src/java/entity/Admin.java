@@ -1,6 +1,7 @@
 package entity;
 
 import java.io.Serializable;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -17,8 +18,11 @@ public class Admin implements Serializable {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long adminId;
+    @Column(nullable = false)
     private String adminName;
+    @Column(unique = true, nullable = false)
     private String adminEmail;
+    @Column(nullable = false)
     private String adminPassword;
     
     public Admin() {
